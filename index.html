@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>De la instrucción a la acción: Prompt vs. Agentes IA</title>
+    <!-- Fuentes solicitadas -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Exo:wght@600;700;800&family=Antic+Didone&family=Cantarell:ital,wght@0,400;0,700;1,400&display=swap"
+        rel="stylesheet">
+    <!-- Iconos Font-Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            /* Colores de Marca Clip */
+            --primary: #FF5E00;
+            --primary-glow: rgba(255, 94, 0, 0.15);
+            --primary-soft: rgba(255, 94, 0, 0.05);
+            --primary-dark: #CC4B00;
+            --text-dark: #0F172A;
+            --text-light: #64748B;
+            --success-green: #15803D;
+            --error-red: #DC2626;
+            --white: #FFFFFF;
+            /* Fuentes asignadas */
+            --font-title: 'Exo', sans-serif;
+            --font-sub: 'Antic Didone', serif;
+            --font-body: 'Cantarell', sans-serif;
+            /* Degradado de fondo */
+            --bg-body: linear-gradient(46deg, rgba(255, 137, 59, 1) 0%, rgba(255, 255, 255, 1) 100%);
+            /* Sombras Flotantes */
+            --shadow-float: 0 15px 35px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            overflow: hidden;
+            font-family: var(--font-body);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-body);
+            position: relative;
+        }
+
+        /* Nubes de luz sutiles */
+        body::before,
+        body::after {
+            content: '';
+            position: absolute;
+            width: 800px;
+            height: 800px;
+            border-radius: 50%;
+            filter: blur(150px);
+            z-index: -1;
+            opacity: 0.25;
+            animation: pulseBackground 10s infinite alternate;
+        }
+
+        body::before {
+            background: rgba(255, 116, 35, 0.98);
+            top: -200px;
+            right: -150px;
+        }
+
+        body::after {
+            background: rgba(255, 116, 35, 0.98);
+            bottom: -250px;
+            left: -200px;
+            animation-delay: 5s;
+        }
+
+        @keyframes pulseBackground {
+            0% {
+                transform: scale(1);
+                opacity: 0.25;
+            }
+
+            100% {
+                transform: scale(1.1);
+                opacity: 0.35;
+            }
+        }
+
+        #presentation {
+            width: 1280px;
+            height: 720px;
+            position: relative;
+        }
+
+        /* --- ANIMACIONES --- */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes bubbleFadeIn {
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+
+        .delay-1 {
+            animation-delay: 0.1s !important;
+        }
+
+        .delay-2 {
+            animation-delay: 0.2s !important;
+        }
+
+        .delay-3 {
+            animation-delay: 0.3s !important;
+        }
+
+        .delay-4 {
+            animation-delay: 0.4s !important;
+        }
+
+        /* Estructura de Diapositiva */
+        .slide {
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 56px;
+            overflow: hidden;
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: none;
+            flex-direction: column;
+            padding: 50px 70px;
+            box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.9);
+        }
+
+        .slide.active {
+            display: flex;
+            animation: scaleIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .slide.active h1,
+        .slide.active h2,
+        .slide.active p,
+        .slide.active .grid-2>*,
+        .slide.active .agent-visual>*,
+        .slide.active .centered-content>* {
+            opacity: 0;
+            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        h1 {
+            font-family: var(--font-title);
+            color: var(--text-dark);
+            margin: 0;
+            font-size: 64px;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            font-weight: 800;
+        }
+
+        h2 {
+            font-family: var(--font-sub);
+            color: var(--text-dark);
+            margin: 0;
+            font-size: 42px;
+            margin-bottom: 30px;
+            border-left: 6px solid var(--primary);
+            padding-left: 25px;
+        }
+
+        h3 {
+            font-family: var(--font-sub);
+            color: var(--text-dark);
+            margin: 0;
+            font-weight: 700;
+        }
+
+        p {
+            font-family: var(--font-body);
+            font-size: 19px;
+            color: var(--text-light);
+            line-height: 1.5;
+            font-weight: 400;
+        }
+
+        .centered-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+            flex: 1;
+        }
+
+        /* Estilo de Tarjetas tipo "Pétalo" */
+        .feature-box-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            position: relative;
+            margin-top: -60px;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 24px;
+            border: 1px solid #F1F5F9;
+            box-shadow: var(--shadow-float);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            transition: all 0.3s ease;
+            opacity: 0;
+            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .slide.active .feature-card:nth-child(1) {
+            animation-delay: 0.2s;
+        }
+
+        .slide.active .feature-card:nth-child(2) {
+            animation-delay: 0.3s;
+        }
+
+        .slide.active .feature-card:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.1);
+        }
+
+        .petal-left-point {
+            border-radius: 40px 40px 40px 0px;
+        }
+
+        .petal-left-top-point {
+            border-radius: 0px 40px 40px 40px;
+        }
+
+        .petal-right-point {
+            border-radius: 40px 40px 0px 40px;
+        }
+
+        .petal-right-top-point {
+            border-radius: 40px 0px 40px 40px;
+        }
+
+        .feature-card i {
+            font-size: 26px;
+            color: var(--primary);
+        }
+
+        .feature-card b {
+            font-family: var(--font-sub);
+            font-size: 20px;
+            color: var(--text-dark);
+            font-weight: 700;
+        }
+
+        .feature-card span {
+            font-family: var(--font-body);
+            font-size: 14px;
+            color: var(--text-light);
+            line-height: 1.4;
+        }
+
+        .btn-clip {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 16px 40px;
+            border-radius: 20px;
+            font-family: var(--font-body);
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 17px;
+            transition: 0.3s ease;
+            box-shadow: 0 10px 25px rgba(255, 94, 0, 0.2);
+        }
+
+        .btn-clip:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 30px rgba(255, 94, 0, 0.3);
+        }
+
+        /* Controles */
+        .controls {
+            position: fixed;
+            bottom: 30px;
+            right: 50px;
+            display: flex;
+            gap: 12px;
+            z-index: 1000;
+        }
+
+        .nav-dot {
+            background: white;
+            color: var(--text-dark);
+            border: 1px solid #E2E8F0;
+            width: 52px;
+            height: 52px;
+            border-radius: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .nav-dot:hover:not(:disabled) {
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .nav-dot:disabled {
+            opacity: 0.2;
+            cursor: not-allowed;
+        }
+
+        .counter {
+            position: fixed;
+            bottom: 45px;
+            left: 50px;
+            color: var(--text-dark);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 4px;
+            opacity: 0.5;
+            font-family: var(--font-body);
+        }
+
+        /* Agente Visual */
+        .agent-visual {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+            flex: 1;
+            margin-top: -20px;
+        }
+
+         .agent-image-area { width: 340px; height: 340px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: transparent; animation-delay: 0.3s !important; }
+        .agent-image-area img { width: 100%; height: auto; border-radius: 24px; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.05)); }
+        
+
+        .agent-feature-petal {
+            background: white;
+            padding: 20px;
+            border: 1px solid #F1F5F9;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            width: 250px;
+            font-family: var(--font-body);
+            font-size: 16px;
+            font-weight: 600;
+            box-shadow: var(--shadow-float);
+            opacity: 0;
+            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .agent-feature-petal:hover {
+            transform: scale(1.05) translateY(-5px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1);
+        }
+
+        .slide.active .agent-visual>div:first-child .agent-feature-petal:nth-child(1) {
+            animation-delay: 0.2s;
+        }
+
+        .slide.active .agent-visual>div:first-child .agent-feature-petal:nth-child(2) {
+            animation-delay: 0.3s;
+        }
+
+        .slide.active .agent-visual>div:last-child .agent-feature-petal:nth-child(1) {
+            animation-delay: 0.4s;
+        }
+
+        .slide.active .agent-visual>div:last-child .agent-feature-petal:nth-child(2) {
+            animation-delay: 0.5s;
+        }
+
+        .agent-feature-petal i {
+            color: var(--primary);
+            font-size: 22px;
+        }
+
+        /* JUEGO */
+        .timer-ui {
+            position: absolute;
+            top: 40px;
+            right: 70px;
+            background: var(--text-dark);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 14px;
+            font-weight: 700;
+            font-family: monospace;
+            font-size: 22px;
+            z-index: 20;
+            opacity: 0;
+            animation: scaleIn 0.5s 0.2s forwards;
+        }
+
+        .suspect-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            flex: 1;
+            align-items: end;
+            padding-bottom: 10px;
+        }
+
+        .suspect-container {
+            position: relative;
+            opacity: 0;
+            animation: fadeInUp 0.6s forwards;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+
+        #phase-play:not(.hidden) .suspect-container:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        #phase-play:not(.hidden) .suspect-container:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        #phase-play:not(.hidden) .suspect-container:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .avatar-frame {
+            width: 110px;
+            height: 110px;
+            background: #FFFFFF;
+            border-radius: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 45px;
+            color: #CBD5E1;
+            border: 1px solid #F1F3F5;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            transition: 0.4s;
+            margin: 0 auto;
+        }
+
+        .drag-over .avatar-frame {
+            border-color: var(--primary);
+            background: var(--primary-soft);
+            transform: scale(1.1) translateY(-10px);
+            box-shadow: 0 20px 45px rgba(255, 94, 0, 0.2);
+        }
+
+        .chat-bubble {
+            position: absolute;
+            bottom: 130%;
+            background: white;
+            border-radius: 24px;
+            padding: 18px;
+            width: 260px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+            border: 1px solid #F8FAFC;
+            font-size: 16px;
+            font-style: italic;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 60px;
+            opacity: 0;
+            animation: bubbleFadeIn 0.5s 0.4s forwards;
+            z-index: 10;
+        }
+
+        .tools-container {
+            background: rgba(21, 128, 61, 0.05);
+            border-radius: 30px;
+            padding: 15px;
+            border: 2px dashed rgba(21, 128, 61, 0.15);
+            margin-top: 15px;
+            text-align: center;
+            opacity: 0;
+            animation: fadeInUp 0.6s 0.5s forwards;
+        }
+        
+
+        .question-chip {
+            background: white;
+            border: 1px solid #E2E8F0;
+            padding: 12px 20px;
+            border-radius: 16px;
+            cursor: grab;
+            font-family: var(--font-sub);
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--success-green);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin: 5px;
+            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.04);
+            transition: 0.3s;
+        }
+
+
+        .question-chip:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        #phase-result {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: var(--success-green);
+        }
+
+        #result-title {
+            font-family: var(--font-title);
+            font-size: 42px;
+            margin-bottom: 25px;
+            font-weight: 800;
+            opacity: 0;
+            animation: scaleIn 0.5s 0.1s forwards;
+        }
+
+        .error-word {
+            color: var(--error-red);
+            font-weight: 900;
+        }
+
+        .result-winner {
+            background: #F0FFF4;
+            border: 2px solid #C6F6D5;
+            border-radius: 32px;
+            padding: 40px;
+            display: flex;
+            align-items: center;
+            gap: 35px;
+            text-align: left;
+            max-width: 900px;
+            margin: 0 auto;
+            box-shadow: 0 25px 60px rgba(21, 128, 61, 0.15);
+            opacity: 0;
+            animation: fadeInUp 0.6s 0.3s forwards;
+        }
+
+        .modal-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            animation: scaleIn 0.3s forwards;
+        }
+
+        .modal-body {
+            background: white;
+            padding: 50px;
+            border-radius: 48px;
+            text-align: center;
+            width: 500px;
+            border: 1px solid #EEE;
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.15);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="presentation">
+        <!-- SLIDE 1: PORTADA -->
+        <div class="slide active">
+            <div class="centered-content">
+                
+                <h1 class="delay-2">Prompt vs. Agentes:<br>El nuevo estándar</h1>
+                <p class="delay-3"
+                    style="font-size: 26px; max-width: 800px; color: var(--text-light); font-weight: 300;">Hacia una
+                    cultura de autonomía y ejecución.</p>
+                <div class="delay-4" style="margin-top: 80px; text-align: center;">
+                    <div style="width: 60px; height: 3px; background: var(--primary); margin: 0 auto 20px;"></div>
+                    <p style="font-weight: 600; color: var(--text-dark); margin: 0; font-size: 20px;">Monica Vazquez</p>
+                    <p style="font-size: 14px; margin: 5px 0 0; color: var(--primary); font-weight: 700;">Ingeniera en Tecnología Interactiva y Animación Digital <br> | Diseñadora Instruccional y Desarrolladora e-Learning</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 2: PROMPT -->
+        <div class="slide">
+            <h2>¿Qué es un Prompt?</h2>
+            <div class="grid-2">
+                <div>
+                    <p style="margin-bottom: 35px; font-size: 21px;">Es la <b>instrucción</b> directa y secuencial. El
+                        motor que requiere que un humano esté siempre al volante para avanzar.</p>
+                    <div
+                        style="display: flex; gap: 15px; align-items: center; color: var(--primary); font-weight: 700; font-size: 17px;">
+                        <img src="promt.png" alt="Prompt" style="width: 220px;">
+                        <span>Interacción táctica de un solo paso</span>
+                    </div>
+                </div>
+
+                <div class="feature-box-container">
+                    <div class="feature-card petal-left-point">
+                        <i class="fa-solid fa-keyboard"></i>
+                        <b>Instrucción</b>
+                        <span>Orden directa para obtener una respuesta específica.</span>
+                    </div>
+                    <div class="feature-card petal-left-top-point">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        <b>Asistencia</b>
+                        <span>Ayuda a redactar, resumir o idear borradores rápidos.</span>
+                    </div>
+                    <div class="feature-card petal-left-point">
+                        <i class="fa-solid fa-person-rays"></i>
+                        <b>Dependencia</b>
+                        <span>Sin un humano que lo guíe, el flujo de trabajo se detiene.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 3: AGENTE -->
+        <div class="slide">
+            <h2>¿Qué es un Agente de IA?</h2>
+            <div class="agent-visual">
+                <div style="display:flex; flex-direction:column; gap:25px;">
+                    <div class="agent-feature-petal petal-right-point"><i
+                            class="fa-solid fa-bullseye"></i><span>Objetivo Final</span></div>
+                    <div class="agent-feature-petal petal-right-top-point"><i
+                            class="fa-solid fa-gears"></i><span>Autonomía de Acción</span></div>
+                </div>
+                <div class="agent-image-area">
+                    <img src="IA AGENTE.png" alt="IA Agente">
+                </div>
+                <div style="display:flex; flex-direction:column; gap:25px;">
+                    <div class="agent-feature-petal petal-left-point"><i
+                            class="fa-solid fa-link"></i><span>Herramientas</span></div>
+                    <div class="agent-feature-petal petal-left-top-point"><i
+                            class="fa-solid fa-database"></i><span>Memoria</span></div>
+                </div>
+            </div>
+            <p
+                style="text-align: center; margin-top: 50px; font-weight: 600; color: var(--text-dark); font-size: 22px;">
+                Un sistema diseñado para ejecutar misiones completas.</p>
+        </div>
+
+        <!-- SLIDE 4: DETECTIVE CLIP -->
+        <div class="slide">
+            <div class="timer-ui" id="timer-box" style="display:none;"><i class="fa-solid fa-clock-rotate-left"></i>
+                <span id="timer-display">12:00</span></div>
+            <h2>Detective Clip</h2>
+
+            <div id="game-interface" style="height:100%; display: flex; flex-direction: column; overflow: visible;">
+                <!-- FASE 1: INTRO (Actualizada con imagen al lado derecho) -->
+                <div id="phase-intro" class="centered-content">
+                    <div class="grid-2" style="max-width: 1100px; text-align: left;">
+                        <div style="border-left: 8px solid var(--primary); padding-left: 30px;">
+                            <p style="color: var(--primary); font-weight: 700; font-size: 12px; margin-bottom: 8px; letter-spacing: 2px;">MISIÓN EN CURSO</p>
+                            <h3 style="font-size: 32px; margin-bottom: 15px; color: var(--success-green);">El Caso de la Reactivación</h3>
+                            <p style="font-size: 18px; color: var(--text-light);">Arrastra las preguntas a los sospechosos para obtener sus testimonios. Solo un perfil cumple con las características de un <b>Agente Autónomo</b>.</p>
+                            <button class="btn-clip" style="margin-top: 40px;" onclick="startGame()">Iniciar Investigación</button>
+                        </div>
+                        <div style="display: flex; justify-content: center; align-items: center; padding: 20px;">
+                            <img src="game.png" 
+                                 alt="Misión de Negocio" 
+                                 style="width: 100%; max-width: 400px; border-radius: 40px; box-shadow: var(--shadow-float); border: 2px solid white;">
+                        </div>
+                    </div>
+                </div>
+
+                <div id="phase-play" class="hidden"
+                    style="flex:1; display: flex; flex-direction: column; justify-content: space-between; overflow: visible;">
+                    <div class="suspect-row">
+                        <div class="suspect-container" ondragover="allowDrop(event)" ondrop="drop(event, 1)">
+                            <div id="bubble-1" class="chat-bubble">"Detecté a las taquerías inactivas y redacté tres
+                                opciones de correos persuasivos..."</div>
+                            <div class="avatar-frame"><i class="fa-solid fa-user-secret"></i></div>
+                            <p style="margin: 10px 0 5px; font-weight: 700; color: var(--text-dark); font-size: 14px;">
+                                Sospechoso 1</p>
+                            <button class="btn-clip" style="padding: 8px 20px; font-size: 12px;"
+                                onclick="selectFinal(1)">Votar</button>
+                        </div>
+                        <div class="suspect-container" ondragover="allowDrop(event)" ondrop="drop(event, 2)">
+                            <div id="bubble-2" class="chat-bubble">"Monitoreé la caída, identifiqué las transacciones e
+                                inicié la campaña ajustando el presupuesto."</div>
+                            <div class="avatar-frame"><i class="fa-solid fa-user-tie"></i></div>
+                            <p style="margin: 10px 0 5px; font-weight: 700; color: var(--text-dark); font-size: 14px;">
+                                Sospechoso 2</p>
+                            <button class="btn-clip" style="padding: 8px 20px; font-size: 12px;"
+                                onclick="selectFinal(2)">Votar</button>
+                        </div>
+                        <div class="suspect-container" ondragover="allowDrop(event)" ondrop="drop(event, 3)">
+                            <div id="bubble-3" class="chat-bubble">"Al cumplirse los 30 días de inactividad, se disparó
+                                el mensaje de marketing aprobado."</div>
+                            <div class="avatar-frame"><i class="fa-solid fa-user-ninja"></i></div>
+                            <p style="margin: 10px 0 5px; font-weight: 700; color: var(--text-dark); font-size: 14px;">
+                                Sospechoso 3</p>
+                            <button class="btn-clip" style="padding: 8px 20px; font-size: 12px;"
+                                onclick="selectFinal(3)">Votar</button>
+                        </div>
+                    </div>
+                    <div class="tools-container">
+                        <div id="q-rebound" class="question-chip" draggable="true" ondragstart="drag(event, 'rebound')">
+                            <i class="fa-solid fa-envelope-circle-check"></i> ¿Qué hiciste si rebotó?</div>
+                        <div id="q-order" class="question-chip" draggable="true" ondragstart="drag(event, 'order')"><i
+                                class="fa-solid fa-bolt-lightning"></i> ¿Quién dio la orden?</div>
+                        <div id="q-words" class="question-chip" draggable="true" ondragstart="drag(event, 'words')"><i
+                                class="fa-solid fa-language"></i> ¿Cómo elegiste las palabras?</div>
+                    </div>
+                </div>
+
+                <div id="phase-result" class="hidden">
+                    <h3 id="result-title"></h3>
+                    <div class="result-winner">
+                        <i class="fa-solid fa-robot" style="font-size: 70px; color: #38A169;"></i>
+                        <div>
+                            <h3
+                                style="color: #22543D; font-size: 26px; margin-bottom: 12px; border:none; padding:0; text-align: left;">
+                                S2: AGENTE AUTÓNOMO</h3>
+                            <p style="font-size: 18px; color: #276749; margin:0;"><b>Identificado:</b> No solo responde
+                                a texto, persigue un objetivo de negocio conectando con herramientas reales y ajustando
+                                pasos ante fallos sin intervención humana constante.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="time-over-modal" class="modal-overlay">
+                <div class="modal-body">
+                    <i class="fa-solid fa-hourglass-end"
+                        style="font-size: 60px; color: var(--primary); margin-bottom: 25px;"></i>
+                    <h2 style="font-family: var(--font-sub);">¡Investigación Finalizada!</h2>
+                    <p>El tiempo para interrogar ha expirado.</p>
+                    <button class="btn-main" style="margin-top: 30px;" onclick="revealFinalFromPopup()">Ver
+                        Resultados</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 5: QR -->
+        <div class="slide">
+            <div class="centered-content">
+                <h2>Cierre y Evaluación</h2>
+                <div class="feature-card delay-2"
+                    style="margin: 30px 0; background: white; padding: 20px; border-radius: 40px; border: 4px solid var(--primary-glow); width: auto; display: inline-block; opacity: 1;">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=https://forms.gle/fHjMNHXoVUkuEyfc8"
+                        alt="QR Evaluación" style="width: 240px; border-radius: 12px;">
+                </div>
+                <p class="delay-3"
+                    style="font-size: 38px; color: var(--primary); font-weight: 700; font-family: var(--font-sub); margin: 0;">
+                    "El futuro es colaborativo"</p>
+                <p class="delay-4" style="font-size: 20px; margin-top: 10px; color: var(--text-light);">Lideramos con
+                    visión humana, ejecutamos con fuerza de Agentes.</p>
+            </div>
+        </div>
+
+        <!-- SLIDE 6: GRACIAS -->
+        <div class="slide">
+            <div class="centered-content">
+                <h1 class="delay-1" style="font-size: 110px; margin-bottom: 25px;">¡Gracias!</h1>
+                <p class="delay-2" style="font-size: 28px; color: var(--text-light); font-weight: 300;">Preguntas, dudas
+                    o próximos pasos para Clip IA.</p>
+                <div class="delay-3"
+                    style="margin-top: 80px; text-align: left; display: inline-block; border-left: 5px solid var(--primary); padding-left: 25px;">
+                    <p style="font-weight: 700; font-size: 22px; color: var(--text-dark); margin: 0;">Monica Vazquez</p>
+                    <p
+                        style="font-size: 13px; margin: 0; color: var(--primary); font-weight: 800; letter-spacing: 2px;">
+                        Ingeniera en Tecnología Interactiva y Animación Digital | Diseñadora Instruccional y Desarrolladora e-Learning </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- NAVEGACIÓN -->
+    <div class="counter">PÁGINA <span id="cur-slide-idx">1</span> / 6</div>
+    <div class="controls">
+        <button class="nav-dot" onclick="prevSlide()" id="pBtn" disabled><i class="fa-solid fa-arrow-left"></i></button>
+        <button class="nav-dot" onclick="nextSlide()" id="nBtn"><i class="fa-solid fa-arrow-right"></i></button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const pBtn = document.getElementById('pBtn');
+        const nBtn = document.getElementById('nBtn');
+        const counterIdx = document.getElementById('cur-slide-idx');
+
+        function updateNavigationUI() {
+            slides.forEach((s, i) => s.classList.toggle('active', i === currentSlide));
+            pBtn.disabled = currentSlide === 0;
+            nBtn.disabled = currentSlide === slides.length - 1;
+            counterIdx.innerText = currentSlide + 1;
+        }
+
+        function nextSlide() { if (currentSlide < slides.length - 1) { currentSlide++; updateNavigationUI(); } }
+        function prevSlide() { if (currentSlide > 0) { currentSlide--; updateNavigationUI(); } }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') nextSlide();
+            if (e.key === 'ArrowLeft') prevSlide();
+        });
+
+        let timerSeconds = 12 * 60;
+        let timerInterval;
+        const gameAnswers = {
+            rebound: { 1: "No lo sé, yo solo redacté el texto que se me solicitó.", 2: "Analicé el fallo de entrega, busqué canal alternativo (SMS) y envié el mensaje adaptado.", 3: "Registré el error en la base de datos y detuve el envío programado automáticamente." },
+            order: { 1: "Un humano me pasó la base de datos y me pidió borradores.", 2: "Nadie directamente. Mi objetivo es la retención y actúo al detectar inactividad.", 3: "El sistema central de reglas cuando se disparó la alerta de 30 días." },
+            words: { 1: "Calculé probabilidades persuasivas basándome en mi entrenamiento de lenguaje.", 2: "Hice pruebas A/B en tiempo real y elegí las que más conversiones generaron en Clip.", 3: "Utilicé estrictamente la plantilla de reactivación que recibí de marketing." }
+        };
+
+        function startGame() {
+            document.getElementById('phase-intro').classList.add('hidden');
+            const playPhase = document.getElementById('phase-play');
+            playPhase.classList.remove('hidden');
+            playPhase.style.display = 'flex';
+            document.getElementById('timer-box').style.display = 'block';
+            startDetectiveTimer();
+        }
+
+        function startDetectiveTimer() {
+            if (timerInterval) clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                timerSeconds--;
+                const m = Math.floor(timerSeconds / 60);
+                const s = timerSeconds % 60;
+                const timerDisplay = document.getElementById('timer-display');
+                if (timerDisplay) {
+                    timerDisplay.innerText = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+                }
+                if (timerSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    const modal = document.getElementById('time-over-modal');
+                    if (modal) modal.style.display = 'flex';
+                }
+            }, 1000);
+        }
+
+        function drag(ev, questionKey) { ev.dataTransfer.setData("text", questionKey); }
+        function allowDrop(ev) { ev.preventDefault(); ev.currentTarget.classList.add('drag-over'); }
+        function drop(ev, suspectId) {
+            ev.preventDefault();
+            ev.currentTarget.classList.remove('drag-over');
+            const questionKey = ev.dataTransfer.getData("text");
+            if (questionKey && gameAnswers[questionKey]) {
+                const bubble = document.getElementById(`bubble-${suspectId}`);
+                bubble.innerText = `"${gameAnswers[questionKey][suspectId]}"`;
+                bubble.style.borderColor = 'var(--primary)';
+                const chip = document.getElementById(`q-${questionKey}`);
+                if (chip) chip.style.opacity = "0.2";
+            }
+        }
+
+        function selectFinal(id) {
+            clearInterval(timerInterval);
+            let msg = "";
+            if (id === 2) {
+                msg = "¡EXCELENTE! Detective de Agentes";
+            } else {
+                msg = "¡<span class='error-word'>ERROR</span>! Perfil incorrecto";
+            }
+            revealGameResult(msg);
+        }
+
+        function revealFinalFromPopup() {
+            document.getElementById('time-over-modal').style.display = 'none';
+            revealGameResult("TIEMPO AGOTADO");
+        }
+
+        function revealGameResult(msg) {
+            document.getElementById('phase-play').classList.add('hidden');
+            const resPhase = document.getElementById('phase-result');
+            resPhase.classList.remove('hidden');
+            resPhase.style.display = 'flex';
+            document.getElementById('timer-box').classList.add('hidden');
+            document.getElementById('result-title').innerHTML = msg;
+        }
+    </script>
+</body>
+
+</html>
