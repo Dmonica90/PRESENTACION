@@ -631,6 +631,8 @@
         .hidden {
             display: none !important;
         }
+
+        
     </style>
 </head>
 
@@ -715,7 +717,7 @@
         <!-- SLIDE 4: DETECTIVE CLIP -->
         <div class="slide">
             <div class="timer-ui" id="timer-box" style="display:none;"><i class="fa-solid fa-clock-rotate-left"></i>
-                <span id="timer-display">12:00</span></div>
+                <span id="timer-display">04:00</span></div>
             <h2>Detective Clip</h2>
 
             <div id="game-interface" style="height:100%; display: flex; flex-direction: column; overflow: visible;">
@@ -725,7 +727,9 @@
                         <div style="border-left: 8px solid var(--primary); padding-left: 30px;">
                             <p style="color: var(--primary); font-weight: 700; font-size: 12px; margin-bottom: 8px; letter-spacing: 2px;">MISIÓN EN CURSO</p>
                             <h3 style="font-size: 32px; margin-bottom: 15px; color: var(--success-green);">El Caso de la Reactivación</h3>
-                            <p style="font-size: 18px; color: var(--text-light);">Arrastra las preguntas a los sospechosos para obtener sus testimonios. Solo un perfil cumple con las características de un <b>Agente Autónomo</b>.</p>
+                            <p style="font-size: 18px; color: var(--text-light);">El problema:</b> Necesitamos reactivar a las taquerías que llevan 30 días sin usar su terminal Clip.</b><br>
+                            <b>El objetivo:</b> Descubrir cuál de los 3 perfiles es el verdadero <b>Agente Autónomo</b>
+                            </p>
                             <button class="btn-clip" style="margin-top: 40px;" onclick="startGame()">Iniciar Investigación</button>
                         </div>
                         <div style="display: flex; justify-content: center; align-items: center; padding: 20px;">
@@ -740,40 +744,37 @@
                     style="flex:1; display: flex; flex-direction: column; justify-content: space-between; overflow: visible;">
                     <div class="suspect-row">
                         <div class="suspect-container" ondragover="allowDrop(event)" ondrop="drop(event, 1)">
-                            <div id="bubble-1" class="chat-bubble">"Detecté a las taquerías inactivas y redacté tres
-                                opciones de correos persuasivos..."</div>
+                            <div id="bubble-1" class="chat-bubble">"Detecté a las taquerías inactivas y generé tres opciones de correos persuasivos con el tono de voz de Clip listos para enviarse."</div>
                             <div class="avatar-frame"><i class="fa-solid fa-user-secret"></i></div>
                             <p style="margin: 10px 0 5px; font-weight: 700; color: var(--text-dark); font-size: 14px;">
-                                Sospechoso 1</p>
+                                Hugo </p>
                             <button class="btn-clip" style="padding: 8px 20px; font-size: 12px;"
                                 onclick="selectFinal(1)">Votar</button>
                         </div>
                         <div class="suspect-container" ondragover="allowDrop(event)" ondrop="drop(event, 2)">
-                            <div id="bubble-2" class="chat-bubble">"Monitoreé la caída, identifiqué las transacciones e
-                                inicié la campaña ajustando el presupuesto."</div>
+                            <div id="bubble-2" class="chat-bubble">"Monitoreé las taquerías, identifiqué la caída en transacciones, creé la campaña, la envié a las 10 am y ya ajusté el presupuesto en redes sociales según los clics."</div>
                             <div class="avatar-frame"><i class="fa-solid fa-user-tie"></i></div>
                             <p style="margin: 10px 0 5px; font-weight: 700; color: var(--text-dark); font-size: 14px;">
-                                Sospechoso 2</p>
+                                Paco </p>
                             <button class="btn-clip" style="padding: 8px 20px; font-size: 12px;"
                                 onclick="selectFinal(2)">Votar</button>
                         </div>
                         <div class="suspect-container" ondragover="allowDrop(event)" ondrop="drop(event, 3)">
-                            <div id="bubble-3" class="chat-bubble">"Al cumplirse los 30 días de inactividad, se disparó
-                                el mensaje de marketing aprobado."</div>
+                            <div id="bubble-3" class="chat-bubble">"En cuanto una taquería cumplió 30 días sin transaccionar, se le envió exactamente el mensaje de reactivación aprobado por marketing."</div>
                             <div class="avatar-frame"><i class="fa-solid fa-user-ninja"></i></div>
                             <p style="margin: 10px 0 5px; font-weight: 700; color: var(--text-dark); font-size: 14px;">
-                                Sospechoso 3</p>
+                                Luis </p>
                             <button class="btn-clip" style="padding: 8px 20px; font-size: 12px;"
                                 onclick="selectFinal(3)">Votar</button>
                         </div>
                     </div>
                     <div class="tools-container">
                         <div id="q-rebound" class="question-chip" draggable="true" ondragstart="drag(event, 'rebound')">
-                            <i class="fa-solid fa-envelope-circle-check"></i> ¿Qué hiciste si rebotó?</div>
+                            <i class="fa-solid fa-envelope-circle-check"></i> ¿Qué hiciste cuando te diste cuenta de que el correo rebotó o falló?</div>
                         <div id="q-order" class="question-chip" draggable="true" ondragstart="drag(event, 'order')"><i
-                                class="fa-solid fa-bolt-lightning"></i> ¿Quién dio la orden?</div>
+                                class="fa-solid fa-bolt-lightning"></i> ¿Quién te dio la orden para empezar a trabajar?</div>
                         <div id="q-words" class="question-chip" draggable="true" ondragstart="drag(event, 'words')"><i
-                                class="fa-solid fa-language"></i> ¿Cómo elegiste las palabras?</div>
+                                class="fa-solid fa-language"></i> ¿Cómo decidiste qué palabras usar en el mensaje?</div>
                     </div>
                 </div>
 
@@ -784,10 +785,10 @@
                         <div>
                             <h3
                                 style="color: #22543D; font-size: 26px; margin-bottom: 12px; border:none; padding:0; text-align: left;">
-                                S2: AGENTE AUTÓNOMO</h3>
+                                Paco: AGENTE AUTÓNOMO</h3>
                             <p style="font-size: 18px; color: #276749; margin:0;"><b>Identificado:</b> No solo responde
                                 a texto, persigue un objetivo de negocio conectando con herramientas reales y ajustando
-                                pasos ante fallos sin intervención humana constante.</p>
+                                pasos ante fallos sin intervención humana constante.</p>    
                         </div>
                     </div>
                 </div>
@@ -868,12 +869,12 @@
             if (e.key === 'ArrowLeft') prevSlide();
         });
 
-        let timerSeconds = 12 * 60;
+        let timerSeconds = 4 * 60;
         let timerInterval;
         const gameAnswers = {
-            rebound: { 1: "No lo sé, yo solo redacté el texto que se me solicitó.", 2: "Analicé el fallo de entrega, busqué canal alternativo (SMS) y envié el mensaje adaptado.", 3: "Registré el error en la base de datos y detuve el envío programado automáticamente." },
-            order: { 1: "Un humano me pasó la base de datos y me pidió borradores.", 2: "Nadie directamente. Mi objetivo es la retención y actúo al detectar inactividad.", 3: "El sistema central de reglas cuando se disparó la alerta de 30 días." },
-            words: { 1: "Calculé probabilidades persuasivas basándome en mi entrenamiento de lenguaje.", 2: "Hice pruebas A/B en tiempo real y elegí las que más conversiones generaron en Clip.", 3: "Utilicé estrictamente la plantilla de reactivación que recibí de marketing." }
+            rebound: { 1: "No lo sé, yo solo redacté el texto que me pidieron.", 2: "Analicé el error de entrega, busqué un canal alternativo como SMS y envié un nuevo mensaje adaptado a ese formato.", 3: "Registré el error en la base de datos y detuve el envío." },
+            order: { 1: "Un humano me pasó la base de datos y me pidió que escribiera los textos.", 2: "Nadie en este momento. Mi objetivo configurado es mantener la retención alta, así que actúo en cuanto detecto la caída.", 3: "El sistema, cuando el contador de días llegó a 30." },
+            words: { 1: "Calculé la probabilidad de las palabras más persuasivas basándome en mi entrenamiento y las instrucciones que me dieron.", 2: "Hice pruebas A/B en tiempo real y elegí las palabras que generaron más aperturas.", 3: "Yo no decido palabras, solo copio y pego la plantilla que me dieron." }
         };
 
         function startGame() {
