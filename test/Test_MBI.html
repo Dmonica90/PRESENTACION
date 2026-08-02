@@ -1,0 +1,429 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <script>window["__codeletBootstrap__"] = JSON.parse('{"A":"A","B":"20260731-05-8d4b1dd","C":{"Abril Fatface":"YACgEZbkUVE,0","Alfa Slab One":"YACgEYS9sJU,0","Anton":"YACgEcYqQ-A,0","Archivo":"YAHO2-t-jNE,0","Arial":"YAGyDvJ_4Ts,0","Bebas Neue":"YACgESME5ew,0","Broken Glyph":"YADZ-exUkv0,0","Canva Sans":"YAFdJjTk5UU,0","Caveat":"YALBs2ploWQ,0","Comic Sans MS":"YAHO2VMiyZo,0","Cormorant Garamond":"YAFdJhX-538,0","Courier New":"YAGzXiGs0_8,0","DM Sans":"YAD1aU3sLnI,0","DM Serif Display":"YAD1aYG82rc,0","Forum":"YACgEcnnqB4,0","Fraunces":"YAEul-FRQw4,0","Georgia":"YAGzXkO0pEM,0","Ghost Mono":"YAHO2EIdDP0,0","Helvetica Neue":"YAFcf6CtJfI,0","Impact":"YAFcfnjI7Vk,0","Inter":"YAFdJvSyp_k,3","Iowan Old Style":"YAGNIFa8j9o,0","Jacques Francois":"YAHO2a5g66Q,0","JetBrains Mono":"YADy3sAhvXQ,0","Oleo Script":"YACgEQQ14jI,0","Playfair Display":"YAFdJhem5V8,1","Poppins":"YAE5fPSY9qM,0","Press Start 2P":"YAFyGr-8pmQ,0","Source Sans 3":"YAG4lO1Mj10,0","Space Grotesk":"YAHO2sjPCSM,0","Times New Roman":"YAGzXW3gftg,0","Times":"YAGzXW3gftg,0","Trebuchet MS":"YAFcfrglpVA,0","Verdana":"YAGzXTctYtQ,0","Work Sans":"YAGXhLOKv44,0","Yellowtail":"YACgEYG4kG4,0"}}');</script>
+    <script src="/_sdk/1c274b9c2bdd3519.telemetry_sdk.js"
+        integrity="sha512-QvDGWM2/VIwB7KXA4cwqkIBlxCdJGd0uO9ksM8wsqNKNiFgewrwdYlGY9ioCTg42Djm5Sw7uha/WH60UzzKOhQ=="></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maslach Burnout Inventory</title>
+    <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&amp;family=Montserrat:wght@400;500;600;700&amp;display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+    <style>
+        :root {
+            --color-azul-gs1: #002C6C;
+            --color-azul-secundario: #003DA5;
+            --color-naranja-gs1: #F26334;
+            --color-azul-gs1-hover: #001F4D;
+            --color-azul-cielo: #7BAFD4;
+            --gs1-color-raspberry: #A6192E;
+            --color-morado: #6D2077;
+            --color-amarillo: #FFCD00;
+            --color-verde: #00A651;
+            --color-azul-acua: #00B2A9;
+            --color-gris-claro: #F2F2F2;
+            --color-negro-texto: #1D1D1B;
+            --color-acierto-correcto: #00A651;
+            --color-error-incorrecto: #E4002B;
+            --color-rojo: #E4002B;
+            --glass-bg: rgba(255, 255, 255, 0.843);
+            --glass-border: rgba(255, 255, 255, 0.75);
+            --glass-shadow: 0 8px 32px rgba(0, 44, 108, 0.10);
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: radial-gradient(ellipse at 50% 0%, #dce8f5 0%, var(--color-gris-claro) 50%, #e8f0f8 100%);
+            min-height: calc(100 * min(var(--vh, 1vh), 1vh));
+        }
+
+        .display-font {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow);
+        }
+
+        .radio-option input:checked+label {
+            background: linear-gradient(135deg, #22335e, #03b6dc);
+            color: #fff !important;
+            border-color: transparent;
+            box-shadow: 0 2px 12px rgba(0, 44, 108, 0.25);
+        }
+
+        .radio-option label:hover {
+            background: #fef0ec;
+            border-color: var(--color-naranja-gs1);
+        }
+
+        .radio-option input:checked+label:hover {
+            opacity: 0.92;
+        }
+
+        .radio-option label {
+            border-radius: 9999px;
+            width: 100px;
+            min-height: 52px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-sizing: border-box;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.35s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes modalIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95) translateY(12px);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .modal-enter {
+            animation: modalIn 0.4s cubic-bezier(.22, 1, .36, 1);
+        }
+
+        .progress-track {
+            background: rgba(0, 44, 108, 0.10);
+        }
+
+        .progress-fill {
+            transition: width 0.4s ease;
+            background: linear-gradient(90deg, var(--color-azul-gs1), var(--color-naranja-gs1));
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--color-naranja-gs1), #e8522a);
+            color: #fff;
+            border-radius: 9999px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 4px 20px rgba(242, 99, 52, 0.35);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            border: 1.5px solid var(--color-azul-gs1);
+            color: var(--color-azul-gs1);
+            border-radius: 9999px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(0, 44, 108, 0.05);
+        }
+
+        .q-badge {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--color-azul-gs1), var(--color-azul-cielo));
+            color: #fff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        #error-msg {
+            background: #fff0f3;
+            border-color: var(--color-rojo);
+            color: var(--color-rojo);
+        }
+
+        #results-modal {
+            background: rgba(0, 44, 108, 0.45);
+            backdrop-filter: blur(4px);
+        }
+
+        button:focus-visible,
+        input:focus-visible+label {
+            outline: 2px solid var(--color-azul-gs1);
+            outline-offset: 2px;
+        }
+    </style>
+    <script src="/_sdk/63b5ed99e5b990a7.data_sdk.js" type="text/javascript"
+        integrity="sha512-fLUGE0rNLPgXS9olxs6QORKg6Diqpi0PSKoNistdAaH/GruBuq5/XhrOdSOcKfqcIIRQ1KvO66J1vCBvvLj4rA=="></script>
+    <script src="/_sdk/797e0a7e8af7c7f8.resizing_sdk.js" type="text/javascript"
+        integrity="sha512-giNZj5eBnASPpYcJXEVOn6FguxFDnaH+gnf5nbRfUgfRDqtOdV+5Dna/CwvXiPeR//Plhtbt32CML3VF4+oCLw=="></script>
+</head>
+
+<body data-template-id="__page-root" class="w-full min-h-screen"
+    style="background: radial-gradient(rgb(220, 232, 245), rgb(242, 242, 242), rgb(220, 238, 255));">
+    <header data-template-id="header-section" class="canva-header w-full py-8 text-center"
+        style="background: rgb(71, 88, 131);">
+        <p data-template-id="main-subtitle" class="canva-text uppercase tracking-[0.2em] text-sm mb-2"
+            style="color: rgb(242, 99, 52); font-weight: 600; font-style: normal; font-size: 13px;">Autoevaluación del
+            agotamiento</p>
+        <h1 data-template-id="main-title" class="canva-text display-font"
+            style="color: rgb(255, 255, 255); font-weight: 700; font-style: normal; font-size: 32px;">Inventario de
+            Agotamiento de Maslach (MBI)</h1>
+    </header>
+    <main class="max-w-2xl mx-auto px-5 py-8">
+        <div id="intro-panel" data-template-id="intro-card" class="canva-card glass rounded-2xl p-8 mb-6 fade-in"
+            style="background: rgba(255, 255, 255, 0.6);">
+            <p data-template-id="intro-text" class="canva-text leading-relaxed"
+                style="color: rgb(29, 29, 27); font-weight: 400; font-style: normal; font-size: 16px;">Esta actividad te
+                ayuda a identificar posibles indicadores de agotamiento en tres dimensiones: agotamiento emocional,
+                despersonalización y realización personal. <br><br>No hay respuestas correctas o incorrectas. Responde con
+                honestidad según la frecuencia con la que hayas experimentado cada situación.</p>
+            <div class="mt-6 text-center"><button type="button" data-template-id="start-button"
+                    class="canva-button btn-primary px-8 py-3 text-base" onclick="startAssessment()"
+                    style="background: linear-gradient(135deg, rgb(242, 99, 52), rgb(232, 82, 42)); color: rgb(255, 255, 255); font-weight: 600; font-style: normal; font-size: 16px;">Comenzar
+                    evaluación</button>
+            </div>
+        </div>
+        <div id="assessment-container" class="hidden">
+            <div class="mb-6">
+                <div class="flex justify-between items-center mb-2"><span data-template-id="progress-label"
+                        class="canva-text text-sm font-medium"
+                        style="color: rgb(0, 44, 108); font-weight: 400; font-style: normal; font-size: 16px;">Progreso
+                        de la sección</span> <span id="progress-percent" class="text-sm font-medium"
+                        style="color:#5a6a7a">0%</span>
+                </div>
+                <div class="w-full h-1.5 rounded-full progress-track overflow-hidden">
+                    <div id="progress-bar" class="progress-fill h-full rounded-full" style="width:0%"></div>
+                </div>
+            </div>
+            <div id="questions-area"></div>
+            <div id="error-msg" class="hidden mt-4 p-3 border rounded-xl text-sm" role="alert" aria-live="polite"><span
+                    data-template-id="error-text" class="canva-text"
+                    style="color: rgb(228, 0, 43); font-weight: 400; font-style: normal; font-size: 16px;">Responde
+                    todas las preguntas de esta sección antes de continuar.</span>
+            </div>
+            <div class="flex justify-between mt-6"><button id="prev-btn" data-template-id="prev-button"
+                    class="canva-button btn-secondary px-6 py-2.5 hidden" onclick="prevSection()"
+                    style="color: rgb(0, 44, 108); font-weight: 600; font-style: normal; font-size: 16px;">Anterior</button>
+                <button id="next-btn" data-template-id="next-button"
+                    class="canva-button btn-primary px-6 py-2.5 ml-auto" onclick="nextSection()"
+                    style="background: linear-gradient(135deg, rgb(242, 99, 52), rgb(232, 82, 42)); color: rgb(255, 255, 255); font-weight: 600; font-style: normal; font-size: 16px;">Siguiente</button>
+            </div>
+        </div>
+    </main>
+    <div id="results-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4" role="dialog"
+        aria-modal="true" aria-labelledby="modal-title">
+        <div class="glass rounded-3xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto p-8 modal-enter">
+            <h2 id="modal-title" data-template-id="results-title" class="canva-text display-font text-center mb-6"
+                style="color: rgb(0, 44, 108); font-weight: 700; font-style: normal; font-size: 26px;">Tu perfil de
+                agotamiento</h2>
+            <div id="score-cards" class="space-y-4 mb-6"></div>
+            <div id="feedback-section" class="border-t pt-5 space-y-3" style="border-color:rgba(0,44,108,0.15)">
+                <p id="summary-text" class="leading-relaxed" style="color:var(--color-negro-texto)"></p>
+                <p id="recommendation-text" class="text-sm leading-relaxed" style="color:#5a6a7a"></p>
+            </div>
+            <div class="mt-6 text-center space-y-1">
+                <p class="text-sm" style="color:#5a6a7a">Descarga el test para repetirlo cuando lo requieras.</p>
+                <p class="text-sm font-semibold" style="color:var(--color-naranja-gs1)">Haz clic en Avanzar para continuar.</p>
+            </div>
+            <div class="mt-4 flex flex-col sm:flex-row gap-3 justify-center">
+                <button data-template-id="restart-button"
+                    class="canva-button btn-primary px-8 py-3" onclick="resetTest()"
+                    style="background: linear-gradient(135deg, rgb(242, 99, 52), rgb(232, 82, 42)); color: rgb(255, 255, 255); font-weight: 600; font-style: normal; font-size: 16px;">Reiniciar test</button>
+                <a data-template-id="download-button" href="../img/MBI_TEST.pdf" download
+                    class="canva-button btn-secondary px-8 py-3 inline-flex items-center justify-center"
+                    style="color: rgb(0, 44, 108); font-weight: 600; font-style: normal; font-size: 16px;">Descargar test</a>
+            </div>
+        </div>
+    </div>
+    <script src="/_sdk/afc2d393c2ac926b.editing_sdk.js"
+        integrity="sha512-Ue7lZoRec1IGq7j3H/38aWZalTxanTjFGoCKdWTFUGFJwCO6Pinekpb6vP1nEQ3ZFuEOglmaFKfrRMeLheTxnw=="></script>
+    <script>
+        const QUESTIONS = [
+            "Me siento emocionalmente agotado por mi trabajo.",
+            "Me siento consumido al final de la jornada laboral.",
+            "Me siento cansado al levantarme por la mañana y tener que afrontar otro día de trabajo.",
+            "Puedo comprender fácilmente cómo se sienten las personas a las que atiendo.",
+            "Siento que trato a algunas personas a las que atiendo como si fueran objetos impersonales.",
+            "Trabajar con personas todo el día representa una gran tensión para mí.",
+            "Resuelvo con mucha eficacia los problemas de las personas a las que atiendo.",
+            "Siento que mi trabajo me ha agotado por completo.",
+            "Siento que influyo positivamente en la vida de otras personas mediante mi trabajo.",
+            "Me he vuelto más insensible hacia las personas desde que acepté este trabajo.",
+            "Me preocupa que este trabajo me esté endureciendo emocionalmente.",
+            "Me siento lleno de energía.",
+            "Me siento frustrado por mi trabajo.",
+            "Siento que estoy trabajando demasiado.",
+            "Realmente no me importa lo que les ocurra a algunas personas a las que atiendo.",
+            "Trabajar directamente con personas me genera demasiado estrés.",
+            "Puedo crear fácilmente un ambiente relajado con las personas a las que atiendo.",
+            "Me siento animado después de trabajar estrechamente con las personas a las que atiendo.",
+            "He logrado muchas cosas valiosas en este trabajo.",
+            "Siento que estoy al límite de mis fuerzas.",
+            "En mi trabajo, trato los problemas emocionales con mucha calma.",
+            "Siento que las personas a las que atiendo me culpan por algunos de sus problemas."
+        ];
+        const SCALE = [
+            { value: 0, label: "Nunca" }, { value: 1, label: "Pocas veces al año o menos" }, { value: 2, label: "Una vez al mes o menos" },
+            { value: 3, label: "Pocas veces al mes" }, { value: 4, label: "Una vez a la semana" }, { value: 5, label: "Varias veces a la semana" }, { value: 6, label: "Todos los días" }
+        ];
+        const SECTIONS = [[0, 1, 2, 3, 4, 5], [6, 7, 8, 9, 10, 11], [12, 13, 14, 15, 16, 17], [18, 19, 20, 21]];
+        const EE_ITEMS = [0, 1, 2, 5, 7, 12, 13, 15, 19];
+        const DP_ITEMS = [4, 9, 10, 14, 21];
+        const PA_ITEMS = [3, 6, 8, 11, 16, 17, 18, 20];
+
+        let currentSection = 0;
+        const answers = {};
+
+        function startAssessment() {
+            document.getElementById('intro-panel').classList.add('hidden');
+            document.getElementById('assessment-container').classList.remove('hidden');
+            renderSection();
+        }
+
+        function renderSection() {
+            const area = document.getElementById('questions-area');
+            area.innerHTML = '';
+            SECTIONS[currentSection].forEach(idx => {
+                const card = document.createElement('div');
+                card.className = 'glass rounded-2xl p-5 mb-4 fade-in';
+                const num = idx + 1;
+                card.innerHTML = `
+          <div class="flex items-start gap-3 mb-3">
+            <span class="q-badge">${num}</span>
+            <p class="font-medium" style="color:var(--color-negro-texto)">${QUESTIONS[idx]}</p>
+          </div>
+          <div class="flex flex-wrap gap-2 pl-10" role="radiogroup" aria-label="Pregunta ${num}">
+            ${SCALE.map(s => `
+              <div class="radio-option">
+                <input type="radio" name="q${idx}" id="q${idx}_${s.value}" value="${s.value}" class="sr-only" ${answers[idx] === s.value ? 'checked' : ''} onchange="selectAnswer(${idx},${s.value})">
+                <label for="q${idx}_${s.value}" class="block cursor-pointer border border-gray-200 px-3 py-2 text-xs sm:text-sm text-center transition-all select-none" style="color:#5a6a7a">
+                  <span class="font-semibold block">${s.value}</span>
+                  <span class="hidden sm:block text-[10px] leading-tight mt-0.5">${s.label}</span>
+                </label>
+              </div>
+            `).join('')}
+          </div>`;
+                area.appendChild(card);
+            });
+            updateNav();
+            hideError();
+        }
+
+        function selectAnswer(idx, value) { answers[idx] = value; hideError(); }
+
+        function updateNav() {
+            const prev = document.getElementById('prev-btn'), next = document.getElementById('next-btn');
+            prev.classList.toggle('hidden', currentSection === 0);
+            next.textContent = currentSection === SECTIONS.length - 1 ? 'Ver resultados' : 'Siguiente';
+            const p = ((currentSection + 1) / SECTIONS.length) * 100;
+            document.getElementById('progress-bar').style.width = p + '%';
+            document.getElementById('progress-percent').textContent = Math.round(p) + '%';
+        }
+
+        function validateSection() { return SECTIONS[currentSection].every(i => answers[i] !== undefined); }
+        function showError() { document.getElementById('error-msg').classList.remove('hidden'); }
+        function hideError() { document.getElementById('error-msg').classList.add('hidden'); }
+
+        function nextSection() {
+            if (!validateSection()) { showError(); return; }
+            if (currentSection === SECTIONS.length - 1) { showResults(); return; }
+            currentSection++; renderSection(); window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        function prevSection() { if (currentSection > 0) { currentSection--; renderSection(); } }
+
+        function calcScore(items) { return items.reduce((s, i) => s + (answers[i] || 0), 0); }
+        function getLevel(score, ranges) { if (score <= ranges[0]) return 'Bajo'; if (score <= ranges[1]) return 'Medio'; return 'Alto'; }
+
+        function showResults() {
+            const ee = calcScore(EE_ITEMS), dp = calcScore(DP_ITEMS), pa = calcScore(PA_ITEMS);
+            const eeLevel = getLevel(ee, [18, 26]), dpLevel = getLevel(dp, [5, 9]), paLevel = getLevel(pa, [33, 39]);
+            const colors = { Bajo: '#00A651', Medio: '#d97706', Alto: '#E4002B' };
+            const paColors = { Bajo: '#E4002B', Medio: '#d97706', Alto: '#00A651' };
+            const cards = [
+                { name: 'Agotamiento emocional', score: ee, max: 54, level: eeLevel, color: colors[eeLevel] },
+                { name: 'Despersonalización', score: dp, max: 30, level: dpLevel, color: colors[dpLevel] },
+                { name: 'Realización personal', score: pa, max: 48, level: paLevel, color: paColors[paLevel] }
+            ];
+            document.getElementById('score-cards').innerHTML = cards.map(c => `
+        <div class="glass rounded-xl p-4">
+          <div class="flex justify-between items-center mb-2">
+            <span class="font-semibold text-sm" style="color:var(--color-negro-texto)">${c.name}</span>
+            <span class="text-xs font-bold px-3 py-0.5 rounded-full" style="background:${c.color}18;color:${c.color}">${c.level}</span>
+          </div>
+          <div class="w-full h-2.5 rounded-full overflow-hidden" style="background:rgba(0,44,108,0.08)">
+            <div class="h-full rounded-full transition-all" style="width:${(c.score / c.max) * 100}%;background:${c.color}"></div>
+          </div>
+          <p class="text-xs mt-1" style="color:#5a6a7a">${c.score} / ${c.max}</p>
+        </div>`).join('');
+
+            let category, summary, recommendation;
+            const highEE = eeLevel === 'Alto', highDP = dpLevel === 'Alto', lowPA = paLevel === 'Bajo';
+            const bc = [highEE, highDP, lowPA].filter(Boolean).length;
+            if (bc >= 3) { category = 'Alto riesgo de agotamiento'; summary = 'Tus respuestas sugieren indicadores importantes en las tres dimensiones del agotamiento.'; recommendation = 'Considera hablar sobre tu experiencia actual con una persona de confianza, tu responsable o un profesional.'; }
+            else if (bc === 2) { category = 'Riesgo moderado de agotamiento'; summary = 'Tus respuestas indican señales relevantes en dos dimensiones del agotamiento.'; recommendation = 'Reflexiona sobre qué aspectos de tu trabajo te resultan más agotadores. Pequeños ajustes pueden ayudar.'; }
+            else if (bc === 1 || eeLevel === 'Medio' || dpLevel === 'Medio') { category = 'Señales de alerta temprana'; summary = 'Tus respuestas muestran algunos indicadores tempranos que merecen atención.'; recommendation = 'Considera qué estrategias te ayudan a recuperar energía y mantenerte conectado con un trabajo significativo.'; }
+            else { category = 'Perfil saludable'; summary = 'Tus respuestas sugieren una relación equilibrada con tu trabajo en las tres dimensiones.'; recommendation = 'Continúa con las prácticas que fortalecen tu resiliencia.'; }
+
+            document.getElementById('summary-text').innerHTML = `<strong>${category}:</strong> ${summary}`;
+            document.getElementById('recommendation-text').textContent = recommendation;
+
+            const modal = document.getElementById('results-modal');
+            modal.classList.remove('hidden'); modal.classList.add('flex');
+            modal.querySelector('button').focus();
+        }
+
+        function resetTest() {
+            attemptScormCompletion();
+
+            const modal = document.getElementById('results-modal');
+            modal.classList.add('hidden'); modal.classList.remove('flex');
+
+            Object.keys(answers).forEach(k => delete answers[k]);
+            currentSection = 0;
+
+            document.getElementById('assessment-container').classList.add('hidden');
+            document.getElementById('intro-panel').classList.remove('hidden');
+            document.getElementById('progress-bar').style.width = '0%';
+            document.getElementById('progress-percent').textContent = '0%';
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function attemptScormCompletion() {
+            try { let api = findScormAPI(window); if (api) { api.LMSSetValue('cmi.core.lesson_status', 'completed'); api.LMSCommit(''); } } catch (e) { }
+        }
+        function findScormAPI(win) {
+            try { if (win.API) return win.API; if (win.parent && win.parent !== win && win.parent.API) return win.parent.API; if (win.opener && win.opener.API) return win.opener.API; } catch (e) { } return null;
+        }
+
+        lucide.createIcons();
+    </script>
+
+</body>
+
+</html>

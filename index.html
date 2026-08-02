@@ -4,943 +4,2475 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>De la instrucción a la acción: Prompt vs. Agentes IA</title>
-    <!-- Fuentes solicitadas -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Exo:wght@600;700;800&family=Antic+Didone&family=Cantarell:ital,wght@0,400;0,700;1,400&display=swap"
-        rel="stylesheet">
-    <!-- Iconos Font-Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <style>
-        :root {
-            /* Colores de Marca Clip */
-            --primary: #FF5E00;
-            --primary-glow: rgba(255, 94, 0, 0.15);
-            --primary-soft: rgba(255, 94, 0, 0.05);
-            --primary-dark: #CC4B00;
-            --text-dark: #0F172A;
-            --text-light: #64748B;
-            --success-green: #15803D;
-            --error-red: #DC2626;
-            --white: #FFFFFF;
-            /* Fuentes asignadas */
-            --font-title: 'Exo', sans-serif;
-            --font-sub: 'Antic Didone', serif;
-            --font-body: 'Cantarell', sans-serif;
-            /* Degradado de fondo */
-            --bg-body: linear-gradient(46deg, rgba(255, 137, 59, 1) 0%, rgba(255, 255, 255, 1) 100%);
-            /* Sombras Flotantes */
-            --shadow-float: 0 15px 35px rgba(0, 0, 0, 0.1);
-        }
-
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            overflow: hidden;
-            font-family: var(--font-body);
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: var(--bg-body);
-            position: relative;
-        }
-
-        /* Nubes de luz sutiles */
-        body::before,
-        body::after {
-            content: '';
-            position: absolute;
-            width: 800px;
-            height: 800px;
-            border-radius: 50%;
-            filter: blur(150px);
-            z-index: -1;
-            opacity: 0.25;
-            animation: pulseBackground 10s infinite alternate;
-        }
-
-        body::before {
-            background: rgba(255, 116, 35, 0.98);
-            top: -200px;
-            right: -150px;
-        }
-
-        body::after {
-            background: rgba(255, 116, 35, 0.98);
-            bottom: -250px;
-            left: -200px;
-            animation-delay: 5s;
-        }
-
-        @keyframes pulseBackground {
-            0% {
-                transform: scale(1);
-                opacity: 0.25;
-            }
-
-            100% {
-                transform: scale(1.1);
-                opacity: 0.35;
-            }
-        }
-
-        #presentation {
-            width: 1280px;
-            height: 720px;
-            position: relative;
-        }
-
-        /* --- ANIMACIONES --- */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes scaleIn {
-            from {
-                opacity: 0;
-                transform: scale(0.9);
-            }
-
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-
-        @keyframes bubbleFadeIn {
-            from {
-                opacity: 0;
-                transform: translateX(-50%) translateY(20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateX(-50%) translateY(0);
-            }
-        }
-
-        .delay-1 {
-            animation-delay: 0.1s !important;
-        }
-
-        .delay-2 {
-            animation-delay: 0.2s !important;
-        }
-
-        .delay-3 {
-            animation-delay: 0.3s !important;
-        }
-
-        .delay-4 {
-            animation-delay: 0.4s !important;
-        }
-
-        /* Estructura de Diapositiva */
-        .slide {
-            width: 100%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.75);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: 56px;
-            overflow: hidden;
-            position: absolute;
-            top: 0;
-            left: 0;
-            display: none;
-            flex-direction: column;
-            padding: 50px 70px;
-            box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.9);
-        }
-
-        .slide.active {
-            display: flex;
-            animation: scaleIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-
-        .slide.active h1,
-        .slide.active h2,
-        .slide.active p,
-        .slide.active .grid-2>*,
-        .slide.active .agent-visual>*,
-        .slide.active .centered-content>* {
-            opacity: 0;
-            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-
-        h1 {
-            font-family: var(--font-title);
-            color: var(--text-dark);
-            margin: 0;
-            font-size: 64px;
-            line-height: 1.1;
-            margin-bottom: 20px;
-            font-weight: 800;
-        }
-
-        h2 {
-            font-family: var(--font-sub);
-            color: var(--text-dark);
-            margin: 0;
-            font-size: 42px;
-            margin-bottom: 30px;
-            border-left: 6px solid var(--primary);
-            padding-left: 25px;
-        }
-
-        h3 {
-            font-family: var(--font-sub);
-            color: var(--text-dark);
-            margin: 0;
-            font-weight: 700;
-        }
-
-        p {
-            font-family: var(--font-body);
-            font-size: 19px;
-            color: var(--text-light);
-            line-height: 1.5;
-            font-weight: 400;
-        }
-
-        .centered-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-        }
-
-        .grid-2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            align-items: center;
-            flex: 1;
-        }
-
-        /* Estilo de Tarjetas tipo "Pétalo" */
-        .feature-box-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            position: relative;
-            margin-top: -60px;
-        }
-
-        .feature-card {
-            background: white;
-            padding: 24px;
-            border: 1px solid #F1F5F9;
-            box-shadow: var(--shadow-float);
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            transition: all 0.3s ease;
-            opacity: 0;
-            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-
-        .slide.active .feature-card:nth-child(1) {
-            animation-delay: 0.2s;
-        }
-
-        .slide.active .feature-card:nth-child(2) {
-            animation-delay: 0.3s;
-        }
-
-        .slide.active .feature-card:nth-child(3) {
-            animation-delay: 0.4s;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.1);
-        }
-
-        .petal-left-point {
-            border-radius: 40px 40px 40px 0px;
-        }
-
-        .petal-left-top-point {
-            border-radius: 0px 40px 40px 40px;
-        }
-
-        .petal-right-point {
-            border-radius: 40px 40px 0px 40px;
-        }
-
-        .petal-right-top-point {
-            border-radius: 40px 0px 40px 40px;
-        }
-
-        .feature-card i {
-            font-size: 26px;
-            color: var(--primary);
-        }
-
-        .feature-card b {
-            font-family: var(--font-sub);
-            font-size: 20px;
-            color: var(--text-dark);
-            font-weight: 700;
-        }
-
-        .feature-card span {
-            font-family: var(--font-body);
-            font-size: 14px;
-            color: var(--text-light);
-            line-height: 1.4;
-        }
-
-        .btn-clip {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 16px 40px;
-            border-radius: 20px;
-            font-family: var(--font-body);
-            font-weight: 600;
-            cursor: pointer;
-            font-size: 17px;
-            transition: 0.3s ease;
-            box-shadow: 0 10px 25px rgba(255, 94, 0, 0.2);
-        }
-
-        .btn-clip:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 15px 30px rgba(255, 94, 0, 0.3);
-        }
-
-        /* Controles */
-        .controls {
-            position: fixed;
-            bottom: 30px;
-            right: 50px;
-            display: flex;
-            gap: 12px;
-            z-index: 1000;
-        }
-
-        .nav-dot {
-            background: white;
-            color: var(--text-dark);
-            border: 1px solid #E2E8F0;
-            width: 52px;
-            height: 52px;
-            border-radius: 18px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: 0.3s;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-        }
-
-        .nav-dot:hover:not(:disabled) {
-            border-color: var(--primary);
-            color: var(--primary);
-            transform: translateY(-3px);
-        }
-
-        .nav-dot:disabled {
-            opacity: 0.2;
-            cursor: not-allowed;
-        }
-
-        .counter {
-            position: fixed;
-            bottom: 45px;
-            left: 50px;
-            color: var(--text-dark);
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 4px;
-            opacity: 0.5;
-            font-family: var(--font-body);
-        }
-
-        /* Agente Visual */
-        .agent-visual {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 30px;
-            flex: 1;
-            margin-top: -20px;
-        }
-
-         .agent-image-area { width: 340px; height: 340px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: transparent; animation-delay: 0.3s !important; }
-        .agent-image-area img { width: 100%; height: auto; border-radius: 24px; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.05)); }
-        
-
-        .agent-feature-petal {
-            background: white;
-            padding: 20px;
-            border: 1px solid #F1F5F9;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            width: 250px;
-            font-family: var(--font-body);
-            font-size: 16px;
-            font-weight: 600;
-            box-shadow: var(--shadow-float);
-            opacity: 0;
-            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-
-        .agent-feature-petal:hover {
-            transform: scale(1.05) translateY(-5px);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1);
-        }
-
-        .slide.active .agent-visual>div:first-child .agent-feature-petal:nth-child(1) {
-            animation-delay: 0.2s;
-        }
-
-        .slide.active .agent-visual>div:first-child .agent-feature-petal:nth-child(2) {
-            animation-delay: 0.3s;
-        }
-
-        .slide.active .agent-visual>div:last-child .agent-feature-petal:nth-child(1) {
-            animation-delay: 0.4s;
-        }
-
-        .slide.active .agent-visual>div:last-child .agent-feature-petal:nth-child(2) {
-            animation-delay: 0.5s;
-        }
-
-        .agent-feature-petal i {
-            color: var(--primary);
-            font-size: 22px;
-        }
-
-        /* JUEGO */
-        .timer-ui {
-            position: absolute;
-            top: 40px;
-            right: 70px;
-            background: var(--text-dark);
-            color: white;
-            padding: 8px 20px;
-            border-radius: 14px;
-            font-weight: 700;
-            font-family: monospace;
-            font-size: 22px;
-            z-index: 20;
-            opacity: 0;
-            animation: scaleIn 0.5s 0.2s forwards;
-        }
-
-        .suspect-row {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            flex: 1;
-            align-items: end;
-            padding-bottom: 10px;
-        }
-
-        .suspect-container {
-            position: relative;
-            opacity: 0;
-            animation: fadeInUp 0.6s forwards;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-        }
-
-        #phase-play:not(.hidden) .suspect-container:nth-child(1) {
-            animation-delay: 0.1s;
-        }
-
-        #phase-play:not(.hidden) .suspect-container:nth-child(2) {
-            animation-delay: 0.2s;
-        }
-
-        #phase-play:not(.hidden) .suspect-container:nth-child(3) {
-            animation-delay: 0.3s;
-        }
-
-        .avatar-frame {
-            width: 110px;
-            height: 110px;
-            background: #FFFFFF;
-            border-radius: 35px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 45px;
-            color: #CBD5E1;
-            border: 1px solid #F1F3F5;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-            transition: 0.4s;
-            margin: 0 auto;
-        }
-
-        .drag-over .avatar-frame {
-            border-color: var(--primary);
-            background: var(--primary-soft);
-            transform: scale(1.1) translateY(-10px);
-            box-shadow: 0 20px 45px rgba(255, 94, 0, 0.2);
-        }
-
-        .chat-bubble {
-            position: absolute;
-            bottom: 130%;
-            background: white;
-            border-radius: 24px;
-            padding: 18px;
-            width: 260px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
-            border: 1px solid #F8FAFC;
-            font-size: 16px;
-            font-style: italic;
-            left: 50%;
-            transform: translateX(-50%);
-            text-align: center;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 60px;
-            opacity: 0;
-            animation: bubbleFadeIn 0.5s 0.4s forwards;
-            z-index: 10;
-        }
-
-        .tools-container {
-            background: rgba(21, 128, 61, 0.05);
-            border-radius: 30px;
-            padding: 15px;
-            border: 2px dashed rgba(21, 128, 61, 0.15);
-            margin-top: 15px;
-            text-align: center;
-            opacity: 0;
-            animation: fadeInUp 0.6s 0.5s forwards;
-        }
-        
-
-        .question-chip {
-            background: white;
-            border: 1px solid #E2E8F0;
-            padding: 12px 20px;
-            border-radius: 16px;
-            cursor: grab;
-            font-family: var(--font-sub);
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--success-green);
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            margin: 5px;
-            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.04);
-            transition: 0.3s;
-        }
-
-
-        .question-chip:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
-        }
-
-        #phase-result {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            color: var(--success-green);
-        }
-
-        #result-title {
-            font-family: var(--font-title);
-            font-size: 42px;
-            margin-bottom: 25px;
-            font-weight: 800;
-            opacity: 0;
-            animation: scaleIn 0.5s 0.1s forwards;
-        }
-
-        .error-word {
-            color: var(--error-red);
-            font-weight: 900;
-        }
-
-        .result-winner {
-            background: #F0FFF4;
-            border: 2px solid #C6F6D5;
-            border-radius: 32px;
-            padding: 40px;
-            display: flex;
-            align-items: center;
-            gap: 35px;
-            text-align: left;
-            max-width: 900px;
-            margin: 0 auto;
-            box-shadow: 0 25px 60px rgba(21, 128, 61, 0.15);
-            opacity: 0;
-            animation: fadeInUp 0.6s 0.3s forwards;
-        }
-
-        .modal-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(10px);
-            z-index: 2000;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            animation: scaleIn 0.3s forwards;
-        }
-
-        .modal-body {
-            background: white;
-            padding: 50px;
-            border-radius: 48px;
-            text-align: center;
-            width: 500px;
-            border: 1px solid #EEE;
-            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.15);
-        }
-
-        .hidden {
-            display: none !important;
-        }
-
-        
-    </style>
+    <title>Curso Prevención y atención del Burnout y Bienestar Laboral</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/burnout.css">
+    <script src="js/SCORM_API_wrapper.js" defer></script>
+    <script src="js/libs/lottie.min.js" defer></script>
+    <script src="js/script.js" defer></script>
+    <script src="js/burnout.js" defer></script>
 </head>
 
 <body>
 
-    <div id="presentation">
-        <!-- SLIDE 1: PORTADA -->
-        <div class="slide active">
-            <div class="centered-content">
-                
-                <h1 class="delay-2">Prompt vs. Agentes:<br>El nuevo estándar</h1>
-                <p class="delay-3"
-                    style="font-size: 26px; max-width: 800px; color: var(--text-light); font-weight: 300;">Hacia una
-                    cultura de autonomía y ejecución.</p>
-                <div class="delay-4" style="margin-top: 80px; text-align: center;">
-                    <div style="width: 60px; height: 3px; background: var(--primary); margin: 0 auto 20px;"></div>
-                    <p style="font-weight: 600; color: var(--text-dark); margin: 0; font-size: 20px;">Monica Vazquez Rosas Landa</p>
-                    <p style="font-size: 12px; margin: 5px 0 0; color: var(--primary); font-weight: 400;">Ingeniera en Tecnología Interactiva y Animación Digital <br> | Diseñadora Instruccional y Desarrolladora e-Learning</p>
+    <div id="curso">
+
+        <!-- =========================================================
+             INTRO
+        ========================================================== -->
+
+        <!-- [G1] Portada -->
+        <div class="slide active" id="slide-1">
+            <div id="intro-background">
+                <div class="slide-header">
+                    <img class="logo-img" src="img/logo/Logo GS1 azul.png" alt="Logo de la Empresa">
+                </div>
+                <div id="overlay-animado">
+                    <div id="intro-content">
+                        <h1>Prevención y atención del Burnout <br>y Bienestar Laboral</h1>
+                        <button id="start-course-btn" class="nav-button" onclick="openNavGuide()">
+                            Comenzar
+                        </button>
+                    </div>
+                </div>
+                <div id="nav-guide-overlay" class="hidden">
+                    <div class="guide-box anim-target anim-bounce-up">
+                        <h2>Guía de Navegación</h2>
+                        <p class="guide-intro">Antes de comenzar, familiarízate con los controles del curso:</p>
+
+                        <div class="guide-grid">
+                            <div class="guide-item">
+                                <div class="icon-circle">
+                                    <img src="img/bullet.svg" alt="Menú">
+                                </div>
+                                <p><strong>Menú:</strong> Accede a las unidades del curso.</p>
+                            </div>
+
+                            <div class="guide-item">
+                                <div class="nav-sim">
+                                    <span>Regresar</span> | <span>Avanzar</span>
+                                </div>
+                                <p><strong>Navegación:</strong> Avanza o retrocede entre pantallas.</p>
+                            </div>
+
+                            <div class="guide-item">
+                                <div class="icon-circle">
+                                    <img src="img/icon_clic.svg" alt="Clic">
+                                </div>
+                                <p><strong>Interactividad:</strong> Haz clic donde veas este icono.</p>
+                            </div>
+
+                            <div class="guide-item">
+                                <div class="bar-sim"></div>
+                                <p><strong>Progreso:</strong> Visualiza tu avance en el curso.</p>
+                            </div>
+
+                            <div class="guide-item" style="grid-column: 1 / -1;">
+                                <div class="icon-circle" style="background-color: var(--color-naranja-gs1);">
+                                    <img src="img/scroll.svg" alt="Scroll">
+                                </div>
+                                <p><strong>Scroll:</strong> Si ves este icono, desliza hacia abajo para ver más
+                                    contenido.</p>
+                            </div>
+                        </div>
+
+                        <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
+
+                        <button class="nav-button primary-blue-btn" onclick="closeNavGuideAndStart()">
+                            ¡Entendido, comenzar!
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- SLIDE 2: PROMPT -->
-        <div class="slide">
-            <h2>¿Qué es un Prompt?</h2>
-            <div class="grid-2">
-                <div>
-                    <p style="margin-bottom: 35px; font-size: 21px;">Es la <b>instrucción</b> directa y secuencial. El
-                        motor que requiere que un humano esté siempre al volante para avanzar.</p>
-                    <div
-                        style="display: flex; gap: 15px; align-items: center; color: var(--primary); font-weight: 700; font-size: 17px;">
-                        <img src="promt.png" alt="Prompt" style="width: 220px;">
-                        <span>Interacción táctica de un solo paso</span>
-                    </div>
-                </div>
-
-                <div class="feature-box-container">
-                    <div class="feature-card petal-left-point">
-                        <i class="fa-solid fa-keyboard"></i>
-                        <b>Instrucción</b>
-                        <span>Orden directa para obtener una respuesta específica.</span>
-                    </div>
-                    <div class="feature-card petal-left-top-point">
-                        <i class="fa-solid fa-wand-magic-sparkles"></i>
-                        <b>Asistencia</b>
-                        <span>Ayuda a redactar, resumir o idear borradores rápidos.</span>
-                    </div>
-                    <div class="feature-card petal-left-point">
-                        <i class="fa-solid fa-person-rays"></i>
-                        <b>Dependencia</b>
-                        <span>Sin un humano que lo guíe, el flujo de trabajo se detiene.</span>
-                    </div>
-                </div>
+        <!-- [G2] Video de bienvenida (guion_01_Burnout_video) -->
+        <div class="slide" id="slide-2">
+            <div class="slide-header">
+                <img class="logo-img" src="img/logo/Logo GS1 azul.png" alt="Logo de la Empresa">
+                <p class="page-title">Presentación</p>
             </div>
-        </div>
+            <div class="slide-scroll-content">
+                <div class="video-split-layout">
+                    <div class="split-col-image">
+                        <img src="img/001_Burnout_GS1.jpg" alt="Bienvenida al curso" class="content-image">
+                    </div>
+                    <div class="split-col-content mob-order-1">
+                        <div class="box-text">
+                            <h1>Bienvenido/a al curso</h1>
+                            <h2><em>Prevención y atención del Burnout y Bienestar Laboral.</em></h2>
+                            <p>Revisa el siguiente video para saber en qué consiste.</p>
 
-        <!-- SLIDE 3: AGENTE -->
-        <div class="slide">
-            <h2>¿Qué es un Agente de IA?</h2>
-            <div class="agent-visual">
-                <div style="display:flex; flex-direction:column; gap:25px;">
-                    <div class="agent-feature-petal petal-right-point"><i
-                            class="fa-solid fa-bullseye"></i><span>Objetivo Final</span></div>
-                    <div class="agent-feature-petal petal-right-top-point"><i
-                            class="fa-solid fa-gears"></i><span>Autonomía de Acción</span></div>
-                </div>
-                <div class="agent-image-area">
-                    <img src="IA AGENTE.png" alt="IA Agente">
-                </div>
-                <div style="display:flex; flex-direction:column; gap:25px;">
-                    <div class="agent-feature-petal petal-left-point"><i
-                            class="fa-solid fa-link"></i><span>Herramientas</span></div>
-                    <div class="agent-feature-petal petal-left-top-point"><i
-                            class="fa-solid fa-database"></i><span>Memoria</span></div>
-                </div>
-            </div>
-            <p
-                style="text-align: center; margin-top: 50px; font-weight: 600; color: var(--text-dark); font-size: 22px;">
-                Un sistema diseñado para ejecutar misiones completas.</p>
-        </div>
+                            <div class="video-placeholder-image">
+                                <img src="img/video.png" alt="Previsualización de Video">
+                            </div>
 
-        <!-- SLIDE 4: DETECTIVE CLIP -->
-        <div class="slide">
-            <div class="timer-ui" id="timer-box" style="display:none;"><i class="fa-solid fa-clock-rotate-left"></i>
-                <span id="timer-display">04:00</span></div>
-            <h2>Detective Clip</h2>
+                            <button class="play-video-btn nav-button"
+                                data-video-url="videos/CB_ Presentación del curso.mp4" data-slide-id="slide-2">
+                                Ver video
+                            </button>
 
-            <div id="game-interface" style="height:100%; display: flex; flex-direction: column; overflow: visible;">
-                <!-- FASE 1: INTRO (Actualizada con imagen al lado derecho) -->
-                <div id="phase-intro" class="centered-content">
-                    <div class="grid-2" style="max-width: 1100px; text-align: left;">
-                        <div style="border-left: 8px solid var(--primary); padding-left: 30px;">
-                            <p style="color: var(--primary); font-weight: 700; font-size: 12px; margin-bottom: 8px; letter-spacing: 2px;">MISIÓN EN CURSO</p>
-                            <h3 style="font-size: 32px; margin-bottom: 15px; color: var(--success-green);">El Caso de la Reactivación</h3>
-                            <p style="font-size: 18px; color: var(--text-light);"><b>El problema:</b> Necesitamos reactivar a las taquerías que llevan 30 días sin usar su terminal Clip.</b><br><br><br>
-                            <b>El objetivo:</b> Descubrir cuál de los 3 perfiles es el verdadero <b>Agente Autónomo</b>
+
+                            <p class="video-finished-message hidden-message" style="text-align:center; font-size:1.2em; font-weight:600;
+                                color:var(--color-acierto-correcto);">
+                                ¡Muy bien! Puedes hacer clic en Avanzar.
                             </p>
-                            <button class="btn-clip" style="margin-top: 40px;" onclick="startGame()">Iniciar Investigación</button>
-                        </div>
-                        <div style="display: flex; justify-content: center; align-items: center; padding: 20px;">
-                            <img src="game.png" 
-                                 alt="Misión de Negocio" 
-                                 style="width: 100%; max-width: 400px; border-radius: 40px; box-shadow: var(--shadow-float); border: 2px solid white;">
                         </div>
                     </div>
-                </div>
-
-                <div id="phase-play" class="hidden"
-                    style="flex:1; display: flex; flex-direction: column; justify-content: space-between; overflow: visible;">
-                    <div class="suspect-row">
-                        <div class="suspect-container" ondragover="allowDrop(event)" ondrop="drop(event, 1)">
-                            <div id="bubble-1" class="chat-bubble">"Detecté a las taquerías inactivas y generé tres opciones de correos persuasivos con el tono de voz de Clip listos para enviarse."</div>
-                            <div class="avatar-frame"><i class="fa-solid fa-user-secret"></i></div>
-                            <p style="margin: 10px 0 5px; font-weight: 700; color: var(--text-dark); font-size: 14px;">
-                                Hugo </p>
-                            <button class="btn-clip" style="padding: 8px 20px; font-size: 12px;"
-                                onclick="selectFinal(1)">Votar</button>
-                        </div>
-                        <div class="suspect-container" ondragover="allowDrop(event)" ondrop="drop(event, 2)">
-                            <div id="bubble-2" class="chat-bubble">"Monitoreé las taquerías, identifiqué la caída en transacciones, creé la campaña, la envié a las 10 am y ya ajusté el presupuesto en redes sociales según los clics."</div>
-                            <div class="avatar-frame"><i class="fa-solid fa-user-tie"></i></div>
-                            <p style="margin: 10px 0 5px; font-weight: 700; color: var(--text-dark); font-size: 14px;">
-                                Paco </p>
-                            <button class="btn-clip" style="padding: 8px 20px; font-size: 12px;"
-                                onclick="selectFinal(2)">Votar</button>
-                        </div>
-                        <div class="suspect-container" ondragover="allowDrop(event)" ondrop="drop(event, 3)">
-                            <div id="bubble-3" class="chat-bubble">"En cuanto una taquería cumplió 30 días sin transaccionar, se le envió exactamente el mensaje de reactivación aprobado por marketing."</div>
-                            <div class="avatar-frame"><i class="fa-solid fa-user-ninja"></i></div>
-                            <p style="margin: 10px 0 5px; font-weight: 700; color: var(--text-dark); font-size: 14px;">
-                                Luis </p>
-                            <button class="btn-clip" style="padding: 8px 20px; font-size: 12px;"
-                                onclick="selectFinal(3)">Votar</button>
-                        </div>
-                    </div>
-                    <div class="tools-container">
-                        <div id="q-rebound" class="question-chip" draggable="true" ondragstart="drag(event, 'rebound')">
-                            <i class="fa-solid fa-envelope-circle-check"></i> ¿Qué hiciste cuando te diste cuenta de que el correo rebotó o falló?</div>
-                        <div id="q-order" class="question-chip" draggable="true" ondragstart="drag(event, 'order')"><i
-                                class="fa-solid fa-bolt-lightning"></i> ¿Quién te dio la orden para empezar a trabajar?</div>
-                        <div id="q-words" class="question-chip" draggable="true" ondragstart="drag(event, 'words')"><i
-                                class="fa-solid fa-language"></i> ¿Cómo decidiste qué palabras usar en el mensaje?</div>
-                    </div>
-                </div>
-
-                <div id="phase-result" class="hidden">
-                    <h3 id="result-title"></h3>
-                    <div class="result-winner">
-                        <i class="fa-solid fa-robot" style="font-size: 70px; color: #38A169;"></i>
-                        <div>
-                            <h3
-                                style="color: #22543D; font-size: 26px; margin-bottom: 12px; border:none; padding:0; text-align: left;">
-                                Paco: AGENTE AUTÓNOMO</h3>
-                            <p style="font-size: 18px; color: #276749; margin:0;"><b>Identificado:</b> <br> <b style="font-family: var(--font-sub);">¿Por qué es el Agente?</b><br> Porque no esperó instrucciones paso a paso. Recibió una meta de negocio (reactivar taquerías), se conectó a la base de datos, tomó decisiones sobre el presupuesto y ejecutó la campaña de principio a fin sin ayuda humana.</p>    
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div id="time-over-modal" class="modal-overlay">
-                <div class="modal-body">
-                    <i class="fa-solid fa-hourglass-end"
-                        style="font-size: 60px; color: var(--primary); margin-bottom: 25px;"></i>
-                    <h2 style="font-family: var(--font-sub);">¡Investigación Finalizada!</h2>
-                    <p>El tiempo para interrogar ha expirado.</p>
-                    <button class="btn-main" style="margin-top: 30px;" onclick="revealFinalFromPopup()">Ver
-                        Resultados</button>
                 </div>
             </div>
         </div>
 
-        <!-- SLIDE 5: QR -->
-        <div class="slide">
-            <div class="centered-content">
-                <h2>Cierre y Evaluación</h2>
-                <div class="feature-card delay-2"
-                    style="margin: 30px 0; background: white; padding: 20px; border-radius: 40px; border: 4px solid var(--primary-glow); width: auto; display: inline-block; opacity: 1;">
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=https://forms.gle/fHjMNHXoVUkuEyfc8"
-                        alt="QR Evaluación" style="width: 240px; border-radius: 12px;">
+        <!-- [G3] Ruta de Aprendizaje - infografía descargable (guion_02_Burnout_infografia) -->
+        <div class="slide" id="slide-3">
+            <div class="slide-header">
+                <img class="logo-img" src="img/logo/Logo GS1 azul.png" alt="Logo de la Empresa">
+                <p class="page-title">Ruta de Aprendizaje</p>
+            </div>
+            <div class="slide-scroll-content">
+                <div class="slide-content-wrapper">
+                    <div class="ruta-text-box anim-target anim-bounce-left anim-delay-1">
+                        <p>Cuidar nuestro bienestar es esencial para mantener nuestra salud y un sano desempeño.
+                            Prevenir y atender el burnout nos permite construir entornos laborales más equilibrados,
+                            humanos y productivos. <strong>¿Qué vas a aprender en esta nueva experiencia de
+                                aprendizaje?</strong> Revisa la siguiente infografía para que conozcas la ruta que
+                            seguirás.
+                        </p>
+                    </div>
+
+                    <div class="download-button-container anim-target anim-bounce-up anim-delay-3">
+                        <div id="animacion-slide-3" style="width: 200px; height: 200px;"></div>
+                        <button id="download-infografia-btn" data-pdf-url="img/Burnout_infografia_RA.pdf"
+                            class="download-btn-viva">
+                            <span class="btn-icon">
+                                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2"
+                                    fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="7 10 12 15 17 10"></polyline>
+                                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                                </svg>
+                            </span>
+                            <span class="btn-text">Descargar Infografía (PDF)</span>
+                        </button>
+
+                    </div>
                 </div>
-                <p class="delay-3"
-                    style="font-size: 38px; color: var(--primary); font-weight: 700; font-family: var(--font-sub); margin: 0;">
-                    "El futuro es colaborativo"</p>
-                <p class="delay-4" style="font-size: 20px; margin-top: 10px; color: var(--text-light);">Lideramos con
-                    visión humana, ejecutamos con fuerza de Agentes.</p>
             </div>
         </div>
 
-        <!-- SLIDE 6: GRACIAS -->
-        <div class="slide">
-            <div class="centered-content">
-                <h1 class="delay-1" style="font-size: 110px; margin-bottom: 25px;">¡Gracias!</h1>
+        <!-- =========================================================
+             UNIDAD 1 · Comprendiendo el Burnout
+        ========================================================== -->
+
+        <!-- [G4] Portada Unidad 1 -->
+        <div class="slide" id="slide-4">
+            <div class="slide-header">
+                <img class="logo-img" src="img/logo/Logo GS1 azul.png" alt="Logo de la Empresa">
+                <p class="page-title">Unidad 1</p>
+            </div>
+            <div class="slide-scroll-content">
+                <div class="video-split-layout">
+                    <div class="split-col-content mob-order-1">
+                        <div class="box-title">
+                            <span class="unidad-kicker">Unidad 1</span>
+                            <h2 class="titulo-unidad anim-target anim-bounce-left anim-delay-1">Comprendiendo el
+                                Burnout</h2>
+                        </div>
+                        <div class="instruccion">
+                            <p><img src="img/icon_clic.svg" alt="Icono de clic" class="icon-Ins"> Haz clic en avanzar.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="split-col-image anim-target anim-bounce-up anim-delay-3">
+                        <img src="img/002_Burnout_GS1.jpg" alt="Comprendiendo el Burnout" class="content-image">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- [G5] En esta unidad aprenderás (índice de temas 1.1–1.4) — HUB -->
+        <div class="slide" id="slide-5" data-gate="temas" data-goto-next="9">
+            <div class="slide-header">
+                <img class="logo-img" src="img/logo/Logo GS1 azul.png" alt="Logo de la Empresa">
+                <p class="page-title">1. Comprendiendo el Burnout</p>
+            </div>
+            <div class="slide-scroll-content">
+                <div class="bn-slide">
+                    <h2 class="bn-title">En esta unidad aprenderás</h2>
+                    <p class="bn-intro anim-target anim-bounce-left anim-delay-1">El mundo laboral actual es dinámico,
+                        demandante y, en muchas ocasiones, acelerado. Esto puede impulsarnos a crecer y aprender, pero
+                        también puede llevarnos a un punto donde la exigencia constante supera nuestra capacidad de
+                        recuperación. Cuando esto ocurre de forma sostenida, puede aparecer un fenómeno conocido como
+                        <strong>burnout</strong> o agotamiento laboral.
+                    </p>
+
+                    <div class="bn-instruccion">
+                        <img src="img/icon_clic.svg" alt="Icono de clic"> Haz clic en cada tema. Al terminar cada uno,
+                        volverás aquí para continuar con el siguiente.
+                    </div>
+
+                    <div class="bn-temas">
+                        <button class="bn-tema anim-target anim-bounce-up anim-delay-2" data-tema="0"
+                            onclick="showSlide(5)">
+                            <span class="bn-tema-num">1.1</span>
+                            <span class="bn-tema-label">¿Qué es el Burnout?</span>
+                            <span class="bn-tema-arrow">›</span>
+                        </button>
+                        <button class="bn-tema anim-target anim-bounce-up anim-delay-3" data-tema="1"
+                            onclick="showSlide(6)">
+                            <span class="bn-tema-num">1.2</span>
+                            <span class="bn-tema-label">Etapas del agotamiento laboral</span>
+                            <span class="bn-tema-arrow">›</span>
+                        </button>
+                        <button class="bn-tema anim-target anim-bounce-up anim-delay-4" data-tema="2"
+                            onclick="showSlide(7)">
+                            <span class="bn-tema-num">1.3</span>
+                            <span class="bn-tema-label">Diferencia entre estrés y burnout</span>
+                            <span class="bn-tema-arrow">›</span>
+                        </button>
+                        <button class="bn-tema anim-target anim-bounce-up anim-delay-5" data-tema="3"
+                            onclick="showSlide(8)">
+                            <span class="bn-tema-num">1.4</span>
+                            <span class="bn-tema-label">Consecuencias del burnout en la salud y el rendimiento</span>
+                            <span class="bn-tema-arrow">›</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- [G6] 1.1 ¿Qué es el Burnout? — spoke del hub (slide 5) -->
+        <div class="slide" id="slide-6" data-tema="0" data-spoke-hub="4" data-goto-next="4" data-goto-prev="4">
+            <div class="slide-header">
+                <img class="logo-img" src="img/logo/Logo GS1 azul.png" alt="Logo de la Empresa">
+                <p class="page-title">1.1. ¿Qué es el Burnout?</p>
+            </div>
+            <div class="slide-scroll-content">
+                <div class="bn-slide">
+                    <h2 class="bn-title">1.1. ¿Qué es el Burnout?</h2>
+                    <p class="bn-intro anim-target anim-bounce-left anim-delay-1">De acuerdo con la
+                        <strong>Organización Mundial de la Salud</strong>, el burnout es el síndrome resultante del
+                        estrés crónico en el trabajo que no se ha manejado con éxito. Como tal se conceptualiza como un
+                        <strong>fenómeno ocupacional</strong>, y no en el contexto de otros ámbitos de la vida.
+                    </p>
+
+                    <div class="bn-card anim-target anim-bounce-up anim-delay-2">
+                        <ul class="bn-list">
+                            <li>No es "estar cansado" después de una semana intensa.</li>
+                            <li>Es el resultado de <strong>estrés crónico</strong> en el trabajo que no se ha gestionado
+                                adecuadamente.</li>
+                            <li>Se manifiesta con cansancio extremo, distanciamiento emocional del trabajo y una
+                                sensación creciente de bajo rendimiento.</li>
+                            <li>Reconocerlo a tiempo es fundamental para cuidar nuestra salud, mantener relaciones
+                                laborales positivas y asegurar un desempeño sostenible.</li>
+                        </ul>
+                        <img src="img/006_Burnout_GS1.jpg" alt="Ilustración de Burnout" class="content-image">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- [G7] 1.2 Etapas del agotamiento laboral (botonera 4 · popups) — spoke -->
+        <div class="slide" id="slide-7" data-gate="buttons" data-tema="1" data-spoke-hub="4" data-goto-next="4"
+            data-goto-prev="4">
+            <div class="slide-header">
+                <img class="logo-img" src="img/logo/Logo GS1 azul.png" alt="Logo de la Empresa">
+                <p class="page-title">1.2. Etapas del agotamiento laboral</p>
+            </div>
+            <div class="slide-scroll-content">
+                <div class="bn-slide">
+                    <h2 class="bn-title">1.2. Etapas del agotamiento laboral</h2>
+                    <p class="bn-intro anim-target anim-bounce-left anim-delay-1">A continuación, revisaremos las etapas
+                        del agotamiento laboral de acuerdo con el modelo de <strong>Maslach y Jackson</strong>, quienes
+                        conceptualizan el síndrome de Burnout como un proceso multidimensional que va evolucionando a
+                        través del tiempo, aunque no siempre de forma completamente lineal.</p>
+
+                    <div class="bn-instruccion">
+                        <img src="img/icon_clic.svg" alt="Icono de clic"> Haz clic en cada etapa.
+                    </div>
+
+                    <div class="bn-button-group">
+                        <button class="bn-tile bn-expandable js-init-pulse" data-gate-btn data-color="amarillo"
+                            onclick="bnShowPanel(this, 'panel-etapas')">
+                            <span class="bn-tile-badge">1</span>
+                            <span class="bn-tile-label">Agotamiento emocional</span>
+                        </button>
+                        <button class="bn-tile bn-expandable js-init-pulse" data-gate-btn data-color="naranja"
+                            onclick="bnShowPanel(this, 'panel-etapas')">
+                            <span class="bn-tile-badge">2</span>
+                            <span class="bn-tile-label">Apatía / Despersonalización</span>
+                        </button>
+                        <button class="bn-tile bn-expandable js-init-pulse" data-gate-btn data-color="morado"
+                            onclick="bnShowPanel(this, 'panel-etapas')">
+                            <span class="bn-tile-badge">3</span>
+                            <span class="bn-tile-label">Reducción de la eficacia profesional</span>
+                        </button>
+                        <button class="bn-tile bn-expandable js-init-pulse" data-gate-btn data-color="azul"
+                            onclick="bnShowPanel(this, 'panel-etapas')">
+                            <span class="bn-tile-badge">4</span>
+                            <span class="bn-tile-label">Automatismo / abandono</span>
+                        </button>
+                    </div>
+
+                    <div class="bn-content-panel" id="panel-etapas">
+                        <div class="bn-panel-content" style="display:none;">
+                            <p class="bn-popup-lead">Es el primer síntoma de que la persona está lidiando con exceso de
+                                demandas laborales y recursos insuficientes para hacerles frente. Sus señales típicas
+                                son:</p>
+                            <ul class="bn-popup-list">
+                                <li>"Me siento fatigado/a al levantarme."</li>
+                                <li>"Termino el día sin energía."</li>
+                                <li>"Parece que ya nada me recarga."</li>
+                            </ul>
+                            <p class="bn-popup-lead">En esta fase, la persona, con el apoyo de su líder, aún puede
+                                lidiar y evitar avanzar al siguiente nivel.</p>
+                            <div class="bn-example"  >
+                                <img src="img/etapa1_Burnout_GS1.jpg" alt="Ejemplo" class="bn-content-image"><span class="bn-example-tag">Ejemplo</span>Un ejecutivo de ventas
+                                que ha tenido tres trimestres de crecimiento en metas; asume viajes y presentaciones
+                                extras, duerme menos de 6 horas por noche, y los fines de semana no desconecta porque
+                                revisa correos y contesta mensajes de WhatsApp de clientes y compañeros.</div>
+                        </div>
+                        <div class="bn-panel-content" style="display:none;">
+                            <p class="bn-popup-lead">Una vez que el agotamiento persiste, la persona empieza a
+                                "desconectarse" emocionalmente del trabajo, de sus tareas y de sus compañeros. Aparece
+                                una actitud de distanciamiento, apatía: "ya no me importa tanto", "esto no vale la
+                                pena".</p>
+                            <p class="bn-popup-lead">La desconexión comienza a afectar la colaboración, la innovación y
+                                el clima laboral, y la persona ya no es "embajadora" sino "sobreviviente" del trabajo.
+                                Aquí es clave que el colaborador y su líder detecten que la persona no solo está
+                                cansada, sino que su vínculo con el rol y el equipo está menguando.</p>
+                            <div class="bn-example">
+                                <img src="img/etapa2_Burnout_GS1.jpg" alt="Ejemplo" class="bn-content-image">
+                                <span class="bn-example-tag">Ejemplo</span>El coordinador de
+                                marketing ya no propone ideas nuevas como antes; cuando el líder le pide opinión
+                                responde con apatía: "como digas". Evita interactuar con otros departamentos y cumple lo
+                                mínimo.</div>
+                        </div>
+                        <div class="bn-panel-content" style="display:none;">
+                            <p class="bn-popup-lead">En esta fase la persona siente que: "no rindo como antes", "no
+                                logro lo que debería", "mi trabajo no tiene impacto", "me cuesta concentrarme y tomar
+                                decisiones".</p>
+                            <p class="bn-popup-lead">Siente que hay mayor retrabajo, falta de calidad, frustración, y el
+                                riesgo de salida del puesto, absentismo o sanciones. Esta fase indica que el burnout
+                                está avanzado y que se necesitan acciones más estructurales, tanto a nivel de la
+                                organización como en el enfoque individual.</p>
+                            <div class="bn-example">
+                                <img src="img/etapa3_Burnout_GS1.jpg" alt="Ejemplo" class="bn-content-image">
+                                <span class="bn-example-tag">Ejemplo</span>Un analista senior que
+                                antes entregaba informes impecables ahora recibe retroalimentación frecuente de errores,
+                                revisiones adicionales, y siente que "ya no soy el mismo". Su autoestima profesional
+                                baja.</div>
+                        </div>
+                        <div class="bn-panel-content" style="display:none;">
+                            <p class="bn-popup-lead">Algunos autores amplían el modelo a una cuarta fase donde la
+                                persona ya opera en piloto automático, se desvincula totalmente y tiene alto riesgo de
+                                rotación, colapso o enfermedad. <br><br>Aunque Maslach y Jackson enfatizan las tres dimensiones,
+                                la mayoría de los programas de intervención reconocen esta fase. Si bien queremos
+                                prevenir antes de llegar aquí, es útil conocerla para reconocer que un colaborador puede
+                                necesitar apoyo urgente.</p>
+                            <div class="bn-example">
+                                <img src="img/etapa4_Burnout_GS1.jpg" alt="Ejemplo" class="bn-content-image">
+                                <span class="bn-example-tag">Ejemplo</span>Un gerente que ya "no aparece en las reuniones", delega todo sin supervisión, no responde correos, y la empresa recibe quejas de clientes, pero no responde igual.</div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Contenidos de popup (ocultos para compatibilidad) -->
+                <div class="bn-popup-src" id="src-etapa1" hidden>
+                    <p class="bn-popup-lead">Es el primer síntoma de que la persona está lidiando con exceso de demandas
+                        laborales y recursos insuficientes para hacerles frente. Sus señales típicas son:</p>
+                    <ul class="bn-popup-list">
+                        <li>"Me siento fatigado/a al levantarme."</li>
+                        <li>"Termino el día sin energía."</li>
+                        <li>"Parece que ya nada me recarga."</li>
+                    </ul>
+                    <p class="bn-popup-lead">En esta fase, la persona, con el apoyo de su líder, aún puede lidiar y
+                        evitar avanzar al siguiente nivel.</p>
+                    <div class="bn-example"><span class="bn-example-tag">Ejemplo</span>Un ejecutivo de ventas que ha
+                        tenido tres trimestres de crecimiento en metas; asume viajes y presentaciones extras, duerme
+                        menos de 6 horas por noche, y los fines de semana no desconecta porque revisa correos y contesta
+                        mensajes de WhatsApp de clientes y compañeros.</div>
+                </div>
+                <div class="bn-popup-src" id="src-etapa2" hidden>
+                    <p class="bn-popup-lead">Una vez que el agotamiento persiste, la persona empieza a "desconectarse"
+                        emocionalmente del trabajo, de sus tareas y de sus compañeros. Aparece una actitud de
+                        distanciamiento, apatía: "ya no me importa tanto", "esto no vale la pena".</p>
+                    <p class="bn-popup-lead">La desconexión comienza a afectar la colaboración, la innovación y el clima
+                        laboral, y la persona ya no es "embajadora" sino "sobreviviente" del trabajo. Aquí es clave que
+                        el colaborador y su líder detecten que la persona no solo está cansada, sino que su vínculo con
+                        el rol y el equipo está menguando.</p>
+                    <div class="bn-example"><span class="bn-example-tag">Ejemplo</span>El coordinador de marketing ya no
+                        propone ideas nuevas como antes; cuando el líder le pide opinión responde con apatía: "como
+                        digas". Evita interactuar con otros departamentos y cumple lo mínimo.</div>
+                </div>
+                <div class="bn-popup-src" id="src-etapa3" hidden>
+                    <p class="bn-popup-lead">En esta fase la persona siente que: "no rinde como antes", "no logro lo que
+                        debería", "mi trabajo no tiene impacto", "me cuesta concentrarme y tomar decisiones".</p>
+                    <p class="bn-popup-lead">Siente que hay mayor retrabajo, falta de calidad, frustración, y el riesgo
+                        de salida del puesto, absentismo o sanciones. Esta fase indica que el burnout está avanzado y
+                        que se necesitan acciones más estructurales, tanto a nivel de la organización como en el enfoque
+                        individual.</p>
+                    <div class="bn-example"><span class="bn-example-tag">Ejemplo</span>Un analista senior que antes
+                        entregaba informes impecables ahora recibe retroalimentación frecuente de errores, revisiones
+                        adicionales, y siente que "ya no soy el mismo". Su autoestima profesional baja.</div>
+                </div>
+                <div class="bn-popup-src" id="src-etapa4" hidden>
+                    <p class="bn-popup-lead">Algunos autores amplían el modelo a una cuarta fase donde la persona ya
+                        opera en piloto automático, se desvincula totalmente y tiene alto riesgo de rotación, colapso o
+                        enfermedad. Aunque Maslach y Jackson enfatizan las tres dimensiones, la mayoría de los programas
+                        de intervención reconocen esta fase. Si bien queremos prevenir antes de llegar aquí, es útil
+                        conocerla para reconocer que un colaborador puede necesitar apoyo urgente.</p>
+                    <div class="bn-example"><span class="bn-example-tag">Ejemplo</span>Un gerente que ya "no aparece en
+                        las reuniones", delega todo sin supervisión, no responde correos, y la empresa recibe quejas de
+                        clientes, pero no responde igual.</div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- [G8/G9] 1.3 Diferencia entre estrés y burnout (botonera + tabla popup + video guion_03) — spoke -->
+        <div class="slide" id="slide-8" data-gate="buttons" data-tema="2" data-spoke-hub="4" data-goto-next="4"
+            data-goto-prev="4">
+            <div class="slide-header">
+                <img class="logo-img" src="img/logo/Logo GS1 azul.png" alt="Logo de la Empresa">
+                <p class="page-title">1.3. Diferencia entre estrés y burnout</p>
+            </div>
+            <div class="slide-scroll-content">
+                <div class="bn-slide">
+                    <h2 class="bn-title">1.3. Diferencia entre estrés y burnout</h2>
+                    <p class="bn-intro anim-target anim-bounce-left anim-delay-1">Aunque a veces son mencionados como lo
+                        mismo, la realidad es que hay diferencias entre el <strong>estrés</strong> y el
+                        <strong>burnout</strong>.
+                    </p>
+
+                    <div class="bn-instruccion">
+                        <img src="img/icon_clic.svg" alt="Icono de clic"> Haz clic en cada botón.
+                    </div>
+
+                    <div class="bn-button-group">
+                        <button class="bn-tile bn-expandable js-init-pulse" data-gate-btn data-color="cielo"
+                            onclick="bnShowPanel(this, 'panel-estres-burnout')">
+                            <span class="bn-tile-badge">
+                                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                                </svg>
+                            </span>
+                            <span class="bn-tile-label">Estrés</span>
+                        </button>
+                        <button class="bn-tile bn-expandable js-init-pulse" data-gate-btn data-color="naranja"
+                            onclick="bnShowPanel(this, 'panel-estres-burnout')">
+                            <span class="bn-tile-badge">
+                                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path
+                                        d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z">
+                                    </path>
+                                </svg>
+                            </span>
+                            <span class="bn-tile-label">Burnout</span>
+                        </button>
+                        <button class="bn-tile bn-expandable js-init-pulse" data-gate-btn data-color="azul"
+                            onclick="bnShowPanel(this, 'panel-estres-burnout')">
+                            <span class="bn-tile-badge">
+                                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+                                    <line x1="12" y1="3" x2="12" y2="21"></line>
+                                    <line x1="3" y1="9" x2="21" y2="9"></line>
+                                </svg>
+                            </span>
+                            <span class="bn-tile-label">Cuadro comparativo</span>
+                        </button>
+                        <button class="bn-tile js-init-pulse" data-gate-btn data-color="morado"
+                            onclick="bnOpenVideo(this,'videos/guion_03_Burnout_video_ejemplo.mp4','slide-8')">
+                            <span class="bn-tile-badge">
+                                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                                </svg>
+                            </span>
+                            <span class="bn-tile-label">Revisa el ejemplo</span>
+                        </button>
+                    </div>
+
+                    <div class="bn-content-panel" id="panel-estres-burnout">
+                        <div class="bn-panel-content" style="display:none;">
+                            <img src="img/009_Burnout_GS1.jpg" alt="Ejemplo" class="bn-content-image">
+                            <p class="bn-popup-lead">El estrés es una respuesta a demandas elevadas y puede ser
+                                temporal; bien gestionado, incluso puede impulsar el desempeño por periodos cortos.</p>
+                        </div>
+                        <div class="bn-panel-content" style="display:none;">
+                            <img src="img/008_Burnout_GS1.jpg" alt="Ejemplo" class="bn-content-image">
+                            <p class="bn-popup-lead">El burnout es la cronificación del estrés laboral sin manejo eficaz
+                                y con deterioro en la energía, el vínculo con el trabajo y la eficacia. Suele estar
+                                precedido por episodios repetidos de estrés.</p>
+                        </div>
+                        <div class="bn-panel-content" style="display:none;">
+                            <table class="bn-table">
+                                <thead>
+                                    <tr>
+                                        <th>Característica</th>
+                                        <th>Estrés</th>
+                                        <th>Burnout</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th>Temporalidad</th>
+                                        <td>Generalmente de corta o media duración</td>
+                                        <td>Sostenido, crónico, sin recuperación adecuada</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Estado de ánimo</th>
+                                        <td>Activo, movilizado ("vamos a resolverlo")</td>
+                                        <td>Pérdida de motivación, sensación de "ya no puedo"</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Emoción asociada</th>
+                                        <td>Ansiedad, irritabilidad, tensión</td>
+                                        <td>Apatía, desapego, vacío emocional</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Rendimiento</th>
+                                        <td>Puede mantenerse o incluso mejorar momentáneamente</td>
+                                        <td>Disminuye claramente con el tiempo</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Recuperación</th>
+                                        <td>Un descanso o fin de semana pueden ayudar</td>
+                                        <td>Las pausas no bastan; se necesita cambio estructural</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Ámbito</th>
+                                        <td>Responde a demandas específicas o puntuales</td>
+                                        <td>Relacionado con condiciones persistentes del trabajo</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Implicación para el trabajo</th>
+                                        <td>Participación activa, implicación normal</td>
+                                        <td>Desconexión, labor cumplida "por trámite"</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <span class="bn-pending">Video pendiente · guion_03_Burnout_video_ejemplo (MP4)</span>
+                </div>
+
+                <!-- Contenidos de popup (ocultos) -->
+                <div class="bn-popup-src" id="src-estres" hidden>
+                    <p class="bn-popup-lead">El estrés es una respuesta a demandas elevadas y puede ser temporal; bien
+                        gestionado, incluso puede impulsar el desempeño por periodos cortos.</p>
+                </div>
+                <div class="bn-popup-src" id="src-burnout" hidden>
+                    <p class="bn-popup-lead">El burnout es la cronificación del estrés laboral sin manejo eficaz y con
+                        deterioro en la energía, el vínculo con el trabajo y la eficacia. Suele estar precedido por
+                        episodios repetidos de estrés.</p>
+                </div>
+                <div class="bn-popup-src" id="src-comparativo" hidden>
+                    <table class="bn-table">
+                        <thead>
+                            <tr>
+                                <th>Característica</th>
+                                <th>Estrés</th>
+                                <th>Burnout</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th>Temporalidad</th>
+                                <td>Generalmente de corta o media duración</td>
+                                <td>Sostenido,
+                                    crónico, sin recuperación adecuada</td>
+                            </tr>
+                            <tr>
+                                <th>Estado de ánimo</th>
+                                <td>Activo, movilizado ("vamos a resolverlo")</td>
+                                <td>Pérdida de
+                                    motivación, sensación de "ya no puedo"</td>
+                            </tr>
+                            <tr>
+                                <th>Emoción asociada</th>
+                                <td>Ansiedad, irritabilidad, tensión</td>
+                                <td>Apatía, desapego,
+                                    vacío emocional</td>
+                            </tr>
+                            <tr>
+                                <th>Rendimiento</th>
+                                <td>Puede mantenerse o incluso mejorar momentáneamente</td>
+                                <td>Disminuye claramente con el tiempo</td>
+                            </tr>
+                            <tr>
+                                <th>Recuperación</th>
+                                <td>Un descanso o fin de semana pueden ayudar</td>
+                                <td>Las pausas no
+                                    bastan; se necesita cambio estructural</td>
+                            </tr>
+                            <tr>
+                                <th>Ámbito</th>
+                                <td>Responde a demandas específicas o puntuales</td>
+                                <td>Relacionado con
+                                    condiciones persistentes del trabajo</td>
+                            </tr>
+                            <tr>
+                                <th>Implicación para el trabajo</th>
+                                <td>Participación activa, implicación normal</td>
+                                <td>Desconexión, labor cumplida "por trámite"</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- [G10/G11/G12] 1.4 Consecuencias del Burnout (botonera 3 · tablas popup) — spoke -->
+        <div class="slide" id="slide-9" data-gate="buttons" data-tema="3" data-spoke-hub="4" data-goto-next="4"
+            data-goto-prev="4">
+            <div class="slide-header">
+                <img class="logo-img" src="img/logo/Logo GS1 azul.png" alt="Logo de la Empresa">
+                <p class="page-title">1.4. Consecuencias del Burnout en la salud y el rendimiento</p>
+            </div>
+            <div class="slide-scroll-content">
+                <div class="bn-slide">
+                    <h2 class="bn-title">1.4. Consecuencias del Burnout</h2>
+                    <p class="bn-intro anim-target anim-bounce-left anim-delay-1">Cuando el agotamiento laboral se
+                        instala, sus efectos pueden sentirse tanto en nuestro cuerpo y mente, como en la forma en que
+                        trabajamos y colaboramos. A continuación, identifica sus señales para que puedas actuar antes de
+                        que se agraven.</p>
+
+                    <div class="bn-instruccion">
+                        <img src="img/icon_clic.svg" alt="Icono de clic"> Haz clic en cada botón.
+                    </div>
+
+                    <div class="bn-button-group">
+                        <button class="bn-tile bn-expandable js-init-pulse" data-gate-btn data-color="cielo"
+                            onclick="bnShowPanel(this, 'panel-consecuencias')">
+                            <span class="bn-tile-badge">
+                                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path
+                                        d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
+                                    </path>
+                                </svg>
+                            </span>
+                            <span class="bn-tile-label">Salud física y emocional</span>
+                        </button>
+                        <button class="bn-tile bn-expandable js-init-pulse" data-gate-btn data-color="verde"
+                            onclick="bnShowPanel(this, 'panel-consecuencias')">
+                            <span class="bn-tile-badge">
+                                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="18" y1="20" x2="18" y2="10"></line>
+                                    <line x1="12" y1="20" x2="12" y2="4"></line>
+                                    <line x1="6" y1="20" x2="6" y2="14"></line>
+                                </svg>
+                            </span>
+                            <span class="bn-tile-label">Rendimiento y forma de trabajar</span>
+                        </button>
+                        <button class="bn-tile bn-expandable js-init-pulse" data-gate-btn data-color="naranja"
+                            onclick="bnShowPanel(this, 'panel-consecuencias')">
+                            <span class="bn-tile-badge">
+                                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <polyline points="12 6 12 12 16 14"></polyline>
+                                </svg>
+                            </span>
+                            <span class="bn-tile-label">¿Por qué importa actuar ahora?</span>
+                        </button>
+                    </div>
+
+                    <div class="bn-content-panel" id="panel-consecuencias">
+                        <div class="bn-panel-content" style="display:none;">
+                            
+                            <ul class="bn-popup-list">
+                                <li><strong>Cansancio constante:</strong> ya no es "hoy estoy cansado", sino "todos los
+                                    días me siento sin energía", incluso al levantarme.</li>
+                                <li><strong>Emociones más pesadas:</strong> sentirse inútil, bajo de ánimo, menor
+                                    interés por colaborar o conectar con compañeros o clientes. Esto puede evolucionar
+                                    hacia ansiedad o depresión si no se atiende.</li>
+                                <li><strong>Problemas de sueño:</strong> dificultad para conciliar el sueño, despertarse
+                                    a mitad de la noche o no sentirse descansado al despertar.</li>
+                                <li><strong>Irritabilidad o seguir el día a día sin ganas:</strong> mostrar apatía,
+                                    responder de forma más seca, perder interés por cosas que antes motivaban.</li>
+                                <li><strong>Síntomas físicos varios:</strong> dolores de cabeza, cuello o espalda,
+                                    trastornos digestivos, palpitaciones o tensión muscular, que ya no se relacionan
+                                    sólo con una semana pesada.</li>
+                            </ul>
+                            <img src="img/028_Burnout_GS1.jpg" alt="Ilustración de consecuencias del Burnout" class="bn-content-image">
+                        </div>
+                        <div class="bn-panel-content" style="display:none;">
+                            <img src="img/027_Burnout_GS1.jpg" alt="Ilustración de consecuencias del Burnout" class="bn-content-image">
+                            <ul class="bn-popup-list">
+                                <li><strong>Menor calidad en las tareas:</strong> se cometen más errores, se vuelve más
+                                    difícil revisar el trabajo, los tiempos se alargan.</li>
+                                <li><strong>Menor productividad real:</strong> aunque estés en la oficina u horas
+                                    conectadas, el rendimiento efectivo puede caer. Lo que producías con 100% ahora
+                                    quizá sea 60-70%.</li>
+                                <li><strong>Retrabajo y efectos en equipo/cliente:</strong> el equipo tiene que esperar
+                                    más, los clientes internos/externos lo sienten, los resultados bajan, la reputación
+                                    del área puede verse afectada.</li>
+                                <li><strong>Desmotivación o desconexión:</strong> "ya no me importa tanto este
+                                    proyecto", "¿para qué me esfuerzo si no cambia nada?". Esto reduce el entusiasmo y
+                                    la iniciativa.</li>
+                                <li><strong>Mayor riesgo para la empresa… y para ti:</strong> puede aumentar el
+                                    ausentismo o que busques otro empleo. Para la empresa significa más costos, menor
+                                    calidad y menor compromiso; para ti, más estrés, más carga emocional, menos
+                                    satisfacción.</li>
+                            </ul>
+                        </div>
+                        <div class="bn-panel-content" style="display:none;">
+                            <div class="bn-content-with-image">
+                                <div>
+                                    <p class="bn-popup-lead">Porque no sólo es un mal rato, es un problema que puede escalar: un
+                                        bajo rendimiento hoy puede derivar en:</p>
+                                    <ul class="bn-popup-list">
+                                        <li>Incapacidad médica</li>
+                                        <li>Renuncia</li>
+                                        <li>Traslado forzoso</li>
+                                        <li>Situación de salud grave mañana</li>
+                                    </ul>
+                                </div>
+                                <img src="img/029_Burnout_GS1.jpg" alt="¿Por qué importa actuar ahora?" class="bn-content-image">
+                                <p class="bn-popup-lead bn-content-full">Porque si actúas temprano, puedes recuperar bienestar, motivación y
+                                        rendimiento. Como dice la normativa <strong>NOM-035-STPS-2018</strong>, es
+                                        responsabilidad compartida: tanto tú como la empresa pueden hacer ajustes para que esto
+                                        no siga empeorando.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contenidos de popup (ocultos para compatibilidad) -->
+                <div class="bn-popup-src" id="src-salud" hidden>
+                    <ul class="bn-popup-list">
+                        <li><strong>Cansancio constante:</strong> ya no es "hoy estoy cansado", sino "todos los días me
+                            siento sin energía", incluso al levantarme.</li>
+                        <li><strong>Emociones más pesadas:</strong> sentirse inútil, bajo de ánimo, menor interés por
+                            colaborar o conectar con compañeros o clientes. Esto puede evolucionar hacia ansiedad o
+                            depresión si no se atiende.</li>
+                        <li><strong>Problemas de sueño:</strong> dificultad para conciliar el sueño, despertarse a mitad
+                            de la noche o no sentirse descansado al despertar.</li>
+                        <li><strong>Irritabilidad o seguir el día a día sin ganas:</strong> mostrar apatía, responder de
+                            forma más seca, perder interés por cosas que antes motivaban.</li>
+                        <li><strong>Síntomas físicos varios:</strong> dolores de cabeza, cuello o espalda, trastornos
+                            digestivos, palpitaciones o tensión muscular, que ya no se relacionan sólo con una semana
+                            pesada.</li>
+                    </ul>
+                </div>
+                <div class="bn-popup-src" id="src-rendimiento" hidden>
+                    <ul class="bn-popup-list">
+                        <li><strong>Menor calidad en las tareas:</strong> se cometen más errores, se vuelve más difícil
+                            revisar el trabajo, los tiempos se alargan.</li>
+                        <li><strong>Menor productividad real:</strong> aunque estés en la oficina u horas conectadas, el
+                            rendimiento efectivo puede caer. Lo que producías con 100% ahora quizá sea 60-70%.</li>
+                        <li><strong>Retrabajo y efectos en equipo/cliente:</strong> el equipo tiene que esperar más, los
+                            clientes internos/externos lo sienten, los resultados bajan, la reputación del área puede
+                            verse afectada.</li>
+                        <li><strong>Desmotivación o desconexión:</strong> "ya no me importa tanto este proyecto", "¿para
+                            qué me esfuerzo si no cambia nada?". Esto reduce el entusiasmo y la iniciativa.</li>
+                        <li><strong>Mayor riesgo para la empresa… y para ti:</strong> puede aumentar el ausentismo o que
+                            busques otro empleo. Para la empresa significa más costos, menor calidad y menor compromiso;
+                            para ti, más estrés, más carga emocional, menos satisfacción.</li>
+                    </ul>
+                </div>
+                <div class="bn-popup-src" id="src-actuar" hidden>
+                    <p class="bn-popup-lead">Porque no sólo es un mal rato, es un problema que puede escalar: un bajo
+                        rendimiento hoy puede derivar en:</p>
+                    <ul class="bn-popup-list">
+                        <li>Incapacidad médica</li>
+                        <li>Renuncia</li>
+                        <li>Traslado forzoso</li>
+                        <li>Situación de salud grave mañana</li>
+                    </ul>
+                    <p class="bn-popup-lead">Porque si actúas temprano, puedes recuperar bienestar, motivación y
+                        rendimiento. Como dice la normativa <strong>NOM-035-STPS-2018</strong>, es responsabilidad
+                        compartida: tanto tú como la empresa pueden hacer ajustes para que esto no siga empeorando.</p>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- [G13] Ejercicio: Test interactivo (guion_04_Burnout_interactivo_test) -->
+        <div class="slide" id="slide-10">
+            <div class="slide-header">
+                <img class="logo-img" src="img/logo/Logo GS1 azul.png" alt="Logo de la Empresa">
+                <p class="page-title">Ejercicio</p>
+            </div>
+            <div class="slide-scroll-content">
+                <div class="bn-embed-wrap">
+                    <iframe id="test-u1-frame" class="bn-embed" src="test/index.html"
+                        title="Test de señales tempranas de Burnout" scrolling="auto"></iframe>
+                </div>
+            </div>
+        </div>
+
+        <!-- =========================================================
+             UNIDAD 2 · Identificación de señales y factores de riesgo
+        ========================================================== -->
+
+        <!-- [G14] Portada Unidad 2 -->
+        <div class="slide" id="slide-11">
+            <div class="slide-header">
+                <img class="logo-img" src="img/logo/Logo GS1 azul.png" alt="Logo de la Empresa">
+                <p class="page-title">Unidad 2</p>
+            </div>
+            <div class="slide-scroll-content">
+                <div class="video-split-layout">
+                    <div class="split-col-content mob-order-1">
+                        <div class="box-title">
+                            <span class="unidad-kicker">Unidad 2</span>
+                            <h2 class="titulo-unidad anim-target anim-bounce-left anim-delay-1">Identificación de
+                                señales
+                                y factores de riesgo</h2>
+                        </div>
+                        <div class="instruccion">
+                            <p><img src="img/icon_clic.svg" alt="Icono de clic" class="icon-Ins"> Haz clic en avanzar.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="split-col-image anim-target anim-bounce-up anim-delay-3">
+                        <img src="img/003_Burnout_GS1.jpg" alt="Señales y factores de riesgo" class="content-image">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- [G15] 2. Intro unidad -->
+        <div class="slide" id="slide-12">
+            <div class="slide-header">
+                <img class="logo-img" src="img/logo/Logo GS1 azul.png" alt="Logo de la Empresa">
+                <p class="page-title">UNIDAD 2 · Identificación de señales y factores de riesgo</p>
+            </div>
+            <div class="slide-scroll-content">
+                <div class="bn-slide">
+                    <h2 class="bn-title">Identificación de señales y factores de riesgo</h2>
+                    <p class="bn-intro anim-target anim-bounce-left anim-delay-1">El Burnout <strong>no es un fallo
+                            personal</strong>. Es una señal de que algo en el diseño del trabajo o en los hábitos debe
+                        ajustarse.</p>
+                    <div class="bn-highlight anim-target anim-bounce-up anim-delay-2">Identificar estas señales es
+                        valentía y es el primer paso para cuidarte.</div>
+                    <img src="img/010_Burnout_GS1.jpg" alt="Ilustración de Burnout" class="content-image">
+                </div>
+            </div>
+        </div>
+
+        <!-- [G16] 2.1 Señales emocionales, cognitivas y conductuales (botonera 3 · popups) -->
+        <div class="slide" id="slide-13" data-gate="buttons">
+            <div class="slide-header">
+                <img class="logo-img" src="img/logo/Logo GS1 azul.png" alt="Logo de la Empresa">
+                <p class="page-title">2.1. Señales emocionales, cognitivas y conductuales</p>
+            </div>
+            <div class="slide-scroll-content">
+                <div class="bn-slide">
+                    <h2 class="bn-title">2.1. Señales emocionales, cognitivas y conductuales</h2>
+                    <p class="bn-intro anim-target anim-bounce-left anim-delay-1">El Burnout no aparece de un día para
+                        otro. Antes envía señales en nuestro comportamiento, estado de ánimo y rendimiento. Detectarlas
+                        temprano es clave para cuidarnos.</p>
+
+                    <div class="bn-instruccion">
+                        <img src="img/icon_clic.svg" alt="Icono de clic"> Haz clic en cada botón.
+                    </div>
+
+                    <div class="bn-button-group">
+                        <button class="bn-tile bn-expandable js-init-pulse" data-gate-btn data-color="morado"
+                            onclick="bnShowPanel(this, 'panel-senales')">
+                            <span class="bn-tile-badge">
+                                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path
+                                        d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2z">
+                                    </path>
+                                    <path
+                                        d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2z">
+                                    </path>
+                                </svg>
+                            </span>
+                            <span class="bn-tile-label">Señales cognitivas<br><small>Lo que ocurre en nuestra
+                                    mente</small></span>
+                        </button>
+                        <button class="bn-tile bn-expandable js-init-pulse" data-gate-btn data-color="naranja"
+                            onclick="bnShowPanel(this, 'panel-senales')">
+                            <span class="bn-tile-badge">
+                                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path
+                                        d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
+                                    </path>
+                                </svg>
+                            </span>
+                            <span class="bn-tile-label">Señales emocionales<br><small>Lo que ocurre con los
+                                    sentimientos</small></span>
+                        </button>
+                        <button class="bn-tile bn-expandable js-init-pulse" data-gate-btn data-color="cielo"
+                            onclick="bnShowPanel(this, 'panel-senales')">
+                            <span class="bn-tile-badge">
+                                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path>
+                                </svg>
+                            </span>
+                            <span class="bn-tile-label">Señales conductuales<br><small>Lo que se nota en nuestras
+                                    acciones</small></span>
+                        </button>
+                    </div>
+
+                    <div class="bn-content-panel" id="panel-senales">
+                        <div class="bn-panel-content" style="display:none;">
+                            
+                            <ul class="bn-popup-list">
+                                <li>Dificultad para concentrarse o tomar decisiones.</li>
+                                <li>Memoria dispersa o frecuentes olvidos.</li>
+                                <li>Pensamientos negativos: "ya no rindo", "no soy suficiente".</li>
+                                <li>Sentir que el esfuerzo ya no vale la pena.</li>
+                            </ul>
+                            <div class="bn-example"><span class="bn-example-tag">En la oficina</span>Revisar varias
+                                veces un mismo correo antes de enviarlo o cometer errores en tareas que antes dominabas.
+                            </div>
+                            <img src="img/031_Burnout_GS1.jpg" alt="Ilustración de consecuencias del Burnout" class="bn-content-image">
+                        </div>
+                        <div class="bn-panel-content" style="display:none;">
+                            
+                            <ul class="bn-popup-list">
+                                <li>Irritabilidad o mal humor constante.</li>
+                                <li>Tristeza, desánimo o sensación de vacío.</li>
+                                <li>Pérdida de motivación y entusiasmo por el trabajo.</li>
+                                <li>Sensación de estar "al límite".</li>
+                                <li>Menor interés en convivir con el equipo o participar.</li>
+                            </ul>
+                            <div class="bn-example"><span class="bn-example-tag">En la oficina</span>Sentir molestia
+                                ante solicitudes simples, pensar "ya no me importa" o evitar reuniones porque "no tengo
+                                ánimo".</div>
+                                <img src="img/032_Burnout_GS1.jpg" alt="Ilustración de consecuencias del Burnout" class="bn-content-image">
+                        </div>
+                        <div class="bn-panel-content" style="display:none;">
+                            
+                            <ul class="bn-popup-list">
+                                <li>Retrasar entregas o hacer solo lo mínimo.</li>
+                                <li>Aumentar el consumo de café, cigarros o comida rápida para "aguantar".</li>
+                                <li>Alejarse del equipo, evitar llamadas o cámaras en reuniones.</li>
+                                <li>Micro-ausentismo: llegar tarde, salir antes, "desconectarse" durante la jornada.
+                                </li>
+                                <li>Menor cuidado en la calidad del trabajo.</li>
+                            </ul>
+                            <div class="bn-example"><span class="bn-example-tag">En la oficina</span>Apagar el micrófono
+                                y la cámara para no participar durante una videoconferencia, contestar frío a clientes
+                                internos o no revisar reportes como se debe.</div>
+                                <img src="img/033_Burnout_GS1.jpg" alt="Ilustración de consecuencias del Burnout" class="bn-content-image">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contenidos de popup (ocultos para compatibilidad) -->
+                <div class="bn-popup-src" id="src-senal-cog" hidden>
+                    <ul class="bn-popup-list">
+                        <li>Dificultad para concentrarse o tomar decisiones.</li>
+                        <li>Memoria dispersa o frecuentes olvidos.</li>
+                        <li>Pensamientos negativos: "ya no rindo", "no soy suficiente".</li>
+                        <li>Sentir que el esfuerzo ya no vale la pena.</li>
+                    </ul>
+                    <div class="bn-example"><span class="bn-example-tag">En la oficina</span>Revisar varias veces un
+                        mismo correo antes de enviarlo o cometer errores en tareas que antes dominabas.</div>
+                </div>
+                <div class="bn-popup-src" id="src-senal-emo" hidden>
+                    <ul class="bn-popup-list">
+                        <li>Irritabilidad o mal humor constante.</li>
+                        <li>Tristeza, desánimo o sensación de vacío.</li>
+                        <li>Pérdida de motivación y entusiasmo por el trabajo.</li>
+                        <li>Sensación de estar "al límite".</li>
+                        <li>Menor interés en convivir con el equipo o participar.</li>
+                    </ul>
+                    <div class="bn-example"><span class="bn-example-tag">En la oficina</span>Sentir molestia ante
+                        solicitudes simples, pensar "ya no me importa" o evitar reuniones porque "no tengo ánimo".</div>
+                </div>
+                <div class="bn-popup-src" id="src-senal-con" hidden>
+                    <ul class="bn-popup-list">
+                        <li>Retrasar entregas o hacer solo lo mínimo.</li>
+                        <li>Aumentar el consumo de café, cigarros o comida rápida para "aguantar".</li>
+                        <li>Alejarse del equipo, evitar llamadas o cámaras en reuniones.</li>
+                        <li>Micro-ausentismo: llegar tarde, salir antes, "desconectarse" durante la jornada.</li>
+                        <li>Menor cuidado en la calidad del trabajo.</li>
+                    </ul>
+                    <div class="bn-example"><span class="bn-example-tag">En la oficina</span>Apagar el micrófono y la
+                        cámara para no participar durante una videoconferencia, contestar frío a clientes internos o no
+                        revisar reportes como se debe.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- [G17] 2.2 Factores laborales y personales (botonera 6 numerada · popups) -->
+        <div class="slide" id="slide-14" data-gate="buttons">
+            <div class="slide-header">
+                <img class="logo-img" src="img/logo/Logo GS1 azul.png" alt="Logo de la Empresa">
+                <p class="page-title">UNIDAD 2 · Identificación de señales y factores de riesgo</p>
+            </div>
+            <div class="slide-scroll-content">
+                <div class="bn-slide">
+                    <h2 class="bn-title">2.2. Factores laborales y personales que lo desencadenan</h2>
+                    <p class="bn-intro anim-target anim-bounce-left anim-delay-1">El Burnout emerge cuando las demandas
+                        del trabajo como la carga, presión temporal, conflictos de rol e interrupciones superan de forma
+                        crónica los recursos, como la autonomía, apoyo del líder y del equipo, claridad,
+                        retroalimentación, reconocimiento.
+                        <br>
+                        <br>Algunos factores laborales que lo desencadenan pueden ser:
+                    </p>
+
+                    <div class="bn-instruccion">
+                        <img src="img/icon_clic.svg" alt="Icono de clic"> Haz clic en cada número.
+                    </div>
+
+                    <div class="bn-accordion">
+                        <div class="bn-accordion-item" data-accordion-id="0">
+                            <button class="bn-accordion-header" data-gate-btn onclick="bnToggleAccordion(this, 0)">
+                                <span class="bn-acc-num">1</span>
+                                <span class="bn-acc-title">Cargas excesivas y picos crónicos</span>
+                                <span class="bn-acc-toggle">›</span>
+                            </button>
+                            <div class="bn-accordion-body is-collapsed">
+                                <div class="bn-acc-content">
+                                    <p class="bn-popup-lead">Cargas excesivas y picos crónicos, plazos irreales,
+                                        "urgencias" continuas.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bn-accordion-item" data-accordion-id="1">
+                            <button class="bn-accordion-header" data-gate-btn onclick="bnToggleAccordion(this, 1)">
+                                <span class="bn-acc-num">2</span>
+                                <span class="bn-acc-title">Ambigüedad o conflicto de rol</span>
+                                <span class="bn-acc-toggle">›</span>
+                            </button>
+                            <div class="bn-accordion-body is-collapsed">
+                                <div class="bn-acc-content">
+                                    <p class="bn-popup-lead">Ambigüedad o conflicto de rol, prioridades cambiantes sin
+                                        criterios.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bn-accordion-item" data-accordion-id="2">
+                            <button class="bn-accordion-header" data-gate-btn onclick="bnToggleAccordion(this, 2)">
+                                <span class="bn-acc-num">3</span>
+                                <span class="bn-acc-title">Poco control / autonomía</span>
+                                <span class="bn-acc-toggle">›</span>
+                            </button>
+                            <div class="bn-accordion-body is-collapsed">
+                                <div class="bn-acc-content">
+                                    <p class="bn-popup-lead">Poco control / autonomía para organizar el trabajo y los
+                                        tiempos de concentración.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bn-accordion-item" data-accordion-id="3">
+                            <button class="bn-accordion-header" data-gate-btn onclick="bnToggleAccordion(this, 3)">
+                                <span class="bn-acc-num">4</span>
+                                <span class="bn-acc-title">Liderazgo y comunicación deficientes</span>
+                                <span class="bn-acc-toggle">›</span>
+                            </button>
+                            <div class="bn-accordion-body is-collapsed">
+                                <div class="bn-acc-content">
+                                    <p class="bn-popup-lead">Liderazgo y comunicación deficientes (feedback sólo
+                                        correctivo, trato hostil).</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bn-accordion-item" data-accordion-id="4">
+                            <button class="bn-accordion-header" data-gate-btn onclick="bnToggleAccordion(this, 4)">
+                                <span class="bn-acc-num">5</span>
+                                <span class="bn-acc-title">Falta de reconocimiento y retroalimentación</span>
+                                <span class="bn-acc-toggle">›</span>
+                            </button>
+                            <div class="bn-accordion-body is-collapsed">
+                                <div class="bn-acc-content">
+                                    <p class="bn-popup-lead">Falta de reconocimiento y de retroalimentación clara.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bn-accordion-item" data-accordion-id="5">
+                            <button class="bn-accordion-header" data-gate-btn onclick="bnToggleAccordion(this, 5)">
+                                <span class="bn-acc-num">6</span>
+                                <span class="bn-acc-title">Interferencia trabajo-vida</span>
+                                <span class="bn-acc-toggle">›</span>
+                            </button>
+                            <div class="bn-accordion-body is-collapsed">
+                                <div class="bn-acc-content">
+                                    <p class="bn-popup-lead">Interferencia trabajo-vida (mensajes fuera de horario como
+                                        regla).</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contenidos de popup (ocultos) -->
+                <div class="bn-popup-src" id="src-fac1" hidden>
+                    <p class="bn-popup-lead">Cargas excesivas y picos crónicos, plazos irreales, "urgencias" continuas.
+                    </p>
+                </div>
+                <div class="bn-popup-src" id="src-fac2" hidden>
+                    <p class="bn-popup-lead">Ambigüedad o conflicto de rol, prioridades cambiantes sin criterios.</p>
+                </div>
+                <div class="bn-popup-src" id="src-fac3" hidden>
+                    <p class="bn-popup-lead">Poco control / autonomía para organizar el trabajo y los tiempos de
+                        concentración.</p>
+                </div>
+                <div class="bn-popup-src" id="src-fac4" hidden>
+                    <p class="bn-popup-lead">Liderazgo y comunicación deficientes (feedback sólo correctivo, trato
+                        hostil).</p>
+                </div>
+                <div class="bn-popup-src" id="src-fac5" hidden>
+                    <p class="bn-popup-lead">Falta de reconocimiento y de retroalimentación clara.</p>
+                </div>
+                <div class="bn-popup-src" id="src-fac6" hidden>
+                    <p class="bn-popup-lead">Interferencia trabajo-vida (mensajes fuera de horario como regla).</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- [G18] 2.3 Diagnóstico de Burnout (MBI · 3 dimensiones) -->
+        <div class="slide" id="slide-15">
+            <div class="slide-header">
+                <img class="logo-img" src="img/logo/Logo GS1 azul.png" alt="Logo de la Empresa">
+                <p class="page-title">UNIDAD 2 · Identificación de señales y factores de riesgo</p>
+            </div>
+           <div class="slide-scroll-content">
+                <div class="bn-embed-wrap">
+                    <iframe id="test-u1-frame" class="bn-embed" src="test/Test_MBI.html"
+                        title="Test de señales tempranas de Burnout" scrolling="auto"></iframe>
+                </div>
+            </div>
+        </div>
+
+        <!-- =========================================================
+             UNIDAD 3 · Estrategias personales de prevención
+        ========================================================== -->
+
+        <!-- [G20] Portada Unidad 3 -->
+        <div class="slide" id="slide-17">
+            <div class="slide-header">
+                <img class="logo-img" src="img/logo/Logo GS1 azul.png" alt="Logo de la Empresa">
+                <p class="page-title">Unidad 3</p>
+            </div>
+            <div class="slide-scroll-content">
+                <div class="video-split-layout">
+                    <div class="split-col-content mob-order-1">
+                        <div class="box-title">
+                            <span class="unidad-kicker">Unidad 3</span>
+                            <h2 class="titulo-unidad anim-target anim-bounce-left anim-delay-1">Estrategias personales
+                                de prevención</h2>
+                        </div>
+                        <div class="instruccion">
+                            <p><img src="img/icon_clic.svg" alt="Icono de clic" class="icon-Ins"> Haz clic en avanzar.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="split-col-image anim-target anim-bounce-up anim-delay-3">
+                        <img src="img/004_Burnout_GS1.jpg" alt="Estrategias personales de prevención"
+                            class="content-image">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- [G21] 3. Intro unidad (frase autocuidado) -->
+        <div class="slide" id="slide-18">
+            <div class="slide-header">
+                <img class="logo-img" src="img/logo/Logo GS1 azul.png" alt="Logo de la Empresa">
+                <p class="page-title">Unidad 3. Estrategias personales de prevención</p>
+            </div>
+            <div class="slide-scroll-content">
+                <div class="bn-slide">
+                    <h2 class="bn-title">3. Estrategias personales de prevención</h2>
+                    <p class="bn-intro anim-target anim-bounce-left anim-delay-1">Es importante que cada colaborador
+                        desarrolle herramientas reales y aplicables para prevenir y manejar el agotamiento laboral
+                        dentro del entorno de oficina: cargas de trabajo, alta conectividad, múltiples reuniones,
+                        presión por resultados y cambios constantes.</p>
+                    <div class="bn-banner anim-target anim-bounce-up anim-delay-2">
+                        <img src="img/011_Burnout_GS1.jpg" alt="Ilustración de autocuidado" class="content-image">
+                        <div class="bn-banner-text">
+                            <h2 class="bn-banner-title">El autocuidado no es un lujo.</h2>
+                            <p class="bn-banner-desc">Es una condición para seguir rindiendo.</p>
+                        </div>
+                    </div>
+                </div>
                 
-                <div class="delay-3"
-                    style="margin-top: 80px; text-align: left; display: inline-block; border-left: 5px solid var(--primary); padding-left: 25px;">
-                    <p style="font-weight: 700; font-size: 22px; color: var(--text-dark); margin: 0;">Monica Vazquez Rosas Landa</p>
-                    <p
-                        style="font-size: 12px; margin: 0; color: var(--primary); font-weight: 400; letter-spacing: 2px;">
-                        Ingeniera en Tecnología Interactiva y Animación Digital <br>| Diseñadora Instruccional y Desarrolladora e-Learning</p>
+            </div>
+        </div>
+
+        <!-- [G22] 3.1 Acciones de autocuidado (botonera 3 · popups) -->
+        <div class="slide" id="slide-19" data-gate="buttons">
+            <div class="slide-header">
+                <img class="logo-img" src="img/logo/Logo GS1 azul.png" alt="Logo de la Empresa">
+                <p class="page-title">Unidad 3. Estrategias personales de prevención</p>
+            </div>
+            <div class="slide-scroll-content">
+                <div class="bn-slide">
+                    <h2 class="bn-title">3.1. Acciones de autocuidado</h2>
+                    <p class="bn-intro anim-target anim-bounce-left anim-delay-1">El trabajo en oficina puede implicar
+                        sedentarismo, multitarea y exigencias cognitivas que consumen energía más rápido de lo que se
+                        recupera. A continuación, revisa algunos ejemplos de autocuidado y micro acciones que puedes
+                        poner en práctica de inmediato.</p>
+                    <div class="bn-highlight anim-target anim-bounce-up anim-delay-2">El autocuidado no es descansar
+                        "cuando se pueda"; es programarlo como parte del desempeño sostenible.</div>
+
+                    <div class="bn-instruccion">
+                        <img src="img/icon_clic.svg" alt="Icono de clic"> Haz clic en cada pestaña.
+                    </div>
+
+                    <div class="bn-tab-group">
+                        <button class="bn-tab active" data-gate-btn
+                            onclick="bnShowPanel(this, 'panel-auto')">Autocuidado físico</button>
+                        <button class="bn-tab" data-gate-btn onclick="bnShowPanel(this, 'panel-auto')">Autocuidado
+                            emocional</button>
+                        <button class="bn-tab" data-gate-btn onclick="bnShowPanel(this, 'panel-auto')">Autocuidado
+                            social</button>
+                    </div>
+
+                    <div class="bn-tab-panel" id="panel-auto">
+                        <div class="bn-panel-content" style="display:none;">
+                            <p class="bn-popup-lead">En oficina solemos estar sentados 6–10 horas, con snacks rápidos y
+                                alta tensión muscular. Para contrarrestar esta situación:</p>
+                            <ul class="bn-popup-list">
+                                <li>Cambia de postura o realiza estiramientos de cuello y hombros cada 60–90 minutos.
+                                </li>
+                                <li>Bebe agua constantemente.</li>
+                                <li>Oblígate a levantarte cada determinado tiempo.</li>
+                                <li>Come lejos del escritorio (evita mezclar trabajo y descanso).</li>
+                            </ul>
+                            <div class="bn-microaccion"><span class="bn-ma-tag">Microacción</span>Programa alarmas de
+                                "pausa activa" en tu calendario (2 por la mañana, 2 por la tarde) y vuélvelas un hábito.
+                                <img src="img/012_Burnout_GS1.jpg" alt="Ilustración de autocuidado" class="content-image">
+                            </div>
+                        </div>
+                        <div class="bn-panel-content" style="display:none;">
+                            <p class="bn-popup-lead">Se trata de gestionar cómo nos sentimos y evitar que el estrés se
+                                vuelva crónico. Ejemplos claros en oficina:</p>
+                            <ul class="bn-popup-list">
+                                <li>Después de una junta tensa, toma 3 minutos para respirar en lugar de "brincar"
+                                    directo a otra reunión.</li>
+                                <li>Pide aclaraciones cuando la retro sea confusa, para evitar frustración acumulada.
+                                </li>
+                                <li>Practica la gratitud laboral: reconoce algo positivo del día antes de cerrar la
+                                    computadora.</li>
+                            </ul>
+                            <div class="bn-microaccion"><span class="bn-ma-tag">Microacción</span>Escribe 1 logro del
+                                día en tu agenda, por pequeño que sea.
+                            <img src="img/014_Burnout_GS1.jpg" alt="Ilustración de autocuidado" class="content-image">
+                            </div>
+                        </div>
+                        <div class="bn-panel-content" style="display:none;">
+                            <p class="bn-popup-lead">El trabajo remoto o híbrido puede generar aislamiento sin que nos
+                                demos cuenta. Algunas acciones que pueden ayudarte son:</p>
+                            <ul class="bn-popup-list">
+                                <li>Conectar con un colega 10 minutos al día para compartir avances o dudas.</li>
+                                <li>Participar activamente en una reunión al menos una vez: una pregunta o propuesta.
+                                </li>
+                                <li>Salir a comer con el equipo una vez cada dos semanas.</li>
+                            </ul>
+                            <div class="bn-microaccion"><span class="bn-ma-tag">Microacción</span>Agenda un café virtual
+                                de 15 minutos con alguien del equipo para reconectar.
+                            <img src="img/013_Burnout_GS1.jpg" alt="Ilustración de autocuidado" class="content-image">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contenidos de popup (ocultos) -->
+                <div class="bn-popup-src" id="src-auto-fis" hidden>
+                    <p class="bn-popup-lead">En oficina solemos estar sentados 6–10 horas, con snacks rápidos y alta
+                        tensión muscular. Para contrarrestar esta situación:</p>
+                    <ul class="bn-popup-list">
+                        <li>Cambia de postura o realiza estiramientos de cuello y hombros cada 60–90 minutos.</li>
+                        <li>Bebe agua constantemente.</li>
+                        <li>Oblígate a levantarte cada determinado tiempo.</li>
+                        <li>Come lejos del escritorio (evita mezclar trabajo y descanso).</li>
+                    </ul>
+                    <div class="bn-microaccion"><span class="bn-ma-tag">Microacción</span>Programa alarmas de "pausa
+                        activa" en tu calendario (2 por la mañana, 2 por la tarde) y vuélvelas un hábito.</div>
+                </div>
+                <div class="bn-popup-src" id="src-auto-emo" hidden>
+                    <p class="bn-popup-lead">Se trata de gestionar cómo nos sentimos y evitar que el estrés se vuelva
+                        crónico. Ejemplos claros en oficina:</p>
+                    <ul class="bn-popup-list">
+                        <li>Después de una junta tensa, toma 3 minutos para respirar en lugar de "brincar" directo a
+                            otra reunión.</li>
+                        <li>Pide aclaraciones cuando la retro sea confusa, para evitar frustración acumulada.</li>
+                        <li>Practica la gratitud laboral: reconoce algo positivo del día antes de cerrar la
+                            computadora.</li>
+                    </ul>
+                    <div class="bn-microaccion"><span class="bn-ma-tag">Microacción</span>Escribe 1 logro del día en tu
+                        agenda, por pequeño que sea.</div>
+                </div>
+                <div class="bn-popup-src" id="src-auto-soc" hidden>
+                    <p class="bn-popup-lead">El trabajo remoto o híbrido puede generar aislamiento sin que nos demos
+                        cuenta. Algunas acciones que pueden ayudarte son:</p>
+                    <ul class="bn-popup-list">
+                        <li>Conectar con un colega 10 minutos al día para compartir avances o dudas.</li>
+                        <li>Participar activamente en una reunión al menos una vez: una pregunta o propuesta.</li>
+                        <li>Salir a comer con el equipo una vez cada dos semanas.</li>
+                    </ul>
+                    <div class="bn-microaccion"><span class="bn-ma-tag">Microacción</span>Agenda un café virtual de 15
+                        minutos con alguien del equipo para reconectar.</div>
                 </div>
             </div>
         </div>
+
+        <!-- [G23] 3.2 Gestión del tiempo — intro -->
+        <div class="slide" id="slide-20">
+            <div class="slide-header">
+                <img class="logo-img" src="img/logo/Logo GS1 azul.png" alt="Logo de la Empresa">
+                <p class="page-title">3.2. Gestión del tiempo y priorización saludable</p>
+            </div>
+            <div class="slide-scroll-content">
+                <div class="bn-slide">
+                    <h2 class="bn-title">3.2. Gestión del tiempo y priorización saludable</h2>
+                    <p class="bn-intro anim-target anim-bounce-left anim-delay-1">Cuando todo es urgente, la mente
+                        trabaja en modo incendio y se desgasta el doble. El agotamiento laboral surge, muchas veces,
+                        porque confundimos <strong>estar ocupados</strong> con <strong>ser productivos</strong>.</p>
+                    <p class="bn-intro anim-target anim-bounce-left anim-delay-2">Gestionar el tiempo no significa
+                        llenar la agenda, sino equilibrar demandas, prioridades y energía. Una buena administración del
+                        tiempo reduce la sensación de caos, evita el multitasking extremo y previene que el trabajo
+                        invada el espacio personal.</p>
+                        <img src="img/015_Burnout_GS1.jpg" alt="Ilustración de gestión del tiempo" class="content-image anim-target anim-bounce-up anim-delay-3">
+                </div>
+            </div>
+        </div>
+
+        <!-- [G24/G25] 3.2 Matriz de Eisenhower (botonera 3 pasos · popups + imagen) -->
+        <div class="slide" id="slide-21" data-gate="buttons">
+            <div class="slide-header">
+                <img class="logo-img" src="img/logo/Logo GS1 azul.png" alt="Logo de la Empresa">
+                <p class="page-title">3.2. Gestión del tiempo y priorización saludable</p>
+            </div>
+            <div class="slide-scroll-content">
+                <div class="bn-slide">
+                    <p class="bn-intro anim-target anim-bounce-left anim-delay-1">Una herramienta poderosa para ayudarte
+                        es la <strong>Matriz de Eisenhower</strong>, que clasifica las tareas según su urgencia e
+                        importancia:</p>
+
+                    <div class="bn-eisen anim-target anim-bounce-up anim-delay-2">
+                        <h3 class="bn-eisen-title">Matriz de Eisenhower</h3>
+                        <div class="ax ax-top-1">Urgente</div>
+                        <div class="ax ax-top-2">No urgente</div>
+                        <div class="ax ax-left-1">Importante</div>
+                        <div class="ax ax-left-2">No importante</div>
+                        <div class="bn-eisen-axis-h"></div>
+                        <div class="bn-eisen-axis-v"></div>
+                        <div class="quad q1">
+                            <p class="bn-eisen-desc">Tareas que tienen alta prioridad</p>
+                            <p class="bn-eisen-label">¡Hazla ya!</p>
+                        </div>
+                        <div class="quad q2">
+                            <p class="bn-eisen-desc">Tareas que no son urgentes</p>
+                            <p class="bn-eisen-label">Planifícalas para luego</p>
+                        </div>
+                        <div class="quad q3">
+                            <p class="bn-eisen-desc">Tareas poco relevantes</p>
+                            <p class="bn-eisen-label">Puedes delegarlas</p>
+                        </div>
+                        <div class="quad q4">
+                            <p class="bn-eisen-desc">Tareas que no son importantes, ni urgentes</p>
+                            <p class="bn-eisen-label">Ignóralas</p>
+                        </div>
+                    </div>
+
+                    <div class="bn-instruccion">
+                        <img src="img/icon_clic.svg" alt="Icono de clic"> Haz clic en cada paso.
+                    </div>
+
+                    <div class="bn-grid">
+                        <button class="bn-tile js-init-pulse" data-gate-btn data-color="naranja"
+                            onclick="bnOpenInfo(this,'src-paso1','Paso 1')">
+                            <span class="bn-tile-badge">1</span>
+                            <span class="bn-tile-label">Identifica urgente vs. importante</span>
+                        </button>
+                        <button class="bn-tile js-init-pulse" data-gate-btn data-color="cielo"
+                            onclick="bnOpenInfo(this,'src-paso2','Paso 2')">
+                            <span class="bn-tile-badge">2</span>
+                            <span class="bn-tile-label">Define 3 prioridades clave</span>
+                        </button>
+                        <button class="bn-tile js-init-pulse" data-gate-btn data-color="verde"
+                            onclick="bnOpenInfo(this,'src-paso3','Paso 3')">
+                            <span class="bn-tile-badge">3</span>
+                            <span class="bn-tile-label">Agenda tu día alrededor de esas metas</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Contenidos de popup (ocultos) -->
+                <div class="bn-popup-src" id="src-paso1" hidden>
+                    <p class="bn-popup-lead">Primero, identifica lo urgente y distínguelo de lo importante.</p>
+                </div>
+                <div class="bn-popup-src" id="src-paso2" hidden>
+                    <p class="bn-popup-lead">Al finalizar la ubicación de tus tareas y responsabilidades en la matriz,
+                        al inicio del día (o la noche anterior), define las <strong>tres prioridades clave</strong> de
+                        acuerdo con:</p>
+                    <ul class="bn-popup-list">
+                        <li>Lo que impacta resultados del negocio.</li>
+                        <li>Lo que evita problemas mayores.</li>
+                        <li>Lo que contribuye a tu bienestar o desarrollo.</li>
+                    </ul>
+                </div>
+                <div class="bn-popup-src" id="src-paso3" hidden>
+                    <p class="bn-popup-lead">Luego, agenda tu día alrededor de esas tres metas, dejando espacios para
+                        imprevistos. Por ejemplo:</p>
+                    <ul class="bn-popup-list">
+                        <li><strong>09:00 – 10:30</strong> · Análisis de ventas trimestrales (meta del área).</li>
+                        <li><strong>11:00 – 12:00</strong> · Revisión con el equipo (previene errores).</li>
+                        <li><strong>16:30 – 17:00</strong> · Capacitación breve o lectura (crecimiento personal).</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- [G26] 3.2 Evita el multitasking (ejemplo / sugerencia) -->
+        <div class="slide" id="slide-22">
+            <div class="slide-header">
+                <img class="logo-img" src="img/logo/Logo GS1 azul.png" alt="Logo de la Empresa">
+                <p class="page-title">3.2. Gestión del tiempo y priorización saludable</p>
+            </div>
+            <div class="slide-scroll-content">
+                <div class="bn-slide">
+                    <h2 class="bn-title">Evita el multitasking</h2>
+                    <p class="bn-intro anim-target anim-bounce-left anim-delay-1">Hacer varias tareas a la vez no ahorra
+                        tiempo, sino que aumenta los errores y el cansancio mental. Cada cambio de tarea exige al
+                        cerebro
+                        reiniciar el contexto, lo que gasta energía y reduce el rendimiento.</p>
+
+                    <div class="bn-compare">
+                        <div class="bn-comp-card is-example anim-target anim-bounce-up anim-delay-2">
+                            <span class="bn-comp-tag">Ejemplo</span>
+                            <p>Responder correos mientras estás en una reunión de seguimiento. Terminas sin escuchar del
+                                todo ni responder con calidad.</p>
+                        </div>
+                        <div class="bn-comp-card is-tip anim-target anim-bounce-up anim-delay-3">
+                            <span class="bn-comp-tag">Sugerencia</span>
+                            <ul>
+                                <li>Dedica bloques de enfoque total (60–90 minutos).</li>
+                                <li>Luego, haz pausas cortas (5–10 minutos).</li>
+                            </ul>
+                            <p style="margin-top:8px; margin-bottom:0;">Este ciclo aumenta la concentración y disminuye
+                                el estrés.</p>
+                        </div>
+                    </div>
+                    <img src="img/034_Burnout_GS1.jpg" alt="Ilustración de multitasking" class="content-image anim-target anim-bounce-up anim-delay-4">
+                </div>
+            </div>
+        </div>
+
+        <!-- [G27] 3.2 Picos de productividad -->
+        <div class="slide" id="slide-23">
+            <div class="slide-header">
+                <img class="logo-img" src="img/logo/Logo GS1 azul.png" alt="Logo de la Empresa">
+                <p class="page-title">3.2. Gestión del tiempo y priorización saludable</p>
+            </div>
+            <div class="slide-scroll-content">
+                <div class="bn-slide">
+                    <h2 class="bn-title">Aprovecha tus picos de productividad</h2>
+                    <ul class="bn-intro anim-target anim-bounce-left anim-delay-1">
+                        <li>Considera que cada persona tiene picos de productividad distintos: algunos trabajan mejor en la mañana, otros después de comer. </li>
+                        <li>Aprende a observar tus momentos de máxima energía y reserva esos bloques para tareas complejas. </li>
+                    </ul>
+                    <div class="bn-banner anim-target anim-bounce-up anim-delay-2">
+                        <img src="img/016_Burnout_GS1.jpg" alt="Ilustración de autocuidado" class="content-image">
+                        <div class="bn-banner-text">
+                            <h2 class="bn-banner-title">Por ejemplo, si tu mejor
+                        concentración es entre 9:00 y 11:00, evita agendar reuniones en ese rango. Usa ese tiempo para
+                        análisis, planeación o escritura.</h2>
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+
+        <!-- [G28] 3.2 Conversaciones con el jefe / Concluyendo -->
+        <div class="slide" id="slide-24">
+            <div class="slide-header">
+                <img class="logo-img" src="img/logo/Logo GS1 azul.png" alt="Logo de la Empresa">
+                <p class="page-title">3.2. Gestión del tiempo y priorización saludable</p>
+            </div>
+            <div class="slide-scroll-content">
+                <div class="bn-slide">
+                    <h2 class="bn-title">Concluyendo:</h2>
+                    <div class="bn-quote-banner anim-target anim-bounce-up anim-delay-1">
+                        <img src="img/017_Burnout_GS1.jpg" alt="Ilustración de conversación con el jefe" class="content-image bn-quote-banner-img">
+                        <div class="bn-quote-col bn-quote-col-left">
+                            <div class="bn-quote">Aprende a observar tus momentos de máxima energía y reserva esos
+                                bloques para tareas complejas.</div>
+                            <div class="bn-quote">La clave es negociar plazos y prioridades. Prioriza a través de la
+                                Matriz de Eisenhower, que clasifica las tareas según su urgencia e importancia.</div>
+                            <div class="bn-quote">"Para entregar el informe a tiempo y con calidad, necesito
+                                reprogramar la presentación o contar con apoyo en los datos. ¿Qué opción
+                                prefieres?"</div>
+                        </div>
+                        <div class="bn-quote-col bn-quote-col-right">
+                            <div class="bn-quote">Si recibes una nueva tarea: "Perfecto, ¿qué prioridad tiene frente a
+                                lo que estoy trabajando ahora?"</div>
+                            <div class="bn-quote">Dilo con claridad: "Puedo entregarlo hoy antes de las 17:00 o mañana
+                                antes de las 10:00. ¿Qué funciona mejor?"</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- [G29] Ejercicio: Caso interactivo (guion_06_Burnout_interactivo_caso) -->
+        <div class="slide" id="slide-25">
+            <div class="slide-header">
+                <img class="logo-img" src="img/logo/Logo GS1 azul.png" alt="Logo de la Empresa">
+                <p class="page-title">Ejercicio</p>
+            </div>
+            <div class="slide-scroll-content">
+                <div class="bn-embed-wrap">
+                    <iframe id="test-u1-frame" class="bn-embed" src="test/Caso_1.html"
+                        title="Test de señales tempranas de Burnout" scrolling="auto"></iframe>
+                </div>
+            </div>
+        </div>
+
+        <!-- [G30] 3.3 Técnicas de relajación — intro -->
+        <div class="slide" id="slide-26">
+            <div class="slide-header">
+                <img class="logo-img" src="img/logo/Logo GS1 azul.png" alt="Logo de la Empresa">
+                <p class="page-title">3.3. Técnicas de relajación</p>
+            </div>
+            <div class="slide-scroll-content">
+                <div class="bn-slide">
+                    <h2 class="bn-title">3.3. Técnicas de relajación</h2>
+                    <div class="bn-grid cols-3">
+                        <div class="bn-highlight anim-target anim-bounce-up anim-delay-2">
+                            <p class="bn-intro anim-target anim-bounce-left anim-delay-1"> En el ritmo acelerado del trabajo,
+                            entre correos, juntas, llamadas y plazos, el cuerpo y la mente entran en un estado de tensión
+                            constante.</p>  </div>
+                        <div class="bn-highlight anim-target anim-bounce-up anim-delay-2">
+                            <p class="bn-intro anim-target anim-bounce-left anim-delay-1"> Aunque no siempre lo notemos, los hombros se elevan, la respiración se vuelve corta y
+                            el cerebro se mantiene en "modo alerta" durante horas.</p>  </div>
+                        <div class="bn-highlight anim-target anim-bounce-up anim-delay-2">
+                            <p class="bn-intro anim-target anim-bounce-left anim-delay-1"> Practicar técnicas de relajación y
+                            <strong>mindfulness</strong> ayuda a interrumpir ese ciclo, liberar tensión acumulada y
+                            recuperar claridad mental para tomar mejores decisiones.</p>  </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- [G31/G32] 3.3 Mindfulness (botonera 3 · infografía guion_07 + tabla popup) -->
+        <div class="slide" id="slide-27" data-gate="buttons">
+            <div class="slide-header">
+                <img class="logo-img" src="img/logo/Logo GS1 azul.png" alt="Logo de la Empresa">
+                <p class="page-title">3.3. Técnicas de relajación</p>
+            </div>
+            <div class="slide-scroll-content">
+                <div class="bn-slide">
+                    <h2 class="bn-title">Mindfulness laboral</h2>
+                    <p class="bn-intro anim-target anim-bounce-left anim-delay-1">El mindfulness laboral o
+                        <strong>atención plena</strong> no significa "dejar de pensar", sino enfocar la mente en el
+                        momento presente: respirar, escuchar, observar y actuar con conciencia. Estas pausas conscientes
+                        mejoran la concentración, reducen errores y fortalecen la gestión emocional en situaciones de
+                        presión.
+                    </p>
+                    <div class="bn-highlight anim-target anim-bounce-up anim-delay-2">En pocas palabras, el mindfulness
+                        no quita trabajo, pero te da más energía y enfoque para hacerlo mejor.</div>
+
+                    <div class="bn-instruccion">
+                        <img src="img/icon_clic.svg" alt="Icono de clic"> Haz clic en cada pestaña.
+                    </div>
+
+                    <div class="bn-tab-group">
+                        <button class="bn-tab active" data-gate-btn onclick="bnShowPanel(this, 'panel-mind')">La
+                            importancia de respirar bien</button>
+                        <button class="bn-tab" data-gate-btn onclick="bnShowPanel(this, 'panel-mind')">Prácticas
+                            aplicables en reuniones</button>
+                        <button class="bn-tab" data-gate-btn onclick="bnShowPanel(this, 'panel-mind')">Haz pausas
+                            conscientes</button>
+                    </div>
+
+                    <div class="bn-tab-panel" id="panel-mind">
+                        <div class="bn-panel-content" style="display:none;">
+                            <p class="bn-popup-lead" style="margin-bottom: 16px;">Descarga la infografía para aprender
+                                técnicas de respiración.</p>
+                            <a href="img/Burnout_infografia_06.pdf" target="_blank"
+                                style="display: inline-block; padding: 10px 16px; background: var(--color-naranja-gs1, #ec633c); color: white; text-decoration: none; border-radius: 6px; font-weight: bold;">Descargar
+                                Infografía (PDF)</a>
+                        </div>
+                        <div class="bn-panel-content" style="display:none;">
+                            <p class="bn-popup-lead">Existen tres acciones concretas para aplicar en tus reuniones y
+                                reducir el agotamiento laboral:</p>
+                            <ul class="bn-popup-list">
+                                <li><strong>Respira profundo antes de hablar</strong> → mejora la claridad y el tono.
+                                </li>
+                                <li><strong>Mira un punto fijo 3 segundos</strong> para relajar ojos y mente.</li>
+                                <li>Antes del cierre, <strong>agradece mentalmente</strong> un logro de la reunión.</li>
+                            </ul>
+                        </div>
+                        <div class="bn-panel-content" style="display:none;">
+                            <table class="bn-table">
+                                <thead>
+                                    <tr>
+                                        <th>Duración</th>
+                                        <th>Técnica</th>
+                                        <th>Momento ideal</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th>30 seg.</th>
+                                        <td>Soltar hombros + exhalar profundo 3 veces.</td>
+                                        <td>Después de un mensaje tenso</td>
+                                    </tr>
+                                    <tr>
+                                        <th>1 min</th>
+                                        <td>Respiración 4-4-6: inhala por la nariz 4 s; mantén el aire 4 s (sin
+                                            tensión); exhala por la boca 6 s, vaciando por completo los pulmones. Repite
+                                            de 4 a 6 veces.</td>
+                                        <td>Antes de presentar en junta</td>
+                                    </tr>
+                                    <tr>
+                                        <th>3 min</th>
+                                        <td>Estiramiento en la estación de trabajo: estira brazos, piernas y cuello.
+                                        </td>
+                                        <td>Entre videollamadas</td>
+                                    </tr>
+                                    <tr>
+                                        <th>5 min</th>
+                                        <td>Música relajante o caminar: regálate pausas de 5 minutos caminando o con
+                                            música que te relaje.</td>
+                                        <td>Después de un cierre complejo</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                </div>
+
+                <!-- Contenidos de popup (ocultos) -->
+                <div class="bn-popup-src" id="src-mind-reu" hidden>
+                    <p class="bn-popup-lead">Existen tres acciones concretas para aplicar en tus reuniones y reducir el
+                        agotamiento laboral:</p>
+                    <ul class="bn-popup-list">
+                        <li><strong>Respira profundo antes de hablar</strong> → mejora la claridad y el tono.</li>
+                        <li><strong>Mira un punto fijo 3 segundos</strong> para relajar ojos y mente.</li>
+                        <li>Antes del cierre, <strong>agradece mentalmente</strong> un logro de la reunión.</li>
+                    </ul>
+                </div>
+                <div class="bn-popup-src" id="src-mind-pausas" hidden>
+                    <table class="bn-table">
+                        <thead>
+                            <tr>
+                                <th>Duración</th>
+                                <th>Técnica</th>
+                                <th>Momento ideal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th>30 seg.</th>
+                                <td>Soltar hombros + exhalar profundo 3 veces.</td>
+                                <td>Después de un
+                                    mensaje tenso</td>
+                            </tr>
+                            <tr>
+                                <th>1 min</th>
+                                <td>Respiración 4-4-6: inhala por la nariz 4 s; mantén el aire 4 s (sin
+                                    tensión); exhala por la boca 6 s, vaciando por completo los pulmones. Repite de 4 a
+                                    6
+                                    veces.</td>
+                                <td>Antes de presentar en junta</td>
+                            </tr>
+                            <tr>
+                                <th>3 min</th>
+                                <td>Estiramiento en la estación de trabajo: estira brazos, piernas y
+                                    cuello.</td>
+                                <td>Entre videollamadas</td>
+                            </tr>
+                            <tr>
+                                <th>5 min</th>
+                                <td>Música relajante o caminar: regálate pausas de 5 minutos caminando o
+                                    con música que te relaje.</td>
+                                <td>Después de un cierre complejo</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- [G33] 3.4 Establecimiento de límites — intro -->
+        <div class="slide" id="slide-28">
+            <div class="slide-header">
+                <img class="logo-img" src="img/logo/Logo GS1 azul.png" alt="Logo de la Empresa">
+                <p class="page-title">3.4. Establecimiento de límites</p>
+            </div>
+            <div class="slide-scroll-content">
+                <div class="bn-slide">
+                    <h2 class="bn-title">3.4. Establecimiento de límites</h2>
+                    <p class="bn-intro anim-target anim-bounce-left anim-delay-1">Establecer límites saludables no
+                        significa falta de compromiso ni resistencia al cambio. Por el contrario, es una forma
+                        inteligente y profesional de proteger la energía, mantener la concentración y asegurar
+                        resultados sostenibles.</p>
+                    <p class="bn-intro anim-target anim-bounce-left anim-delay-2">Un colaborador que sabe cuándo
+                        trabajar y cuándo desconectarse rinde mejor, se relaciona mejor y vive con mayor equilibrio.</p>
+                    <div class="bn-highlight anim-target anim-bounce-up anim-delay-3">Cuidar tus límites no te hace
+                        menos
+                        productivo; te hace más humano y eficiente.
+                    <img src="img/018_Burnout_GS1.jpg" alt="Ilustración de límites saludables" class="content-image"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- [G34] 3.4 Límites necesarios (organizador) -->
+        <div class="slide" id="slide-29">
+            <div class="slide-header">
+                <img class="logo-img" src="img/logo/Logo GS1 azul.png" alt="Logo de la Empresa">
+                <p class="page-title">3.4. Establecimiento de límites</p>
+            </div>
+            <div class="slide-scroll-content">
+                <div class="bn-slide">
+                    <h2 class="bn-title">Límites necesarios</h2>
+                    <p class="bn-intro anim-target anim-bounce-left anim-delay-1">Practicar límites saludables implica
+                        aprender a decir "no" con respeto, organizar horarios realistas, desconectarse digitalmente al
+                        terminar la jornada, y reservar tiempo para recargar energía personal y familiar. Estos hábitos
+                        fortalecen la claridad mental, reducen el estrés acumulado y ayudan a mantener una vida laboral
+                        más equilibrada.</p>
+
+                    <div class="bn-dims">
+                        <div class="bn-dim anim-target anim-bounce-up anim-delay-2" data-color="azul">
+                            <div class="bn-dim-icon">
+                                <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M18.63 13A17.89 17.89 0 0 1 18 8"></path>
+                                    <path d="M6.26 6.26A5.86 5.86 0 0 0 6 8c0 7-3 9-3 9h14"></path>
+                                    <path d="M18 8a6 6 0 0 0-9.33-5"></path>
+                                    <line x1="1" y1="1" x2="23" y2="23"></line>
+                                    <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path>
+                                </svg>
+                            </div>
+                            <h4>"Modo No Molestar"</h4>
+                            <p>Actívalo al terminar la jornada laboral.</p>
+                        </div>
+                        <div class="bn-dim anim-target anim-bounce-up anim-delay-3" data-color="naranja">
+                            <div class="bn-dim-icon">
+                                <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M4 4h16v12H5.17L4 17.17V4z"></path>
+                                    <line x1="8" y1="9" x2="16" y2="9"></line>
+                                </svg>
+                            </div>
+                            <h4>Notificaciones off</h4>
+                            <p>Desactiva las notificaciones de correo fuera de horario.</p>
+                        </div>
+                        <div class="bn-dim anim-target anim-bounce-up anim-delay-4" data-color="verde">
+                            <div class="bn-dim-icon">
+                                <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"></path>
+                                    <line x1="7" y1="2" x2="7" y2="11"></line>
+                                    <path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"></path>
+                                </svg>
+                            </div>
+                            <h4>Come lejos del escritorio</h4>
+                            <p>Al menos 2 veces por semana, sin mezclar trabajo y descanso.</p>
+                        </div>
+                        <div class="bn-dim anim-target anim-bounce-up anim-delay-5" data-color="morado">
+                            <div class="bn-dim-icon">
+                                <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <rect x="3" y="4" width="18" height="18" rx="2"></rect>
+                                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                                </svg>
+                            </div>
+                            <h4>Respeta el almuerzo</h4>
+                            <p>No agendes reuniones en las horas de comida.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- [G35] 3.5 Pedir apoyo cuando es necesario (video guion_08) -->
+        <div class="slide" id="slide-30">
+            <div class="slide-header">
+                <img class="logo-img" src="img/logo/Logo GS1 azul.png" alt="Logo de la Empresa">
+                <p class="page-title">3.5. Pedir apoyo cuando es necesario</p>
+            </div>
+            <div class="slide-scroll-content">
+                <div class="bn-slide">
+                    <h2 class="bn-title">3.5. Pedir apoyo cuando es necesario</h2>
+                    <p class="bn-intro anim-target anim-bounce-left anim-delay-1">En muchos entornos laborales existe la
+                        idea equivocada de que "pedir ayuda es signo de debilidad" o de que los buenos colaboradores
+                        deben poder con todo.</p>
+                    <p class="bn-intro anim-target anim-bounce-left anim-delay-2">En realidad, pedir apoyo a tiempo es
+                        una <strong>habilidad profesional clave</strong>: demuestra autoconciencia, responsabilidad y
+                        compromiso con la calidad del trabajo y con el propio bienestar. Revisa el siguiente video para
+                        ver algunos aspectos sobre este tema.</p>
+
+                    <div style="text-align:center; margin-top:8px;">
+                        <button class="bn-video-btn"
+                            onclick="bnOpenVideo(this,'videos/guion_08_Burnout_video.mp4','slide-30')">
+                            <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                            </svg>
+                            Pedir ayuda
+                        </button>
+                        <div class="bn-instruccion" style="justify-content:center; margin-top:14px;">
+                            <img src="img/icon_clic.svg" alt="Icono de clic"> Haz clic para ver el video.
+                        </div>
+                        <span class="bn-pending">Video pendiente · guion_08_Burnout_video (MP4)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- [G36] Ejercicio: Caso interactivo (guion_09_Burnout_interactivo_caso) -->
+        <div class="slide" id="slide-31">
+            <div class="slide-header">
+                <img class="logo-img" src="img/logo/Logo GS1 azul.png" alt="Logo de la Empresa">
+                <p class="page-title">Ejercicio</p>
+            </div>
+            <div class="slide-scroll-content">
+                <div class="bn-exercise anim-target anim-bounce-up anim-delay-1">
+                    <span class="bn-exercise-kicker">Ejercicio</span>
+                    <div class="bn-quiz-icon" data-color="morado"
+                        onclick="bnOpenInfo(this,'src-caso-u3b','Caso práctico de prevención')">
+                        <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                        </svg>
+                    </div>
+                    <h2>Caso práctico de prevención</h2>
+                    <p>Es fundamental contar con herramientas prácticas para prevenir y manejar el agotamiento laboral
+                        en medio de cargas intensas, alta conectividad y presión por resultados. Analiza y responde el
+                        siguiente caso para fortalecer tu bienestar profesional.</p>
+                    <div class="bn-instruccion" style="justify-content:center;">
+                        <img src="img/icon_clic.svg" alt="Icono de clic"> Haz clic en el ícono.
+                    </div>
+                    <span class="bn-pending">Interactivo pendiente · guion_09_Burnout_interactivo_caso
+                        (HTML5/Genially)</span>
+                </div>
+
+                <div class="bn-popup-src" id="src-caso-u3b" hidden>
+                    <p class="bn-popup-lead">Aquí se integrará el <strong>caso interactivo</strong>
+                        (guion_09_Burnout_interactivo_caso) para aplicar las estrategias personales de prevención del
+                        Burnout ante cargas intensas y presión por resultados.</p>
+                    <p class="bn-popup-lead">Formato: HTML5 / SCORM / Genially · Integración: Página.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- =========================================================
+             UNIDAD 4 · Red de apoyo organizacional y trabajo en equipo
+        ========================================================== -->
+
+        <!-- [G37] Portada Unidad 4 -->
+        <div class="slide" id="slide-32">
+            <div class="slide-header">
+                <img class="logo-img" src="img/logo/Logo GS1 azul.png" alt="Logo de la Empresa">
+                <p class="page-title">Unidad 4</p>
+            </div>
+            <div class="slide-scroll-content">
+                <div class="video-split-layout">
+                    <div class="split-col-content mob-order-1">
+                        <div class="box-title">
+                            <span class="unidad-kicker">Unidad 4</span>
+                            <h2 class="titulo-unidad anim-target anim-bounce-left anim-delay-1">Red de apoyo
+                                organizacional y trabajo en equipo</h2>
+                        </div>
+                        <div class="instruccion">
+                            <p><img src="img/icon_clic.svg" alt="Icono de clic" class="icon-Ins"> Haz clic en avanzar.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="split-col-image anim-target anim-bounce-up anim-delay-3">
+                        <img src="img/005_Burnout_GS1.jpg" alt="Red de apoyo organizacional" class="content-image">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- [G38] 4. Intro unidad -->
+        <div class="slide" id="slide-33">
+            <div class="slide-header">
+                <img class="logo-img" src="img/logo/Logo GS1 azul.png" alt="Logo de la Empresa">
+                <p class="page-title">4. Red de apoyo organizacional y trabajo en equipo</p>
+            </div>
+            <div class="slide-scroll-content">
+                <div class="bn-slide">
+                    <h2 class="bn-title">4. Red de apoyo organizacional y trabajo en equipo</h2>
+                    <p class="bn-intro anim-target anim-bounce-left anim-delay-1">Comprender el papel del entorno
+                        laboral y del trabajo en equipo en la prevención del Burnout es primordial para identificar
+                        prácticas organizacionales y comportamientos colectivos que promuevan un ambiente saludable,
+                        colaborativo y de bienestar sostenido.</p>
+                    <div class="bn-highlight anim-target anim-bounce-up anim-delay-2">Un entorno de bienestar se
+                        construye entre todos: es una responsabilidad compartida en la que todos somos partícipes.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- [G39] 4.1 Cultura de bienestar y reconocimiento (contenido) -->
+        <div class="slide" id="slide-34">
+            <div class="slide-header">
+                <img class="logo-img" src="img/logo/Logo GS1 azul.png" alt="Logo de la Empresa">
+                <p class="page-title">4.1. Cultura de bienestar y reconocimiento</p>
+            </div>
+            <div class="slide-scroll-content">
+                <div class="bn-slide">
+                    <h2 class="bn-title">4.1. Cultura de bienestar y reconocimiento</h2>
+                    <p class="bn-intro anim-target anim-bounce-left anim-delay-1">El bienestar laboral no se logra solo
+                        con pausas o actividades recreativas; es el resultado de una <strong>cultura
+                            organizacional</strong> que cuida a las personas mientras busca resultados. Una empresa con
+                        cultura de bienestar:</p>
+
+                    <div class="bn-dims">
+                        <div class="bn-dim anim-target anim-bounce-up anim-delay-2" data-color="cielo">
+                            <div class="bn-dim-icon">
+                                <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                                </svg>
+                            </div>
+                            <h4>Comunica con claridad</h4>
+                            <p>Metas y decisiones transparentes para todos.</p>
+                        </div>
+                        <div class="bn-dim anim-target anim-bounce-up anim-delay-3" data-color="naranja">
+                            <div class="bn-dim-icon">
+                                <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <polygon
+                                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
+                                    </polygon>
+                                </svg>
+                            </div>
+                            <h4>Reconoce de forma justa</h4>
+                            <p>Valora logros y esfuerzos de manera equitativa.</p>
+                        </div>
+                        <div class="bn-dim anim-target anim-bounce-up anim-delay-4" data-color="morado">
+                            <div class="bn-dim-icon">
+                                <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path
+                                        d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
+                                    </path>
+                                </svg>
+                            </div>
+                            <h4>Fomenta la confianza</h4>
+                            <p>Respeto y empatía como base de las relaciones.</p>
+                        </div>
+                        <div class="bn-dim anim-target anim-bounce-up anim-delay-5" data-color="verde">
+                            <div class="bn-dim-icon">
+                                <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <polyline points="12 6 12 12 16 14"></polyline>
+                                </svg>
+                            </div>
+                            <h4>Promueve la desconexión</h4>
+                            <p>Equilibrio real entre el trabajo y la vida personal.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- [G40] 4.1 Cultura — ejemplo (botón + bullets) -->
+        <div class="slide" id="slide-35">
+            <div class="slide-header">
+                <img class="logo-img" src="img/logo/Logo GS1 azul.png" alt="Logo de la Empresa">
+                <p class="page-title">4.1. Cultura de bienestar y reconocimiento</p>
+            </div>
+            <div class="slide-scroll-content">
+                <div class="bn-slide">
+                    <h2 class="bn-title">Reconocer también previene el agotamiento</h2>
+                    <div class="bn-highlight anim-target anim-bounce-left anim-delay-1">El reconocimiento no sólo
+                        motiva; también previene el agotamiento.</div>
+
+                    <div class="bn-ej-wrap anim-target anim-bounce-up anim-delay-2">
+                        <button class="bn-ej-btn" onclick="bnOpenInfo(this,'src-ej-cultura','Ejemplo')">
+                            <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                            Ver ejemplo
+                        </button>
+                    </div>
+
+                    <div class="bn-card anim-target anim-bounce-up anim-delay-3">
+                        <p style="margin:0 0 12px; font-weight:700; color:var(--color-azul-gs1);">Reflexiona:</p>
+                        <ul class="bn-list">
+                            <li>¿Qué acciones puedes proponer en tu empresa para fomentar una cultura de bienestar y
+                                reconocimiento?</li>
+                            <li>Si eres líder, ¿cómo reconoces a los miembros de tu equipo?</li>
+                            <li>Si eres colaborador, ¿participas en las encuestas y evaluaciones de clima laboral?</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="bn-popup-src" id="src-ej-cultura" hidden>
+                    <p class="bn-popup-lead">En un corporativo de moda, los equipos que cerraron proyectos clave son
+                        reconocidos públicamente en una reunión mensual. Además, se promueve el descanso real: los
+                        líderes evitan enviar mensajes fuera de horario.</p>
+                    <div class="bn-microaccion"><span class="bn-ma-tag">Resultado</span>Mayor motivación, compromiso y
+                        retención del talento.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- [G41] 4.2 Comunicación empática y liderazgo saludable -->
+        <div class="slide" id="slide-36">
+            <div class="slide-header">
+                <img class="logo-img" src="img/logo/Logo GS1 azul.png" alt="Logo de la Empresa">
+                <p class="page-title">4.2. Comunicación empática y liderazgo saludable</p>
+            </div>
+            <div class="slide-scroll-content">
+                <div class="bn-slide">
+                    <h2 class="bn-title">4.2. Comunicación empática y liderazgo saludable</h2>
+                    <p class="bn-intro anim-target anim-bounce-left anim-delay-1">El liderazgo es un factor determinante
+                        en la aparición o prevención del Burnout. Un líder saludable no solo exige resultados: también
+                        escucha, equilibra y guía. Pero, ¿cuáles son las características de un <strong>liderazgo que
+                            cuida</strong>?</p>
+
+                    <div class="bn-card anim-target anim-bounce-up anim-delay-2">
+                        <ul class="bn-list">
+                            <li>Mantiene canales de comunicación abiertos y respetuosos.</li>
+                            <li>Da retroalimentación constructiva, no solo correctiva.</li>
+                            <li>Reconoce esfuerzos, no solo resultados.</li>
+                            <li>Sabe detectar señales tempranas de agotamiento en su equipo.</li>
+                            <li>Promueve la autonomía y la confianza.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- [G42] 4.2 Liderazgo — ejemplo (botón + invitación cursos) -->
+        <div class="slide" id="slide-37">
+            <div class="slide-header">
+                <img class="logo-img" src="img/logo/Logo GS1 azul.png" alt="Logo de la Empresa">
+                <p class="page-title">4.2. Comunicación empática y liderazgo saludable</p>
+            </div>
+            <div class="slide-scroll-content">
+                <div class="bn-slide">
+                    <h2 class="bn-title">Escuchar también es liderar</h2>
+                    <div class="bn-highlight anim-target anim-bounce-left anim-delay-1">Escuchar y saber detectar las
+                        conductas de tu equipo también es liderar.</div>
+
+                    <div class="bn-ej-wrap anim-target anim-bounce-up anim-delay-2">
+                        <button class="bn-ej-btn" onclick="bnOpenInfo(this,'src-ej-liderazgo','Ejemplo')">
+                            <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                            Ver ejemplo
+                        </button>
+                    </div>
+
+                    <div class="bn-invite anim-target anim-bounce-up anim-delay-3">
+                        <div class="bn-invite-icon">
+                            <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                                <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+                            </svg>
+                        </div>
+                        <p>Para fortalecer tus habilidades de liderazgo y comunicación, te invitamos a inscribirte en
+                            los cursos que <strong>GS1 México</strong> tiene para ti.</p>
+                    </div>
+                </div>
+
+                <div class="bn-popup-src" id="src-ej-liderazgo" hidden>
+                    <p class="bn-popup-lead">Un jefe de área nota que una analista, antes muy proactiva, comienza a
+                        cometer errores y participar menos. En lugar de sancionarla, el líder se reúne con ella para
+                        preguntar cómo se siente y revisar juntos su carga de trabajo.</p>
+                    <div class="bn-microaccion"><span class="bn-ma-tag">Resultado</span>Con un pequeño ajuste de tareas
+                        y apoyo del equipo, la colaboradora recupera energía y rendimiento.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- [G43] 4.3 Trabajo en equipo y apoyo entre colegas (botonera 2 · popups) -->
+        <div class="slide" id="slide-38" data-gate="buttons">
+            <div class="slide-header">
+                <img class="logo-img" src="img/logo/Logo GS1 azul.png" alt="Logo de la Empresa">
+                <p class="page-title">4.3. Trabajo en equipo y apoyo entre colegas</p>
+            </div>
+            <div class="slide-scroll-content">
+                <div class="bn-slide">
+                    <h2 class="bn-title">4.3. Trabajo en equipo y apoyo entre colegas</h2>
+                    <p class="bn-intro anim-target anim-bounce-left anim-delay-1">Un entorno colaborativo protege contra
+                        el Burnout porque crea redes de apoyo emocional y operativo. Los equipos cohesionados se ayudan,
+                        comparten responsabilidades y evitan que la carga recaiga siempre sobre las mismas personas.</p>
+
+                    <div class="bn-instruccion">
+                        <img src="img/icon_clic.svg" alt="Icono de clic"> Haz clic en cada botón.
+                    </div>
+
+                    <div class="bn-grid cols-2">
+                        <button class="bn-tile js-init-pulse" data-gate-btn data-color="verde"
+                            onclick="bnOpenInfo(this,'src-equipo-prac','Prácticas saludables de equipo')">
+                            <span class="bn-tile-badge">
+                                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="9" cy="7" r="4"></circle>
+                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                </svg>
+                            </span>
+                            <span class="bn-tile-label">Prácticas saludables de equipo</span>
+                        </button>
+                        <button class="bn-tile js-init-pulse" data-gate-btn data-color="naranja"
+                            onclick="bnOpenInfo(this,'src-equipo-ej','Ejemplo')">
+                            <span class="bn-tile-badge">
+                                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                            </span>
+                            <span class="bn-tile-label">Ejemplo: "miércoles de foco"</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Contenidos de popup (ocultos) -->
+                <div class="bn-popup-src" id="src-equipo-prac" hidden>
+                    <ul class="bn-popup-list">
+                        <li>Distribuir las tareas de manera equilibrada.</li>
+                        <li>Compartir aprendizajes y buenas prácticas (no competir por reconocimiento).</li>
+                        <li>Cuidar el tono en chats y correos: evitar ironías o mensajes pasivo-agresivos.</li>
+                        <li>Fomentar espacios de conexión humana: pausas grupales, celebraciones, revisiones semanales,
+                            aperturas o cierres diarios.</li>
+                    </ul>
+                </div>
+                <div class="bn-popup-src" id="src-equipo-ej" hidden>
+                    <p class="bn-popup-lead">El equipo de contabilidad implementa "miércoles de foco": una hora sin
+                        interrupciones ni reuniones, donde todos trabajan concentrados. Al final, comparten un logro de
+                        la semana. El clima mejora y los errores bajan.</p>
+                    <div class="bn-microaccion"><span class="bn-ma-tag">Idea clave</span>¡Un equipo que se apoya, se
+                        protege del desgaste!</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- [G44] 4.4 Prácticas de organizaciones saludables (7 íconos-botón · popups) -->
+        <div class="slide" id="slide-39" data-gate="buttons">
+            <div class="slide-header">
+                <img class="logo-img" src="img/logo/Logo GS1 azul.png" alt="Logo de la Empresa">
+                <p class="page-title">4.4. Prácticas de organizaciones saludables</p>
+            </div>
+            <div class="slide-scroll-content">
+                <div class="bn-slide">
+                    <h2 class="bn-title">4.4. Prácticas de organizaciones saludables</h2>
+                    <p class="bn-intro anim-target anim-bounce-left anim-delay-1">Las organizaciones que reducen los
+                        riesgos psicosociales aplican acciones concretas y medibles. Estas estrategias previenen el
+                        Burnout y, además, aumentan la productividad, la innovación y la lealtad. Algunas buenas
+                        prácticas alineadas al cumplimiento de la <strong>NOM-035-STPS</strong> son:</p>
+
+                    <div class="bn-instruccion">
+                        <img src="img/icon_clic.svg" alt="Icono de clic"> Haz clic en cada práctica.
+                    </div>
+
+                    <div class="bn-tab-group">
+                        <button class="bn-tab active" data-gate-btn
+                            onclick="bnShowPanel(this, 'panel-org-practices')">1. Ajuste de cargas</button>
+                        <button class="bn-tab" data-gate-btn onclick="bnShowPanel(this, 'panel-org-practices')">2.
+                            Capacitación</button>
+                        <button class="bn-tab" data-gate-btn onclick="bnShowPanel(this, 'panel-org-practices')">3.
+                            Participación</button>
+                        <button class="bn-tab" data-gate-btn onclick="bnShowPanel(this, 'panel-org-practices')">4.
+                            Desconexión</button>
+                        <button class="bn-tab" data-gate-btn onclick="bnShowPanel(this, 'panel-org-practices')">5.
+                            Flexibilidad</button>
+                        <button class="bn-tab" data-gate-btn onclick="bnShowPanel(this, 'panel-org-practices')">6.
+                            Apoyo</button>
+                        <button class="bn-tab" data-gate-btn onclick="bnShowPanel(this, 'panel-org-practices')">7.
+                            Reconocimiento</button>
+                    </div>
+
+                    <div class="bn-tab-panel" id="panel-org-practices">
+                        <div class="bn-panel-content" style="display:none;">
+                            <p class="bn-popup-lead"><strong>Ajuste continuo de cargas</strong></p>
+                            <p>Evaluar y ajustar las cargas de trabajo regularmente.</p>
+                        </div>
+                        <div class="bn-panel-content" style="display:none;">
+                            <p class="bn-popup-lead"><strong>Capacitación para el bienestar</strong></p>
+                            <p>Ofrecer capacitaciones sobre manejo del estrés, liderazgo y comunicación efectiva.</p>
+                        </div>
+                        <div class="bn-panel-content" style="display:none;">
+                            <p class="bn-popup-lead"><strong>Participación activa del equipo</strong></p>
+                            <p>Fomentar la participación en decisiones y en la mejora continua.</p>
+                        </div>
+                        <div class="bn-panel-content" style="display:none;">
+                            <p class="bn-popup-lead"><strong>Política de desconexión digital</strong></p>
+                            <p>Establecer políticas de desconexión digital: sin correos, llamadas o mensajes fuera de
+                                horario.</p>
+                        </div>
+                        <div class="bn-panel-content" style="display:none;">
+                            <p class="bn-popup-lead"><strong>Flexibilidad laboral efectiva</strong></p>
+                            <p>Promover la flexibilidad laboral: home office, horarios escalonados y permisos
+                                familiares.</p>
+                        </div>
+                        <div class="bn-panel-content" style="display:none;">
+                            <p class="bn-popup-lead"><strong>Canales seguros de apoyo</strong></p>
+                            <p>Contar con canales de atención confidenciales para apoyo psicológico o quejas de clima
+                                laboral.</p>
+                        </div>
+                        <div class="bn-panel-content" style="display:none;">
+                            <p class="bn-popup-lead"><strong>Reconocimiento significativo</strong></p>
+                            <p>Reconocer públicamente los logros y las contribuciones.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contenidos de popup (ocultos) -->
+                <div class="bn-popup-src" id="src-org1" hidden>
+                    <p class="bn-popup-lead">Evaluar y ajustar las cargas de trabajo regularmente.</p>
+                </div>
+                <div class="bn-popup-src" id="src-org2" hidden>
+                    <p class="bn-popup-lead">Ofrecer capacitaciones sobre manejo del estrés, liderazgo y comunicación
+                        efectiva.</p>
+                </div>
+                <div class="bn-popup-src" id="src-org3" hidden>
+                    <p class="bn-popup-lead">Fomentar la participación en decisiones y en la mejora continua.</p>
+                </div>
+                <div class="bn-popup-src" id="src-org4" hidden>
+                    <p class="bn-popup-lead">Establecer políticas de desconexión digital: sin correos, llamadas o
+                        mensajes fuera de horario.</p>
+                </div>
+                <div class="bn-popup-src" id="src-org5" hidden>
+                    <p class="bn-popup-lead">Promover la flexibilidad laboral: home office, horarios escalonados y
+                        permisos familiares.</p>
+                </div>
+                <div class="bn-popup-src" id="src-org6" hidden>
+                    <p class="bn-popup-lead">Contar con canales de atención confidenciales para apoyo psicológico o
+                        quejas de clima laboral.</p>
+                </div>
+                <div class="bn-popup-src" id="src-org7" hidden>
+                    <p class="bn-popup-lead">Reconocer públicamente los logros y las contribuciones.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- [G45] 4.4 Concluyendo -->
+        <div class="slide" id="slide-40">
+            <div class="slide-header">
+                <img class="logo-img" src="img/logo/Logo GS1 azul.png" alt="Logo de la Empresa">
+                <p class="page-title">4.4. Prácticas de organizaciones saludables</p>
+            </div>
+            <div class="slide-scroll-content">
+                <div class="bn-slide">
+                    <h2 class="bn-title">Concluyendo</h2>
+                    <div class="bn-card anim-target anim-bounce-up anim-delay-1">
+                        <ul class="bn-list">
+                            <li>El bienestar organizacional no depende solo del individuo, sino de cómo trabaja la
+                                organización como sistema.</li>
+                            <li>La prevención del Burnout requiere un entorno donde líderes y colaboradores contribuyan
+                                activamente para cuidar su energía, sus relaciones y su propósito.</li>
+                        </ul>
+                    </div>
+                    <div class="bn-highlight anim-target anim-bounce-up anim-delay-2" style="font-size:1.05rem;">Un
+                        ambiente laboral saludable no se construye con discursos, sino con decisiones diarias que cuidan
+                        a las personas.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- =========================================================
+             CIERRE
+        ========================================================== -->
+
+        <!-- [G46] Cierre del curso — collage -->
+        <div class="slide" id="slide-41">
+            <div class="slide-header">
+                <img class="logo-img" src="img/logo/Logo GS1 azul.png" alt="Logo de la Empresa">
+                <p class="page-title">Cierre del curso</p>
+            </div>
+            <div class="slide-scroll-content">
+                <div class="bn-collage-wrap">
+                    <h2 class="bn-title anim-target anim-bounce-left anim-delay-1">Cierre del curso</h2>
+                    <p class="bn-collage-lead anim-target anim-bounce-left anim-delay-2">Has recorrido las cuatro
+                        unidades: comprender el Burnout, identificar sus señales, aplicar estrategias personales de
+                        prevención y construir redes de apoyo en tu organización.</p>
+                    <div class="bn-collage anim-target anim-bounce-up anim-delay-3">
+                        <figure class="c1"><img src="img/001_Burnout_GS1.jpg" alt="Bienestar laboral"></figure>
+                        <figure class="c2"><img src="img/002_Burnout_GS1.jpg" alt="Comprendiendo el Burnout"></figure>
+                        <figure class="c3"><img src="img/003_Burnout_GS1.jpg" alt="Señales y factores de riesgo">
+                        </figure>
+                        <figure class="c4"><img src="img/004_Burnout_GS1.jpg" alt="Estrategias de prevención"></figure>
+                        <figure class="c5"><img src="img/005_Burnout_GS1.jpg" alt="Red de apoyo organizacional">
+                        </figure>
+                        <figure class="c6"><img src="img/001_Burnout_GS1.jpg" alt="Bienestar laboral"></figure>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- [G47] Cierre — video repaso (guion_10_Burnout_video) -->
+        <div class="slide" id="slide-42">
+            <div class="slide-header">
+                <img class="logo-img" src="img/logo/Logo GS1 azul.png" alt="Logo de la Empresa">
+                <p class="page-title">Cierre del curso</p>
+            </div>
+            <div class="slide-scroll-content">
+                <div class="bn-slide" style="text-align:center;">
+                    <h2 class="bn-title" style="text-align:center;">Repaso general del curso</h2>
+                    <p class="bn-intro" style="max-width:600px; margin:0 auto 20px;">Hemos llegado al final del curso,
+                        no sin antes hacer un repaso muy general. Para ello, revisa el siguiente video.</p>
+                    <button class="bn-video-btn"
+                        onclick="bnOpenVideo(this,'videos/guion_10_Burnout_video.mp4','slide-42')">
+                        <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                        </svg>
+                        Ver repaso
+                    </button>
+                    <div class="bn-instruccion" style="justify-content:center; margin-top:14px;">
+                        <img src="img/icon_clic.svg" alt="Icono de clic"> Haz clic para ver el video.
+                    </div>
+                    <span class="bn-pending">Video pendiente · guion_10_Burnout_video (MP4)</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- [G48] Evaluación final (guion_11_Burnout_interactivo_evaluacion) -->
+        <div class="slide" id="slide-43">
+            <div class="slide-header">
+                <img class="logo-img" src="img/logo/Logo GS1 azul.png" alt="Logo de la Empresa">
+                <p class="page-title">Evaluación final</p>
+            </div>
+            <div class="slide-scroll-content">
+                <div class="bn-exercise anim-target anim-bounce-up anim-delay-1">
+                    <span class="bn-exercise-kicker">Evaluación final</span>
+                    <div class="bn-quiz-icon" data-color="naranja"
+                        onclick="bnOpenInfo(this,'src-eval-final','Evaluación final del curso')">
+                        <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        </svg>
+                    </div>
+                    <h2>Evaluación final del curso</h2>
+                    <p>Te invitamos a realizar la evaluación final del curso para demostrar los conocimientos adquiridos
+                        y llevarlos a la práctica en tu día a día laboral, fortaleciendo tu bienestar y tu desempeño
+                        profesional.</p>
+                    <div class="bn-instruccion" style="justify-content:center;">
+                        <img src="img/icon_clic.svg" alt="Icono de clic"> Haz clic en el ícono.
+                    </div>
+                    <span class="bn-pending">Interactivo pendiente · guion_11_Burnout_interactivo_evaluacion
+                        (HTML5/Genially)</span>
+                </div>
+
+                <div class="bn-popup-src" id="src-eval-final" hidden>
+                    <p class="bn-popup-lead">Aquí se integrará la <strong>evaluación final</strong>
+                        (guion_11_Burnout_interactivo_evaluacion), que reportará tu calificación al LMS mediante SCORM.
+                    </p>
+                    <p class="bn-popup-lead">Formato: HTML5 / SCORM / Genially · Integración: Página.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- [G49] ¡Felicidades! + Salir -->
+        <div class="slide" id="slide-44">
+            <div class="slide-header">
+                <img class="logo-img" src="img/logo/Logo GS1 azul.png" alt="Logo de la Empresa">
+                <p class="page-title">¡Felicidades!</p>
+            </div>
+            <div class="slide-scroll-content">
+                <div class="cierre-final bn-card anim-target anim-bounce-up anim-delay-1">
+                    <div class="bn-cierre-icon">
+                        <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"></path>
+                            <path d="M17 5h3a2 2 0 0 1 0 4h-3M7 5H4a2 2 0 0 0 0 4h3"></path>
+                        </svg>
+                    </div>
+                    <h2>¡Felicidades!</h2>
+                    <p>Has concluido el curso:<br><strong>Prevención y atención del Burnout y Bienestar Laboral</strong>
+                    </p>
+                    <blockquote>«Tu trabajo ocupará gran parte de tu vida… la única manera de hacer un gran trabajo es
+                        amar lo que haces.»<br><cite>— Steve Jobs</cite></blockquote>
+                    <button class="nav-button primary-blue-btn" onclick="exitCourse()">SALIR</button>
+                </div>
+            </div>
+        </div>
+
     </div>
 
-    <!-- NAVEGACIÓN -->
-    <div class="counter">PÁGINA <span id="cur-slide-idx">1</span> / 6</div>
-    <div class="controls">
-        <button class="nav-dot" onclick="prevSlide()" id="pBtn" disabled><i class="fa-solid fa-arrow-left"></i></button>
-        <button class="nav-dot" onclick="nextSlide()" id="nBtn"><i class="fa-solid fa-arrow-right"></i></button>
+    <!-- barra de navegacion y elementos -->
+    <nav id="nav-bar">
+
+        <div class="nav-group left-group">
+            <div class="menu-dropdown-container">
+                <button id="menuBtn" class="nav-button home-btn"><img src="img/bullet.svg"
+                        style="width: 15px; padding: 0;" alt="Menú"></button>
+                <div id="module-dropdown" class="dropdown-content">
+                </div>
+            </div>
+            <button id="homeBtn" class="nav-button home-btn">Inicio</button>
+
+            <button id="prevBtn" class="nav-button">Regresar</button>
+        </div>
+
+
+        <div class="nav-group center-group">
+            <div id="progress-bar-container">
+                <div id="progress-bar"></div>
+            </div>
+        </div>
+
+
+        <div class="nav-group right-group">
+            <button id="nextBtn" class="nav-button">Avanzar</button>
+            <button id="finish-course" class="nav-button" style="display: none;">Finalizar Curso</button>
+        </div>
+    </nav>
+    <div id="progress-bar-container">
+        <div id="progress-bar"></div>
+    </div>
+    <div id="scroll-indicator" class="hidden">
+        <img src="img/scroll.svg" alt="Indicador de scroll" class="scroll-icon">
+    </div>
+    <div id="fullscreen-video-overlay">
+        <video id="intro-video" controls>
+            <source src="" type="video/mp4">
+            Tu navegador no soporta el tag de video.
+        </video>
+    </div>
+    <div id="feedback-popup-overlay" class="hidden">
+        <div id="feedback-popup-box">
+            <div id="feedback-icon-container" style="font-size: 3rem; margin-bottom: 15px;">
+            </div>
+            <h2 id="feedback-title"></h2>
+            <p id="feedback-message"></p>
+            <button id="close-feedback-btn" class="nav-button primary-blue-btn">Cerrar</button>
+        </div>
+    </div>
+    <div id="floating-audio-player" class="player-hidden">
+        <div class="player-content">
+            <button id="fp-play-toggle" class="fp-btn">
+                <img src="img/play_icon.svg" alt="Play" id="fp-play-icon"> </button>
+
+            <span id="fp-current-time">00:00</span>
+
+            <div class="fp-progress-container" id="fp-progress-container">
+                <div class="fp-progress-fill" id="fp-progress-fill"></div>
+            </div>
+
+            <span id="fp-duration">00:00</span>
+
+            <button id="fp-close-btn" class="fp-btn close">✖</button>
+        </div>
     </div>
 
-    <script>
-        let currentSlide = 0;
-        const slides = document.querySelectorAll('.slide');
-        const pBtn = document.getElementById('pBtn');
-        const nBtn = document.getElementById('nBtn');
-        const counterIdx = document.getElementById('cur-slide-idx');
-
-        function updateNavigationUI() {
-            slides.forEach((s, i) => s.classList.toggle('active', i === currentSlide));
-            pBtn.disabled = currentSlide === 0;
-            nBtn.disabled = currentSlide === slides.length - 1;
-            counterIdx.innerText = currentSlide + 1;
-        }
-
-        function nextSlide() { if (currentSlide < slides.length - 1) { currentSlide++; updateNavigationUI(); } }
-        function prevSlide() { if (currentSlide > 0) { currentSlide--; updateNavigationUI(); } }
-
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowRight' || e.key === ' ') nextSlide();
-            if (e.key === 'ArrowLeft') prevSlide();
-        });
-
-        let timerSeconds = 4 * 60;
-        let timerInterval;
-        const gameAnswers = {
-            rebound: { 1: "No lo sé, yo solo redacté el texto que me pidieron.", 2: "Analicé el error de entrega, busqué un canal alternativo como SMS y envié un nuevo mensaje adaptado a ese formato.", 3: "Registré el error en la base de datos y detuve el envío." },
-            order: { 1: "Un humano me pasó la base de datos y me pidió que escribiera los textos.", 2: "Nadie en este momento. Mi objetivo configurado es mantener la retención alta, así que actúo en cuanto detecto la caída.", 3: "El sistema, cuando el contador de días llegó a 30." },
-            words: { 1: "Calculé la probabilidad de las palabras más persuasivas basándome en mi entrenamiento y las instrucciones que me dieron.", 2: "Hice pruebas A/B en tiempo real y elegí las palabras que generaron más aperturas.", 3: "Yo no decido palabras, solo copio y pego la plantilla que me dieron." }
-        };
-
-        function startGame() {
-            document.getElementById('phase-intro').classList.add('hidden');
-            const playPhase = document.getElementById('phase-play');
-            playPhase.classList.remove('hidden');
-            playPhase.style.display = 'flex';
-            document.getElementById('timer-box').style.display = 'block';
-            startDetectiveTimer();
-        }
-
-        function startDetectiveTimer() {
-            if (timerInterval) clearInterval(timerInterval);
-            timerInterval = setInterval(() => {
-                timerSeconds--;
-                const m = Math.floor(timerSeconds / 60);
-                const s = timerSeconds % 60;
-                const timerDisplay = document.getElementById('timer-display');
-                if (timerDisplay) {
-                    timerDisplay.innerText = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
-                }
-                if (timerSeconds <= 0) {
-                    clearInterval(timerInterval);
-                    const modal = document.getElementById('time-over-modal');
-                    if (modal) modal.style.display = 'flex';
-                }
-            }, 1000);
-        }
-
-        function drag(ev, questionKey) { ev.dataTransfer.setData("text", questionKey); }
-        function allowDrop(ev) { ev.preventDefault(); ev.currentTarget.classList.add('drag-over'); }
-        function drop(ev, suspectId) {
-            ev.preventDefault();
-            ev.currentTarget.classList.remove('drag-over');
-            const questionKey = ev.dataTransfer.getData("text");
-            if (questionKey && gameAnswers[questionKey]) {
-                const bubble = document.getElementById(`bubble-${suspectId}`);
-                bubble.innerText = `"${gameAnswers[questionKey][suspectId]}"`;
-                bubble.style.borderColor = 'var(--primary)';
-                const chip = document.getElementById(`q-${questionKey}`);
-                if (chip) chip.style.opacity = "0.2";
-            }
-        }
-
-        function selectFinal(id) {
-            clearInterval(timerInterval);
-            let msg = "";
-            if (id === 2) {
-                msg = "¡EXCELENTE! Detective de Agentes";
-            } else {
-                msg = "¡<span class='error-word'>ERROR</span>! Perfil incorrecto";
-            }
-            revealGameResult(msg);
-        }
-
-        function revealFinalFromPopup() {
-            document.getElementById('time-over-modal').style.display = 'none';
-            revealGameResult("TIEMPO AGOTADO");
-        }
-
-        function revealGameResult(msg) {
-            document.getElementById('phase-play').classList.add('hidden');
-            const resPhase = document.getElementById('phase-result');
-            resPhase.classList.remove('hidden');
-            resPhase.style.display = 'flex';
-            document.getElementById('timer-box').classList.add('hidden');
-            document.getElementById('result-title').innerHTML = msg;
-        }
-    </script>
 </body>
 
 </html>

@@ -1,0 +1,36 @@
+<?xml version="1.0" standalone="no" ?>
+<manifest identifier="Curso_GS1_Burnout" version="1.0"
+          xmlns="http://www.imsproject.org/xsd/imscp_rootv1p1p2"
+          xmlns:adlcp="http://www.adlnet.org/xsd/adlcp_rootv1p2"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.imsproject.org/xsd/imscp_rootv1p1p2 imscp_rootv1p1p2.xsd
+                              http://www.imsglobal.org/xsd/imsmd_rootv1p2p1 imsmd_rootv1p2p1.xsd
+                              http://www.adlnet.org/xsd/adlcp_rootv1p2 adlcp_rootv1p2.xsd">
+
+  <organizations default="ORG-1">
+    <organization identifier="ORG-1">
+      <title>Prevención y atención del Burnout y Bienestar Laboral</title>
+
+      <item identifier="ITEM-1" identifierref="RES-1">
+        <title>Prevención y atención del Burnout y Bienestar Laboral</title>
+      </item>
+    </organization>
+  </organizations>
+	<resources>
+		<resource identifier="RES-1" type="webcontent" adlcp:scormType="sco" href="index.html">
+			<file href="index.html"/>
+			<file href="js/SCORM_API_wrapper.js"/>
+			<file href="js/script.js"/>
+			<file href="css/styles.css"/>
+			<file href="css/burnout.css"/>
+			<file href="js/libs/lottie.min.js"/>
+			<file href="animations/courses.json"/>
+			<file href="img/logo/Logo GS1 azul.png"/>
+			<file href="img/001_Burnout_GS1.jpg"/>
+			<file href="img/002_Burnout_GS1.jpg"/>
+			<file href="img/003_Burnout_GS1.jpg"/>
+			<file href="img/004_Burnout_GS1.jpg"/>
+			<file href="img/005_Burnout_GS1.jpg"/>
+		</resource>
+	</resources>
+</manifest>

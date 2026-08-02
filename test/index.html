@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test · ¿Estás en riesgo de Burnout?</title>
+    <style>
+        @font-face {
+            font-family: 'Montserrat';
+            src: url('../fonts/Montserrat-Regular.woff2') format('woff2');
+            font-weight: 400;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'Montserrat';
+            src: url('../fonts/Montserrat-SemiBold.woff2') format('woff2');
+            font-weight: 600;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'Montserrat';
+            src: url('../fonts/Montserrat-Bold.woff2') format('woff2');
+            font-weight: 700;
+            font-display: swap;
+        }
+
+        :root {
+            --serif: 'Cormorant Garamond', 'Playfair Display', Georgia, 'Times New Roman', serif;
+            --sans: 'Montserrat', -apple-system, 'Segoe UI', sans-serif;
+            --purple: #8a5a9e;
+            --purple-deep: #6d3f86;
+            --pink: #d16aa6;
+            --ink: #4a3b57;
+            --muted: #8a7d95;
+            --card: rgba(255, 255, 255, 0.66);
+            --green: #58a768;
+            --amber: #e0a23a;
+            --orange: #e07a45;
+            --red: #d15361;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html, body { min-height: 100%; }
+
+        body {
+            font-family: var(--sans);
+            color: var(--ink);
+            background:
+                radial-gradient(1200px 700px at 15% 5%, #f6e6f0 0%, rgba(246, 230, 240, 0) 55%),
+                radial-gradient(1000px 600px at 90% 15%, #f4dfe9 0%, rgba(244, 223, 233, 0) 50%),
+                radial-gradient(900px 900px at 80% 100%, #e7d6ef 0%, rgba(231, 214, 239, 0) 55%),
+                linear-gradient(160deg, #efe4f2 0%, #f3e2ec 45%, #ecdcef 100%);
+            background-attachment: fixed;
+            padding: 26px 16px 40px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .wrap { width: 100%; max-width: 840px; margin: 0 auto; }
+
+        /* --- Encabezado --- */
+        .test-head { text-align: center; margin-bottom: 22px; }
+
+        .lotus {
+            width: 54px; height: 54px; margin: 0 auto 12px;
+            display: grid; place-items: center;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--purple) 0%, var(--pink) 100%);
+            box-shadow: 0 10px 24px rgba(138, 90, 158, 0.35);
+        }
+        .lotus svg { width: 30px; height: 30px; }
+
+        .kicker {
+            font-family: var(--sans);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--purple);
+            margin-bottom: 8px;
+        }
+        .test-head h1 {
+            font-family: var(--serif);
+            font-weight: 600;
+            font-size: 2.15rem;
+            line-height: 1.12;
+            color: var(--purple-deep);
+            letter-spacing: 0.3px;
+        }
+        .test-head .sub {
+            margin-top: 12px;
+            font-size: 0.92rem;
+            line-height: 1.55;
+            color: var(--muted);
+            max-width: 480px;
+            margin-left: auto; margin-right: auto;
+        }
+
+        /* --- Progreso --- */
+        .progress-wrap {
+            display: flex; align-items: center; gap: 12px;
+            margin: 20px 2px 14px;
+        }
+        .progress-track {
+            flex: 1; height: 8px; border-radius: 999px;
+            background: rgba(138, 90, 158, 0.16);
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%; width: 0%;
+            border-radius: 999px;
+            background: linear-gradient(90deg, var(--purple) 0%, var(--pink) 100%);
+            transition: width .35s ease;
+        }
+        .progress-label { font-size: 0.8rem; font-weight: 600; color: var(--purple); white-space: nowrap; }
+
+        /* --- Tarjeta de pregunta --- */
+        .q-card {
+            background: var(--card);
+            -webkit-backdrop-filter: blur(14px);
+            backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            border-radius: 20px;
+            padding: 18px 18px 18px 20px;
+            margin-bottom: 14px;
+            box-shadow: 0 8px 26px rgba(109, 63, 134, 0.10);
+            display: flex; align-items: center; gap: 16px;
+            transition: box-shadow .2s ease, transform .2s ease;
+        }
+        .q-card.answered { box-shadow: 0 8px 26px rgba(109, 63, 134, 0.14); }
+
+        .q-num {
+            flex: 0 0 auto;
+            width: 34px; height: 34px;
+            display: grid; place-items: center;
+            border-radius: 50%;
+            background: rgba(138, 90, 158, 0.12);
+            color: var(--purple-deep);
+            font-weight: 700; font-size: 0.9rem;
+        }
+        .q-text { flex: 1; font-size: 0.95rem; line-height: 1.4; font-weight: 500; }
+
+        .q-opts { flex: 0 0 auto; display: flex; gap: 8px; }
+        .opt {
+            border: 1.5px solid rgba(138, 90, 158, 0.35);
+            background: rgba(255, 255, 255, 0.55);
+            color: var(--purple-deep);
+            font-family: var(--sans);
+            font-weight: 600; font-size: 0.82rem;
+            padding: 8px 16px;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: all .18s ease;
+        }
+        .opt:hover { border-color: var(--purple); transform: translateY(-1px); }
+        .opt.sel-si {
+            background: linear-gradient(135deg, var(--purple) 0%, var(--pink) 100%);
+            color: #fff; border-color: transparent;
+            box-shadow: 0 6px 14px rgba(198, 106, 166, 0.35);
+        }
+        .opt.sel-no {
+            background: var(--purple-deep);
+            color: #fff; border-color: transparent;
+        }
+
+        /* --- Botón principal --- */
+        .actions { text-align: center; margin-top: 22px; }
+        .btn-primary {
+            font-family: var(--sans);
+            font-weight: 700; font-size: 0.98rem;
+            color: #fff;
+            background: linear-gradient(135deg, var(--purple) 0%, var(--pink) 100%);
+            border: none;
+            padding: 15px 38px;
+            border-radius: 999px;
+            cursor: pointer;
+            box-shadow: 0 12px 28px rgba(160, 80, 140, 0.35);
+            transition: transform .18s ease, box-shadow .18s ease, opacity .18s ease;
+        }
+        .btn-primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 16px 34px rgba(160, 80, 140, 0.42); }
+        .btn-primary:disabled { opacity: 0.45; cursor: not-allowed; box-shadow: none; }
+
+        .btn-ghost {
+            font-family: var(--sans); font-weight: 600; font-size: 0.9rem;
+            color: var(--purple-deep);
+            background: rgba(255, 255, 255, 0.6);
+            border: 1.5px solid rgba(138, 90, 158, 0.35);
+            padding: 12px 28px; border-radius: 999px; cursor: pointer;
+            transition: all .18s ease;
+        }
+        .btn-ghost:hover { border-color: var(--purple); transform: translateY(-1px); }
+
+        /* --- Resultado --- */
+        .result {
+            display: none;
+            background: var(--card);
+            -webkit-backdrop-filter: blur(16px);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.75);
+            border-radius: 26px;
+            padding: 34px 26px 30px;
+            text-align: center;
+            box-shadow: 0 16px 40px rgba(109, 63, 134, 0.16);
+            animation: rise .45s ease;
+        }
+        .result.show { display: block; }
+        @keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+
+        .score-ring {
+            width: 128px; height: 128px; margin: 0 auto 18px;
+            position: relative;
+            display: grid; place-items: center;
+        }
+        .score-ring svg { position: absolute; inset: 0; transform: rotate(-90deg); }
+        .score-ring .score-num {
+            font-family: var(--serif);
+            font-size: 2.6rem; font-weight: 600;
+            line-height: 1; color: var(--purple-deep);
+        }
+        .score-ring .score-of { font-size: 0.72rem; color: var(--muted); letter-spacing: 1px; margin-top: 2px; }
+
+        .risk-badge {
+            display: inline-block;
+            font-weight: 700; font-size: 0.8rem;
+            letter-spacing: 1px; text-transform: uppercase;
+            color: #fff; padding: 7px 20px; border-radius: 999px;
+            margin-bottom: 16px;
+        }
+        .result h2 {
+            font-family: var(--serif); font-weight: 600;
+            font-size: 1.7rem; color: var(--purple-deep); margin-bottom: 12px;
+        }
+        .result p.fb {
+            font-size: 0.95rem; line-height: 1.65; color: var(--ink);
+            max-width: 470px; margin: 0 auto 24px; text-align: left;
+        }
+
+        @media (max-width: 520px) {
+            .test-head h1 { font-size: 1.8rem; }
+            .q-card { flex-wrap: wrap; }
+            .q-opts { width: 100%; justify-content: flex-end; }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+
+        <!-- ============ CUESTIONARIO ============ -->
+        <section id="quiz-view">
+            <div class="test-head">
+                <div class="lotus">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M12 21c-4.5 0-8-2.5-8-6 2.5 0 4.2.8 5.4 2M12 21c4.5 0 8-2.5 8-6-2.5 0-4.2.8-5.4 2" />
+                        <path d="M12 21c-2.2-1.3-3.5-3.6-3.5-6.3 0-3 1.5-5.6 3.5-7.7 2 2.1 3.5 4.7 3.5 7.7 0 2.7-1.3 5-3.5 6.3z" />
+                    </svg>
+                </div>
+                <p class="kicker">Test de bienestar laboral</p>
+                <h1>¿Estás en riesgo de Burnout?</h1>
+                <p class="sub">Responde <strong>Sí</strong> o <strong>No</strong> a cada pregunta, de acuerdo con tu
+                    comportamiento laboral durante las últimas seis semanas. No hay respuestas buenas ni malas.</p>
+            </div>
+
+            <div class="progress-wrap">
+                <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+                <span class="progress-label" id="progressLabel">0 / 6</span>
+            </div>
+
+            <div id="questions"></div>
+
+            <div class="actions">
+                <button class="btn-primary" id="submitBtn" disabled onclick="showResult()">Ver mi resultado</button>
+            </div>
+        </section>
+
+        <!-- ============ RESULTADO ============ -->
+        <section class="result" id="result-view">
+            <div class="score-ring">
+                <svg viewBox="0 0 120 120">
+                    <circle cx="60" cy="60" r="52" fill="none" stroke="rgba(138,90,158,0.14)" stroke-width="10" />
+                    <circle id="ringFill" cx="60" cy="60" r="52" fill="none" stroke="url(#grad)" stroke-width="10"
+                        stroke-linecap="round" stroke-dasharray="327" stroke-dashoffset="327" />
+                    <defs>
+                        <linearGradient id="grad" x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0%" stop-color="#8a5a9e" />
+                            <stop offset="100%" stop-color="#d16aa6" />
+                        </linearGradient>
+                    </defs>
+                </svg>
+                <div>
+                    <div class="score-num"><span id="scoreNum">0</span></div>
+                    <div class="score-of">DE 6 PUNTOS</div>
+                </div>
+            </div>
+
+            <span class="risk-badge" id="riskBadge">Riesgo</span>
+            <h2 id="riskTitle">Resultado</h2>
+            <p class="fb" id="riskFeedback"></p>
+
+            <button class="btn-ghost" onclick="resetTest()">Repetir test</button>
+        </section>
+
+    </div>
+
+    <script>
+        const QUESTIONS = [
+            "Me siento agotado/a la mayor parte del tiempo laboral.",
+            "Me descubro cínico/a o desapegado/a del trabajo con más frecuencia.",
+            "Siento que rindo menos o que mi trabajo “ya no sale”.",
+            "Mi carga y prioridades cambian sin control claro.",
+            "Mi trabajo invade sistemáticamente mis horarios personales.",
+            "Rara vez recibo apoyo o reconocimiento por entregables clave."
+        ];
+
+        // Retroalimentación por rango de puntaje (1 punto por cada "Sí")
+        const TIERS = [
+            {
+                min: 0, max: 1, label: "Riesgo bajo", color: "var(--green)",
+                text: "Este puntaje sugiere que tu energía y tu relación con el trabajo se encuentran relativamente estables. Conviene mantener las prácticas que ya te funcionan: pausas reales, límites de horario y momentos de desconexión. El objetivo aquí es sostener el equilibrio para que el estrés no avance silencioso."
+            },
+            {
+                min: 2, max: 3, label: "Riesgo medio", color: "var(--amber)",
+                text: "Los indicadores muestran que el desgaste ya empezó a tomar espacio. Todavía no es una emergencia, pero tampoco es un asunto para “más adelante”. Conviene revisar cargas, renegociar expectativas y ajustar rutinas de recuperación física y mental. Es el punto perfecto para intervenir antes de que aparezca el agotamiento profundo."
+            },
+            {
+                min: 4, max: 5, label: "Riesgo alto", color: "var(--orange)",
+                text: "El cansancio, el desapego y la falta de apoyo ya están golpeando tu desempeño y tu bienestar. Requiere atención inmediata. Es recomendable frenar, redistribuir tareas, hablar con un superior o RR. HH., y activar recursos de apoyo emocional o profesional. Aquí la prioridad es detener la espiral."
+            },
+            {
+                min: 6, max: 6, label: "Riesgo crítico", color: "var(--red)",
+                text: "Todas las señales están encendidas. El burnout no es una posibilidad: es una realidad en curso. Es urgente tomar medidas de contención y recuperación. Esto incluye detener temporalmente la exigencia laboral cuando sea viable, buscar acompañamiento profesional y reconstruir límites claros entre vida personal y trabajo. La intervención temprana evita consecuencias más severas en salud y desempeño."
+            }
+        ];
+
+        const answers = new Array(QUESTIONS.length).fill(null); // 1 = Sí, 0 = No
+
+        // Construir preguntas
+        const container = document.getElementById('questions');
+        QUESTIONS.forEach((q, i) => {
+            const card = document.createElement('div');
+            card.className = 'q-card';
+            card.id = 'qcard-' + i;
+            card.innerHTML = `
+                <div class="q-num">${i + 1}</div>
+                <div class="q-text">${q}</div>
+                <div class="q-opts">
+                    <button class="opt" data-q="${i}" data-val="1" onclick="answer(${i},1,this)">Sí</button>
+                    <button class="opt" data-q="${i}" data-val="0" onclick="answer(${i},0,this)">No</button>
+                </div>`;
+            container.appendChild(card);
+        });
+
+        function answer(i, val, btn) {
+            answers[i] = val;
+            const card = document.getElementById('qcard-' + i);
+            card.classList.add('answered');
+            card.querySelectorAll('.opt').forEach(o => o.classList.remove('sel-si', 'sel-no'));
+            btn.classList.add(val === 1 ? 'sel-si' : 'sel-no');
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const done = answers.filter(a => a !== null).length;
+            document.getElementById('progressFill').style.width = (done / QUESTIONS.length * 100) + '%';
+            document.getElementById('progressLabel').textContent = done + ' / ' + QUESTIONS.length;
+            document.getElementById('submitBtn').disabled = done < QUESTIONS.length;
+            reportHeight();
+        }
+
+        function showResult() {
+            const score = answers.reduce((s, a) => s + (a || 0), 0);
+            const tier = TIERS.find(t => score >= t.min && score <= t.max);
+
+            document.getElementById('quiz-view').style.display = 'none';
+            const rv = document.getElementById('result-view');
+            rv.classList.add('show');
+
+            document.getElementById('scoreNum').textContent = score;
+            const badge = document.getElementById('riskBadge');
+            badge.textContent = tier.label;
+            badge.style.background = tier.color;
+            document.getElementById('riskTitle').textContent = tier.label;
+            document.getElementById('riskTitle').style.color = tier.color;
+            document.getElementById('riskFeedback').textContent = tier.text;
+
+            // Animar el anillo (327 = circunferencia r=52)
+            const offset = 327 - (score / QUESTIONS.length) * 327;
+            setTimeout(() => {
+                const ring = document.getElementById('ringFill');
+                ring.style.transition = 'stroke-dashoffset 1s ease';
+                ring.style.strokeDashoffset = offset;
+            }, 60);
+
+            // Reportar al curso contenedor (para SCORM / desbloqueo)
+            try {
+                parent.postMessage({ type: 'bn-test-done', score: score, max: QUESTIONS.length, tier: tier.label }, '*');
+            } catch (e) { }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            reportHeight();
+        }
+
+        function resetTest() {
+            answers.fill(null);
+            document.querySelectorAll('.opt').forEach(o => o.classList.remove('sel-si', 'sel-no'));
+            document.querySelectorAll('.q-card').forEach(c => c.classList.remove('answered'));
+            document.getElementById('result-view').classList.remove('show');
+            document.getElementById('quiz-view').style.display = 'block';
+            const ring = document.getElementById('ringFill');
+            ring.style.transition = 'none'; ring.style.strokeDashoffset = 327;
+            updateProgress();
+        }
+
+        // Auto-alto: informar al iframe padre la altura del contenido
+        function reportHeight() {
+            try {
+                const h = document.body.scrollHeight;
+                parent.postMessage({ type: 'bn-test-height', height: h }, '*');
+            } catch (e) { }
+        }
+        window.addEventListener('load', reportHeight);
+        window.addEventListener('resize', reportHeight);
+        updateProgress();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,5958 @@
+/* ==========================================================================
+   1. VARIABLES GLOBALES Y FUENTES
+   ========================================================================== */
+:root {
+    /* Colores GS1 */
+    --color-azul-gs1: #22335e;
+    --color-azul-gs1-hover: #1f304f;
+    --color-naranja-gs1: #ec633c;
+    --color-white: #FFFFFF;
+    --color-negro-texto: #333333;
+
+    /* Colores Secundarios/Base */
+    --color-azul-secundario: #1F3F6D;
+    --color-azul-cielo: #03b6dc;
+    --gs1-color-raspberry: #F05587;
+    --color-morado: #6c3b8f;
+    --color-amarillo: #fcda32;
+    --color-verde: #7dbb4b;
+    --color-azul-acua: #2db5b2;
+    --color-gris-claro: #F4F4F4;
+
+    /* Feedback */
+    --color-acierto-correcto: #28a745;
+    --color-error-incorrecto: #dc3545;
+    --color-rojo: #dc3545;
+
+    /* Layout */
+    --ancho-maximo: 1000px;
+    --alto-nav-bar: 80px;
+    --alto-header: 80px;
+    --alto-contenido: calc(100vh - var(--alto-header) - var(--alto-nav-bar));
+    --padding-lateral-content: 20px;
+}
+
+/* DECLARACIÓN DE FUENTES */
+@font-face {
+    font-family: 'Montserrat';
+    src: url('../fonts/Montserrat-Thin.woff2') format('woff2');
+    font-weight: 100;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Montserrat';
+    src: url('../fonts/Montserrat-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Montserrat';
+    src: url('../fonts/Montserrat-Medium.woff2') format('woff2');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Montserrat';
+    src: url('../fonts/Montserrat-SemiBold.woff2') format('woff2');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Montserrat';
+    src: url('../fonts/Montserrat-ExtraBold.woff2') format('woff2');
+    font-weight: 800;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'Montserrat';
+    src: url('../fonts/Montserrat-Italic.woff2') format('woff2');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* ==========================================================================
+   2. RESET Y ESTRUCTURA BASE (HTML/BODY)
+   ========================================================================== */
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100% !important;
+    height: 100% !important;
+    overflow: hidden;
+    font-family: 'Montserrat', sans-serif;
+    background-color: var(--color-gris-claro);
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+#curso {
+    flex-grow: 1;
+    position: relative;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none !important;
+    /* QUITA EL LÍMITE DE ANCHO AQUÍ */
+    margin: 0;
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+    background-color: var(--color-white);
+}
+
+/* TIPOGRAFÍA GENERAL */
+h1 {
+    font-weight: 800;
+    color: var(--color-white);
+    font-size: clamp(1em, 2.5vw, 2em);;
+}
+
+h2,
+.titulo-unidad {
+    font-weight: 800;
+    font-size: clamp(1.8em, 2.5vw, 2em);
+    line-height: 1.2;
+    text-align: left;
+    color: var(--color-naranja-gs1);
+}
+
+.subtitulo-contenido,
+h3 {
+    font-weight: 600;
+    color: var(--color-negro-texto);
+    font-size: clamp(1em, 2.5vw, 1.9em);
+}
+
+p {
+    font-weight: 400;
+    line-height: 1.6;
+    color: var(--color-negro-texto);
+    font-size: clamp(.8em, 2.5vw, 1.2em);
+}
+
+/* =============================================== */
+/* GUÍA DE NAVEGACIÓN (POPUP INICIAL)              */
+/* =============================================== */
+
+#nav-guide-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.85);
+    /* Fondo oscuro */
+    z-index: 100;
+    /* Encima de todo */
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.guide-box {
+    background-color: white;
+    width: 100%;
+    max-width: 800px;
+    border-radius: 20px;
+    padding: 40px;
+    text-align: center;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+}
+
+.guide-box h2 {
+    color: var(--color-azul-gs1);
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.guide-intro {
+    font-size: 1.1em;
+    margin-bottom: 30px;
+    color: #666;
+}
+
+/* Grid de Iconos */
+.guide-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    /* 2 columnas */
+    gap: 30px;
+    margin-bottom: 30px;
+    text-align: left;
+}
+
+.guide-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid #eee;
+}
+
+.guide-item p {
+    margin: 0;
+    font-size: 0.9em;
+    line-height: 1.4;
+}
+
+.guide-item strong {
+    color: var(--color-naranja-gs1);
+}
+
+/* Simulaciones visuales de los iconos */
+.icon-circle {
+    width: 40px;
+    height: 40px;
+    background: var(--color-azul-gs1);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.icon-circle img {
+    width: 20px;
+    filter: brightness(0) invert(1);
+}
+
+.nav-sim {
+    font-size: 0.8em;
+    font-weight: bold;
+    color: white;
+    background: var(--color-naranja-gs1);
+    padding: 5px 10px;
+    border-radius: 5px;
+    white-space: nowrap;
+}
+
+.bar-sim {
+    width: 50px;
+    height: 8px;
+    background: #ddd;
+    border-radius: 4px;
+    position: relative;
+}
+
+.bar-sim::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 50%;
+    background: var(--color-naranja-gs1);
+    border-radius: 4px;
+}
+
+
+/* ==========================================================================
+   3. LAYOUT DEL CURSO (HEADER, SLIDE, FOOTER)
+   ========================================================================== */
+
+/* --- SLIDE GENERAL --- */
+.slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    transform: translateX(100%);
+    transition: transform 0.6s ease-in-out, opacity 0.6s ease-in-out;
+    z-index: 10;
+    background-color: var(--color-white);
+    box-sizing: border-box;
+}
+
+.slide.active {
+    opacity: 1;
+    transform: translateX(0);
+    z-index: 2;
+}
+
+.slide.leaving {
+    opacity: 0;
+    transform: translateX(-100%);
+    z-index: 3;
+}
+
+/* --- HEADER (ENCABEZADO) --- */
+.slide-header {
+    position: relative;
+    width: 100%;
+    height: var(--alto-header);
+    display: flex;
+    align-items: center;
+    padding: 0 var(--padding-lateral-content);
+    box-sizing: border-box;
+    z-index: 100;
+    border-bottom: 1px solid #E0E0E0;
+    background-color: var(--color-white);
+}
+
+.slide-header .logo-img {
+    height: 40px;
+    min-width: 40px;
+    object-fit: contain;
+}
+
+.slide-header .page-title {
+    flex-grow: 1;
+    text-align: center;
+    font-size: 1.2em;
+    font-weight: 600;
+    color: var(--color-azul-secundario);
+    margin: 0;
+    padding-right: calc(40px + 20px);
+}
+
+/* --- CONTENEDOR SCROLLABLE --- */
+
+
+.slide-scroll-content {
+    position: relative;
+    flex-grow: 1;
+    height: auto;
+    width: 100%;
+
+    box-sizing: border-box;
+    background-color: var(--color-white);
+
+    /* 1. OBLIGAR AL SCROLL A APARECER */
+    /* 'scroll' fuerza que el carril gris aparezca SIEMPRE, incluso si cabe el texto */
+    overflow-y: scroll;
+    overflow-x: hidden;
+
+    /* Configuración para Firefox (Estándar nuevo) */
+    scrollbar-width: auto;
+    /* 'auto' es la barra gruesa, 'thin' es la delgada */
+    scrollbar-color: var(--color-azul-gs1) #e0e0e0;
+    /* Color Barra / Color Fondo */
+}
+
+/* --- PERSONALIZACIÓN FORZADA (CHROME, EDGE, SAFARI) --- */
+
+/* 2. El Contenedor de la Barra (El Riel completo) */
+.slide-scroll-content::-webkit-scrollbar {
+    /* Un ancho generoso para que sea fácil de atinar con el mouse */
+    width: 16px;
+    /* Fondo explícito para que no sea transparente */
+    background-color: #f0f0f0;
+    /* Comando para asegurar visualización */
+    -webkit-appearance: none;
+    display: block;
+}
+
+/* 3. El Fondo del Riel (Track) */
+.slide-scroll-content::-webkit-scrollbar-track {
+    background-color: #f0f0f0;
+    border-left: 1px solid #dcdcdc;
+    /* Línea separadora */
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
+    /* Sombra interna para profundidad */
+}
+
+/* 4. La Barra que se mueve (Thumb) */
+.slide-scroll-content::-webkit-scrollbar-thumb {
+    background-color: var(--color-azul-gs1);
+    /* Tu azul corporativo */
+    border-radius: 8px;
+    /* Redondeada */
+
+    /* Borde blanco alrededor para que parezca flotar dentro del riel */
+    border: 3px solid #f0f0f0;
+
+    /* Altura mínima para que nunca desaparezca si hay mucho texto */
+    min-height: 50px;
+}
+
+/* 5. Efecto Hover (Cuando pones el mouse encima de la barra) */
+.slide-scroll-content::-webkit-scrollbar-thumb:hover {
+    background-color: var(--color-naranja-gs1);
+    /* Cambia a naranja */
+}
+
+/* =============================================== */
+/* FORZAR BARRA DE SCROLL EN LAS FASES (OVERLAYS)  */
+/* =============================================== */
+
+.phase-overlay {
+    /* 1. OBLIGAR AL CARRIL A APARECER SIEMPRE */
+    overflow-y: scroll !important; /* 'scroll' en lugar de 'auto' */
+    
+    /* Asegura suavidad en iOS */
+    -webkit-overflow-scrolling: touch;
+    
+    /* Firefox */
+    scrollbar-width: auto;
+    scrollbar-color: var(--color-azul-gs1) #e0e0e0;
+}
+
+/* --- PERSONALIZACIÓN DE LA BARRA (CHROME, EDGE, SAFARI) --- */
+
+/* 2. El Riel (Ancho y visible) */
+.phase-overlay::-webkit-scrollbar {
+    width: 16px; 
+    background-color: #f0f0f0; 
+    display: block !important; /* Fuerza visualización */
+}
+
+/* 3. El Fondo del Riel */
+.phase-overlay::-webkit-scrollbar-track {
+    background-color: #f0f0f0; 
+    border-left: 1px solid #dcdcdc;
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.1);
+}
+
+/* 4. La Manija (Thumb) Azul */
+.phase-overlay::-webkit-scrollbar-thumb {
+    background-color: var(--color-azul-gs1); 
+    border-radius: 8px; 
+    border: 3px solid #f0f0f0; /* Efecto flotante */
+    min-height: 50px; 
+}
+
+/* 5. Hover Naranja */
+.phase-overlay::-webkit-scrollbar-thumb:hover {
+    background-color: var(--color-naranja-gs1);
+}
+
+/* --- BARRA DE NAVEGACIÓN (FOOTER) --- */
+#nav-bar {
+    position: relative;
+    height: var(--alto-nav-bar);
+    flex-shrink: 0;
+    width: 100%;
+    background-color: var(--color-azul-gs1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 var(--padding-lateral-content);
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    z-index: 20;
+}
+
+.nav-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.center-group {
+    flex-grow: 1;
+    margin: 0 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+/* Progress Bar */
+#progress-bar-container {
+    width: 100%;
+    height: 10px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+#progress-bar {
+    height: 100%;
+    width: 0%;
+    background-color: var(--color-naranja-gs1);
+    transition: width 0.3s ease;
+}
+
+.progress-info {
+    color: var(--color-white);
+    font-size: 0.8em;
+    font-weight: 500;
+}
+
+/* Botones de Navegación */
+.nav-button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+    text-transform: uppercase;
+    transition: background-color 0.2s, opacity 0.2s;
+    font-size: 0.9em;
+    background-color: var(--color-naranja-gs1);
+    color: var(--color-white);
+}
+
+.nav-button:hover:not(:disabled) {
+    opacity: 0.85;
+}
+
+.nav-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.home-btn {
+    background-color: transparent !important;
+    border: 1px solid white;
+    color: white;
+}
+
+.home-btn:hover:not(:disabled) {
+    background-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+#menuBtn {
+    background-color: var(--color-white);
+    color: var(--color-negro-texto);
+}
+
+#menuBtn:hover {
+    background-color: var(--color-naranja-gs1);
+    color: var(--color-white);
+}
+
+.nav-button.primary-blue-btn {
+    background-color: var(--color-azul-gs1);
+    color: white;
+    padding: 12px 25px;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+.nav-button.primary-blue-btn:hover {
+    background-color: var(--color-azul-gs1-hover);
+    box-shadow: 0 4px 8px rgba(0, 44, 108, 0.3);
+}
+
+/* Menú Dropdown */
+.menu-dropdown-container {
+    position: relative;
+}
+
+#module-dropdown {
+    display: none;
+    position: absolute;
+    bottom: var(--alto-nav-bar);
+    right: auto;
+    left: 0;
+    background-color: var(--color-white);
+    min-width: 250px;
+    box-shadow: 0px -4px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 20;
+    border-radius: 10px 10px 0 0;
+    overflow: hidden;
+}
+
+#module-dropdown.show {
+    display: block;
+}
+
+.module-link {
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    color: var(--color-negro-texto);
+    transition: background-color 0.2s;
+}
+
+.module-link.locked {
+    color: #999;
+    cursor: not-allowed;
+    background-color: #f0f0f0;
+    pointer-events: none;
+}
+
+.module-link.unlocked:hover {
+    background-color: #e0e0e0;
+}
+
+/* ==========================================================================
+   4. COMPONENTES GLOBALES (LAYOUTS, VIDEO, TABS, INDICADORES)
+   ========================================================================== */
+
+/* --- 4.1 LAYOUT DE COLUMNAS (SPLIT LAYOUT) --- */
+.video-split-layout {
+    min-height: 100%;
+    width: 100%;
+    display: flex;
+    
+    align-items: stretch;
+    justify-content: space-between;
+    padding: 0;
+}
+
+.split-col-image {
+    width: 40%;
+    padding: 0;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.split-col-content {
+    width: 60%;
+    background-color: var(--color-white);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.infografia {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    width: 100%;
+    object-fit: contain;
+    object-position: top;
+}
+
+.content-image {
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    display: block;
+    animation: fadeInSlideRight 2s ease-out forwards;
+}
+
+/* --- 4.2 VIDEO PLAYER --- */
+.video-placeholder-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.video-placeholder-image img {
+    max-width: 300px;
+    width: 50%;
+    height: auto;
+    margin: 20px 0;
+}
+
+#fullscreen-video-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.95);
+    z-index: 4000;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.3s ease;
+}
+
+#fullscreen-video-overlay video {
+    max-width: 90%;
+    max-height: 90vh;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.video-launch.center-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    text-align: center;
+}
+
+.play-video-btn {
+    background-color: transparent;
+    color: var(--color-naranja-gs1);
+    border: 2px solid var(--color-naranja-gs1);
+    padding: 10px 20px;
+    font-size: 0.9em;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 5px;
+}
+
+.play-video-btn:hover {
+    background-color: var(--color-naranja-gs1);
+    color: white;
+    border: 2px solid var(--color-naranja-gs1);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(236, 99, 60, 0.3);
+}
+
+/* --- 4.3 BOTONES DE DESCARGA --- */
+.download-button-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: 0;
+    padding: 20px 0;
+    flex-shrink: 0;
+}
+
+.infografia-icon {
+    width: 80px;
+    height: 200px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.download-btn-viva {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 12px 25px;
+    max-width: 90%;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1em;
+    font-weight: 600;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background: linear-gradient(135deg, var(--color-azul-cielo) 0%, var(--color-azul-secundario) 100%);
+    background-size: 200% auto;
+    box-shadow: 0 5px 15px rgba(3, 182, 220, 0.4);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.download-btn-viva:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(3, 182, 220, 0.6);
+    background: linear-gradient(135deg, var(--color-azul-acua) 0%, var(--color-azul-gs1) 100%);
+}
+
+.download-btn-viva:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 10px rgba(3, 182, 220, 0.4);
+}
+
+.btn-icon svg {
+    width: 24px;
+    height: 24px;
+    transition: transform 0.3s ease;
+    flex-shrink: 0;
+}
+
+.download-btn-viva:hover .btn-icon svg {
+    animation: downloadBounce 1s infinite;
+}
+
+
+.download-btn-viva::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transition: 0.5s;
+}
+
+.download-btn-viva:hover::after {
+    left: 100%;
+    transition: 0.5s ease-in-out;
+}
+
+/* --- 4.4 INTERACTIVO DE PESTAÑAS (TABS) --- */
+.tabs-container {
+    margin-top: 20px;
+    width: 100%;
+}
+
+.tabs-nav {
+    display: flex;
+    flex-wrap: wrap;
+    border-bottom: 2px solid var(--color-azul-secundario);
+    margin-bottom: 20px;
+    gap: 2px;
+}
+
+.tab-button {
+    flex-grow: 1;
+    padding: 10px 15px;
+    font-size: 0.9em;
+    font-weight: 600;
+    text-align: center;
+    line-height: 1.2;
+    border: none;
+    background-color: transparent;
+    color: var(--color-azul-secundario);
+    border-radius: 5px 5px 0 0;
+    border-bottom: 3px solid transparent;
+    height: auto;
+    min-height: 45px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.tab-button.active {
+    color: var(--color-azul-gs1);
+    background-color: #F0F8FF;
+    border-bottom: 3px solid var(--color-naranja-gs1);
+    font-weight: 700;
+}
+
+.tab-button:hover:not(.active) {
+    background-color: #F4F4F4;
+    color: var(--color-azul-gs1);
+}
+
+.tab-pane {
+    display: none;
+    padding: 25px;
+    border: 1px solid #E9E9E9;
+    border-top: none;
+    border-radius: 0 0 5px 5px;
+    background-color: var(--color-white);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.tab-pane.active {
+    display: block;
+}
+
+/* --- 4.5 INDICADOR DE SCROLL --- */
+#scroll-indicator {
+    position: fixed;
+    bottom: calc(var(--alto-nav-bar) + 30px);
+    right: 30px;
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    background-color: var(--color-naranja-gs1);
+    box-shadow: 0 5px 15px rgba(236, 99, 60, 0.5);
+    z-index: 1000;
+    opacity: 0;
+    transform: scale(0.8);
+    transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+#scroll-indicator.active {
+    opacity: 1;
+    transform: scale(1);
+    animation: pulse-shadow 2s infinite;
+}
+
+#scroll-indicator.hidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(0.5);
+}
+
+#scroll-indicator img {
+    width: 28px;
+    height: 28px;
+    filter: brightness(0) invert(1);
+    animation: scroll-bounce 1.5s infinite ease-in-out;
+}
+
+/* --- 4.6 CAJAS DE TEXTO (MISCELÁNEOS) --- */
+.hidden-message {
+    display: none !important;
+}
+
+.box-text {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.box-text h2 {
+    text-align: center;
+    font-size: 2em;
+    margin-bottom: 10px;
+    color: var(--color-naranja-gs1);
+    line-height: 1.2;
+}
+
+.box-title {
+    margin: 0;
+    padding-left: 5%;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.box-title h2 {
+    text-align: left;
+    color: var(--color-naranja-gs1);
+    margin-bottom: 10px;
+    line-height: 1.1;
+    font-size: clamp(2.5em, 5vw, 4em);
+}
+
+.box-title p {
+    text-align: left;
+    margin-bottom: 10px;
+}
+
+/* ==========================================================================
+   5. ESTILOS ESPECÍFICOS POR SLIDE
+   ========================================================================== */
+
+/* --- SLIDE 1 --- */
+#slide-1 {
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    position: relative;
+}
+
+#slide-1 .slide-header {
+    display: none;
+}
+
+#slide-1 .logo-header {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 30;
+}
+
+#slide-1 .logo-header img {
+    height: 40px;
+    width: auto;
+}
+
+#intro-background {
+    background-image: url('../img/imagen_p01.png');
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#overlay-animado {
+    position: absolute;
+    top: 30%;
+    left: 0;
+    height: 50%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(2px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 2s ease-out forwards;
+    z-index: 5;
+}
+
+#intro-content {
+    color: var(--color-white);
+    max-width: 500px;
+    width: 90%;
+    padding: 20px 15px;
+    font-size: clamp (1em, 2.5vw, 1.4em);
+    text-align: center;
+    animation: slideInUp 1s ease-out forwards;
+}
+
+#intro-content .nav-button {
+    font-size: .7em;
+    font-weight: 400;
+    margin-top: 2%;
+}
+
+/* --- SLIDE 3 --- */
+#slide-3 .slide-scroll-content {
+    background-image: url(../img/art_full_slide-3.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.slide-content-wrapper {
+    max-width: 850px;
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.ruta-text-box {
+    width: 100%;
+    padding: 35px 40px;
+    background-color: var(--color-naranja-gs1);
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.ruta-text-box p {
+    margin: 0;
+    font-size: clamp(1em, 3vw, 1.2em);
+    text-align: center;
+    color: var(--color-white);
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+/* --- SLIDE 4 --- */
+#slide-4 .split-col-image {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    padding: 0;
+    margin: 0;
+}
+
+#lottie-animation-box {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    flex-shrink: 0;
+}
+
+/* --- SLIDE 5 --- */
+#slide-5 .slide-scroll-content {
+    background-color: var(--color-white);
+}
+
+#slide-5 .split-col-content {
+    background-color: var(--color-white);
+    width: 50%;
+    text-align: justify;
+    object-position: center;
+    padding-left: 8%;
+}
+
+#slide-5 .split-col-image {
+    width: 50%;
+    display: flex;
+    align-items: center;
+}
+
+.box-img-txt {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    max-width: 400px;
+    width: 90%;
+    margin: 20px 0;
+}
+
+.box-img-txt img {
+    width: 100%;
+    height: auto;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+#animacion-slide-5 {
+    margin: 0 auto;
+}
+
+.box-img-txt p {
+    font-size: 1.3em;
+    font-weight: 400;
+    color: var(--color-azul-gs1);
+    text-align: center;
+}
+
+.icon-menu {
+    width: 5px;
+}
+
+/* --- SLIDE 6 (Interactivo Barras) --- */
+#slide-6 .split-col-image {
+    width: 60%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#slide-6 .split-col-content {
+    background-image: url('../img/art_right_slide-6.png');
+    background-size: cover;
+}
+
+.instruccion {
+    display: flex;
+    align-items: center !important;
+    border-radius: 50px;
+    border: 2px solid var(--color-azul-gs1)!important;
+    background-color: var(--color-white)!important;
+    width: fit-content;
+    max-width: 95%;
+    border-width: 1.5px;
+    padding: 8px 20px!important;
+    font-size: 0.9em;
+    margin: 15px auto !important;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    animation: fadeInSlideRight 2s ease-in-out forwards;
+    white-space: nowrap;
+
+}
+
+.instruccion p { 
+    margin: 0 !important;
+    padding: 0!important;
+    display: flex;
+    align-items: center!important;
+    font-weight: 300 !important;
+    color: var(--color-negro-texto)!important;
+    font-family: 'Montserrat', sans-serif !important;
+    font-style: normal !important;
+    
+
+}
+
+.icon-Ins {
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+    flex-shrink: 0;
+}
+
+.answer-btn {
+    flex-grow: 1;
+    padding: 15px;
+    margin-top: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    height: 65px;
+    min-height: 65px;
+    width: 400px;
+    max-width: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.item-title {
+    font-size: 1.5em;
+    font-weight: 700;
+    color: var(--color-azul-secundario);
+    animation: slideInText 2s ease-in-out forwards;
+}
+
+.item-content-row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+    justify-content: center;
+    animation: slideInText 1s ease-in-out forwards;
+}
+
+.icon-button {
+    width: 80px;
+    height: 80px;
+    border: none;
+    background-color: transparent;
+    padding: 0;
+    flex-shrink: 0;
+    cursor: pointer;
+    border-radius: 50%;
+    overflow: visible;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.2s ease-out;
+}
+
+.icon-button:hover {
+    transform: scale(1.1);
+}
+
+.icon-button:active {
+    transform: scale(0.95);
+}
+
+.icon-button img {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.item-1 {
+    background-color: var(--gs1-color-raspberry);
+    color: white;
+}
+
+.item-2 {
+    background-color: var(--color-amarillo);
+    color: var(--color-negro-texto);
+}
+
+.answer-btn .answer-text {
+    color: inherit;
+    font-weight: 600;
+    margin: 0;
+    text-align: left;
+    font-size: 0.9em;
+    line-height: 1.3;
+}
+
+/* --- SLIDE 7 (Tarjetas) --- */
+#slide-7 .slide-scroll-content {
+    height: 100%;
+    background-color: #f4f4f4;
+    background-image: url(../img/art_full_slide-7.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center top;
+}
+
+#slide-7 .video-split-layout {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    height: auto;
+    max-width: var(--ancho-maximo);
+    margin: 0 auto;
+    padding-top: 20px;
+}
+
+.text-inBox {
+    background-color: var(--color-naranja-gs1);
+    color: var(--color-white);
+    padding: 5px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    max-width: 700px;
+    width: 90%;
+    text-align: center;
+    margin: 50px auto 40px auto;
+}
+
+.text-inBox p {
+    color: var(--color-white);
+}
+
+.split-col-card1,
+.split-col-card2 {
+    width: 35%;
+    min-width: 280px;
+    max-width: 450px;
+    margin: 10px;
+    height: 400px;
+}
+
+.content-card,
+.content-card-B {
+    width: 100%;
+    border-radius: 20px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.15);
+    background-color: var(--color-white);
+    padding-bottom: 20px;
+    height: 450px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.content-Tcard {
+    padding: 0 20px;
+}
+
+.card-img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+
+}
+
+/* --- SLIDE 8 (Plataformas) --- */
+#slide-8 .slide-scroll-content {
+    background-image: url(../img/art_full_slide-8.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    height: 100%
+}
+
+.top-instruction-box {
+    text-align: left;
+    max-width: var(--ancho-maximo);
+    margin: 20px auto 0 auto;
+    padding: 0 var(--padding-lateral-content);
+}
+
+.top-instruction-box p {
+    font-size: 1.2em;
+    font-weight: 500;
+    color: var(--color-negro-texto);
+}
+
+.three-col-layout {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 30px;
+    max-width: 1000px;
+    width: 100%;
+    height: 60vh;
+    margin: 0 auto;
+    padding-right: 60px;
+    box-sizing: border-box;
+    overflow: hidden;
+    min-height: 20vh;
+}
+
+.interactive-column {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    height: 90%;
+    padding: 5%;
+    position: relative;
+    max-width: 250px;
+}
+
+#slide-8 .interactive-column:nth-child(1) {
+    margin-bottom: 90px;
+}
+
+#slide-8 .interactive-column:nth-child(2) {
+    margin-bottom: 30px;
+}
+
+#slide-8 .interactive-column:nth-child(3) {
+    margin-bottom: -10px;
+}
+
+.platform-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    width: 100%;
+    height: 100%;
+}
+
+.platform-button {
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: transform 0.2s ease-out;
+    z-index: 5;
+}
+
+.platform-button img {
+    width: 100%;
+    height: auto;
+    display: block;
+    filter: drop-shadow(0px 10px 15px rgba(0, 0, 0, 0.193));
+    transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.platform-content {
+    position: absolute;
+    bottom: 70px;
+    left: 45%;
+    height: 45%;
+    width: 100%;
+    z-index: 6 !important;
+    pointer-events: none;
+}
+
+.platform-content.show-line .line-image {
+    animation: lineSweepUp 0.8s ease-out forwards;
+    height: 100%;
+    opacity: 1;
+}
+
+.line-image {
+    position: absolute;
+    bottom: 0;
+    width: 15%;
+    max-width: 20px;
+    height: 10%;
+    object-fit: fill;
+    object-position: bottom;
+    transition: opacity 0.3s;
+    opacity: 0;
+    z-index: 6;
+}
+
+.feature-text-box {
+    position: absolute;
+    align-items: center;
+    gap: 15px;
+    max-width: 300px;
+    opacity: 0;
+    z-index: 8;
+}
+
+.icon-left {
+    left: 50%;
+    transform: translateX(-30%);
+}
+
+.feature-icon {
+    width: 50px;
+    height: 50px;
+    flex-shrink: 0;
+    animation: scaleIn 0.5s ease-out forwards;
+}
+
+.feature-text-wrapper {
+    align-items: center;
+    transform: translateX(10%);
+    flex-grow: 1;
+    text-align: left;
+}
+
+.feature-text-wrapper p {
+    margin: 0;
+    font-size: .8em;
+}
+
+.feature-text-wrapper h3 {
+    margin: 0;
+    font-size: 1em;
+}
+
+.feature-text-box,
+.feature-icon {
+    opacity: 0;
+}
+
+.platform-content.show-content .text-icon-group {
+    animation: fadeIn 0.5s ease-out forwards;
+    animation-delay: 0.7s;
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* --- SLIDE 9 --- */
+#slide-9 .slide-scroll-content {
+    background-image: url(../img/art_full_slide-9.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+#slide-9 .split-col-content {
+    width: 50%;
+    background-color: transparent;
+}
+
+#slide-9 .box-text {
+    width: 80%;
+    max-width: 500px;
+    height: auto;
+    background-color: var(--color-naranja-gs1);
+    text-align: left;
+    color: var(--color-white);
+    padding: 4%;
+    border-radius: 28px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.75);
+}
+
+#slide-9 .box-text p {
+    color: var(--color-white);
+}
+
+#slide-9 .split-col-content h3 {
+    color: var(--color-white);
+    width: 700;
+    font-size: 1.5em;
+    text-align: center;
+    padding: 0;
+    margin: 20px;
+}
+
+/* --- SLIDE 10 --- */
+#slide-10 .slide-scroll-content {
+    background-image: url('../img/art_full_slide-10.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+#slide-10 .split-col-content {
+    background-color: transparent;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 5%;
+    width: 45%;
+}
+
+#slide-10 .split-col-content h3 {
+    color: var(--color-white);
+    font-size: 2.5em;
+    line-height: 1.1;
+    text-align: left;
+
+    font-weight: 800;
+}
+
+#slide-10 .split-col-content p {
+    color: var(--color-white);
+    font-size: 1.3em;
+    line-height: 1.4;
+    text-align: left;
+}
+
+#slide-10 .split-col-image {
+    background-color: transparent;
+    width: 55%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.bottom-caption {
+    position: relative !important;
+    bottom: auto !important;
+    left: auto !important;
+    width: 100%;
+    text-align: center;
+    z-index: 10;
+    padding: 0 5px;
+    box-sizing: border-box;
+    pointer-events: none;
+    
+    background-color: transparent;
+}
+
+
+
+.bottom-caption p {
+    color: var(--color-white);
+    font-size: 1.1em;
+    max-width: 800px;
+    margin: 0 auto;
+    text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.items-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 90%;
+    max-width: 500px;
+}
+
+.arrow-card {
+    display: flex;
+    width: 100%;
+    filter: drop-shadow(0px 4px 6px rgba(0, 0, 0, 0.3));
+}
+
+.icon-box {
+    width: 130px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+}
+
+.icon-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.text-box {
+    background-color: var(--color-white);
+    width: 500px;
+    height: 80px;
+    padding: 5px 10px;
+    border-radius: 0 10px 10px 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.text-box h2 {
+    font-size: 1.4em;
+    color: var(--color-azul-gs1);
+    margin: 0 0 5px 0;
+    font-weight: 800;
+}
+
+.text-box p {
+    font-size: 1em;
+    color: var(--color-negro-texto);
+    margin: 0;
+    line-height: 1.2;
+}
+
+
+/* --- SLIDE 11 (Feedback Cards) --- */
+#slide-11 .slide-scroll-content {
+    background-image: url(../img/art_full_slide-11.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    align-items: center;
+}
+
+
+.feedback-col-layout {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 20px;
+    width: 100%;
+    max-width: 1100px;
+    margin: 20px auto;
+    padding: 0 20px;
+    flex-wrap: wrap;
+}
+
+.feedback-card {
+    width: 300px;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.card-button {
+    background: transparent;
+    border: none;
+    outline: none;
+    box-shadow: none;
+    padding: 0;
+    width: 150px;
+    cursor: pointer;
+    z-index: 10;
+    position: relative;
+    transition: transform 0.3s;
+}
+
+.card-button img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.card-button:hover {
+    transform: translateY(-5px);
+}
+
+.card-content {
+    width: 100%;
+    margin-top: -150px;
+    border-radius: 15px;
+    padding: 0 20px;
+    box-sizing: border-box;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 0.8s ease-out, opacity 0.8s ease-out, padding 0.8s ease;
+    color: var(--color-white);
+    text-align: left;
+    position: relative;
+    z-index: 5;
+}
+
+.card-content.active {
+    max-height: 600px;
+    opacity: 1;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.content-text {
+    padding-top: 150px;
+}
+
+.content-text h4 {
+    margin: 15px 0 5px 0;
+    font-size: 1em;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.content-text p {
+    margin: 0;
+    font-size: 0.95em;
+    line-height: 1.4;
+    color: var(--color-white);
+}
+
+.bg-azul-gs1 {
+    background-color: var(--color-azul-gs1);
+    box-shadow: 0px 0px 15px var(--color-azul-gs1);
+}
+
+.bg-naranja {
+    background-color: var(--color-naranja-gs1);
+    box-shadow: 0px 0px 15px var(--color-naranja-gs1);
+}
+
+.bg-morado {
+    background-color: var(--color-morado);
+    box-shadow: 0px 0px 15px var(--color-morado);
+}
+
+.bg-rosa-gs1 {
+    background-color: var(--gs1-color-raspberry);
+    box-shadow: 0px 0px 15px rgba(243, 0, 186, 0.359);
+}
+
+
+/* --- SLIDE 12 (Arco Interactivo) --- */
+#slide-12 .slide-scroll-content {
+    background-image: url(../img/art_full_slide-12.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    overflow-y: auto;
+}
+
+.interactive-arc-layout {
+    position: relative;
+    width: 100%;
+    max-width: 900px;
+    height: auto;
+    margin: 50px auto;
+    margin-top: 10%;
+}
+
+.arc-item {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 15;
+    background-color: transparent !important;
+    background: transparent !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.btn-number {
+    background-color: transparent !important;
+    background: transparent !important;
+    border: none !important;
+    outline: none !important;
+    cursor: pointer;
+    padding: 5px;
+    transition: transform 0.2s;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn-number img {
+    width: 120px;
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.2));
+    background: transparent !important;
+}
+
+.btn-number:hover {
+    transform: scale(1.1);
+}
+
+.btn-number:focus,
+.btn-number:active {
+    background-color: transparent !important;
+    outline: none !important;
+    border: none !important;
+}
+
+#slide-12 .item-1 {
+    top: 80px;
+    left: 20%;
+    transform: translateX(-50%);
+}
+
+#slide-12 .item-2-1 {
+    top: 170px;
+    left: 35%;
+    transform: translateX(-50%);
+}
+
+#slide-12 .item-3 {
+    top: 170px;
+    left: 55%;
+    transform: translateX(-50%);
+}
+
+#slide-12 .item-4 {
+    top: 80px;
+    left: 70%;
+    transform: translateX(-50%);
+}
+
+#slide-12 .item-center {
+    top: 0;
+    left: 52%;
+    transform: translateX(-50%);
+    opacity: 0;
+}
+
+#slide-12 .item-center.visible {
+    opacity: 1;
+}
+
+.content-left-top {
+    right: 110%;
+    top: 0;
+    text-align: right;
+}
+
+.content-left-bottom {
+    right: 110%;
+    top: 50%;
+    text-align: right;
+}
+
+.content-right-bottom {
+    left: 110%;
+    top: 50%;
+    text-align: left;
+}
+
+.content-right-top {
+    left: 110%;
+    top: 0;
+    text-align: left;
+}
+
+.content-top-center {
+    top: -150px;
+    left: 30%;
+    transform: translateX(-50%);
+    width: 700px;
+
+}
+
+.arc-content {
+    position: absolute;
+    width: 280px;
+    background-color: transparent;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.4s ease;
+    z-index: 20;
+}
+
+.arc-content.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.arc-content h4 {
+    color: var(--color-azul-gs1);
+    font-size: 1em;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.arc-content p {
+    font-size: 0.85em;
+    line-height: 1.3;
+    color: var(--color-negro-texto);
+}
+
+.yellow-box {
+    width: 500px;
+    max-width: 600px;
+    padding: 15px;
+    border-radius: 5px;
+    text-align: left;
+}
+
+.yellow-box ul {
+    text-align: left;
+    padding-left: 20px;
+    font-size: 0.9em;
+}
+
+
+/* --- ESCENARIO DEL SLIDE 15 --- */
+
+/* 1. El Contenedor Principal (La Oficina) */
+.interactive-scene {
+    position: relative;
+    width: 100%;
+    max-width: 1000px; /* Ancho máximo de tu diseño */
+    height: 500px;     /* Ajusta según tu imagen de fondo */
+    margin: 0 auto;
+    margin-top: 5%;
+    
+    /* Tu imagen de fondo de la oficina vacía */
+    background-image: url('../img/fondo_oficina_slide-14.png'); 
+    background-size: cover;
+    background-position: center;
+    border-radius: 15px;
+    border-color: var(--color-white);
+    border-style: solid;
+    border-width: 2px;
+    overflow: hidden; /* Para que nada se salga del borde */
+    box-shadow: 0px 0px 15px var(--color-azul-gs1);
+}
+
+/* 2. Los Personajes (Wrapper) */
+.character-wrapper {
+    position: absolute;
+    bottom: 0; /* Pegados al piso */
+    width: 40%; /* Ocupan el 35% del ancho del escenario */
+    display: flex;
+    justify-content: center; /* Centrar elementos internos */
+}
+
+/* Posiciones Específicas */
+.char-woman {
+    left: 5%; /* Ubicación horizontal */
+    z-index: 10;
+}
+
+.char-man {
+    right: 5%; /* Ubicación horizontal */
+    z-index: 9;
+}
+
+/* La imagen del personaje */
+.char-img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* 3. El Botón (GIF) Flotante */
+.interaction-trigger {
+    position: absolute;
+    top: 40%; /* A la altura del pecho/boca aprox */
+    left: 50%;
+    transform: translateX(-50%); /* Centrado exacto sobre el personaje */
+    
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    width: 80px; /* Tamaño del GIF */
+    height: 80px;
+    z-index: 20;
+    transition: transform 0.2s;
+}
+
+.interaction-trigger:hover {
+    transform: translateX(-50%) scale(1.1);
+}
+
+.interaction-trigger img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* 4. Los Globos de Texto */
+.speech-bubble {
+    position: absolute;
+    top: -40%; /* Flotando arriba de la cabeza */
+    left: 50%;
+    transform: translateX(-50%);
+    
+    background-color: white;
+    padding: 15px 20px;
+    border-radius: 20px;
+    border-bottom-left-radius: 0; /* Pico del globo */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    width: 450px; /* Ancho del texto */
+    z-index: 30;
+    margin: 3%;
+    /* Animación de aparición */
+    animation: popIn 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+/* Estilo del texto */
+.speech-bubble p {
+    margin: 0;
+    color: var(--color-azul-gs1);
+    font-size: 0.95em;
+    line-height: 1.4;
+    text-align: center;
+}
+
+/* Clases de utilidad */
+.hidden {
+    display: none !important;
+}
+
+
+/* ==========================================================================
+   SLIDE 16: PESTAÑAS INTERACTIVAS (TABS) - VERSIÓN FINAL
+   ========================================================================== */
+#slide-16 .slide-scroll-content {
+    background-image: url(../img/art_full_slide-15.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+/* 1. CONTENEDOR PRINCIPAL */
+.tabs-container {
+    width: 100%;
+    max-width: 1000px;
+    margin: 30px auto;
+    padding: 0 20px;
+    /* Margen de seguridad lateral */
+    box-sizing: border-box;
+}
+
+/* 2. NAVEGACIÓN (BOTONES DE ARRIBA) */
+.tabs {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 5px;
+    /* En móvil, si no caben, que bajen */
+    flex-wrap: wrap;
+}
+
+.tabs li {
+    flex-grow: 1;
+    /* Todos del mismo ancho */
+    text-align: center;
+}
+
+.tabs li a {
+    display: block;
+    padding: 15px 10px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9em;
+    border-radius: 10px 10px 0 0;
+    transition: all 0.3s ease;
+
+    /* Estado Inactivo (Color base) */
+    background-color: #e0e6ed;
+    color: var(--color-azul-gs1);
+    border-bottom: 1px solid #ccc;
+}
+
+/* --- ESTADOS DE LA PESTAÑA --- */
+
+/* A) ACTIVA (Se pone blanca y conecta con el contenido) */
+.tabs li.active a {
+    background-color: var(--color-white);
+    color: var(--color-naranja-gs1);
+    border-top: 4px solid var(--color-naranja-gs1);
+    border-bottom: 1px solid var(--color-white);
+    /* Borra la línea para fusionar */
+    z-index: 5;
+    position: relative;
+    /* Necesario para el z-index */
+}
+
+/* B) HOVER (Solo si no está activa ni bloqueada) */
+.tabs li:not(.active):not(.locked) a:hover {
+    background-color: #d1d9e6;
+}
+
+/* C) BLOQUEADA (Gris y sin clic) */
+.tabs li.locked {
+    opacity: 0.6;
+    pointer-events: none;
+    /* IMPOSIBLE DAR CLIC */
+    filter: grayscale(100%);
+    cursor: not-allowed;
+}
+
+/* Icono de candado visual */
+.tabs li.locked a::after {
+    content: '🔒';
+    font-size: 0.8em;
+    margin-left: 5px;
+    opacity: 0.5;
+}
+
+/* 3. CONTENEDOR DE CONTENIDOS (CAJA BLANCA) */
+.tabs-content {
+    background-color: var(--color-white);
+    padding: 30px;
+    border-radius: 0 0 15px 15px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    border-top: 1px solid #e0e6ed;
+    margin-top: -1px;
+    /* Sube 1px para tapar el borde de los botones */
+    position: relative;
+    min-height: 300px;
+    /* Altura mínima para que no salte mucho */
+}
+
+/* --- MENSAJE DE BIENVENIDA (PLACEHOLDER) --- */
+.tabs-placeholder {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--color-azul-gs1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation: fadeIn 0.5s ease;
+}
+
+.tabs-placeholder h3 {
+    font-size: 1.3em;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+/* Cuando se activa una pestaña, ocultamos el placeholder */
+.tabs-content.has-active-tab .tabs-placeholder {
+    display: none;
+}
+
+/* --- PANELES INDIVIDUALES --- */
+.tabs-panel {
+    display: none;
+    /* Ocultos por defecto */
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.tabs-panel.active {
+    display: block;
+}
+
+/* 4. LAYOUT INTERNO (IZQUIERDA / DERECHA) */
+.panel-split {
+    display: flex;
+    gap: 30px;
+    align-items: stretch;
+    /* Misma altura */
+}
+
+/* Columna Izquierda (Lista y Audio) */
+.panel-left {
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.panel-left ul {
+    padding-left: 20px;
+    margin-top: 0;
+}
+
+.panel-left li {
+    margin-bottom: 10px;
+    line-height: 1.5;
+    color: var(--color-negro-texto);
+}
+
+/* Columna Derecha (Tarjeta de Color) */
+.panel-right {
+    width: 40%;
+    padding: 25px;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.panel-right h3 {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    font-weight: 800;
+}
+
+/* Colores Específicos de Tarjetas */
+.bg-naranja {
+    background-color: var(--color-naranja-gs1);
+    color: white;
+}
+
+.bg-naranja h3,
+.bg-naranja p {
+    color: white;
+}
+
+.bg-azul-gs1 {
+    background-color: var(--color-azul-gs1);
+    color: white;
+}
+
+.bg-azul-gs1 h3,
+.bg-azul-gs1 p {
+    color: white;
+}
+
+.bg-morado {
+    background-color: var(--color-morado);
+    color: white;
+}
+
+.bg-morado h3,
+.bg-morado p {
+    color: white;
+}
+
+/* =========================================================
+   ESTILOS DE AUDIO Y TARJETAS (VERSIÓN MINI REPRODUCTOR)
+   ========================================================= */
+
+/* 1. BASE DEL BOTÓN (Para todos) */
+.audio-play-btn,
+.universal-audio-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    outline: none;
+    position: relative; /* Indispensable para contener el reproductor */
+    z-index: 10;
+    display: inline-block;
+}
+
+/* 2. BOTONES PEQUEÑOS/REDONDOS (Slides 16, 17, 19) */
+/* Estos necesitan un tamaño fijo */
+.audio-ref .audio-play-btn,
+.box-audio-s17 .universal-audio-btn, 
+.box-audio-s19 .universal-audio-btn {
+    width: 50px;
+    height: 50px;
+}
+
+/* 3. TARJETAS DE FASE 2 (Grandes) */
+/* Estos necesitan crecer y acomodar el texto arriba */
+.icon-video-card {
+    /* Dimensiones */
+    width: 160px;
+    height: 260px;  /* Altura suficiente para icono + texto + reproductor */
+    
+    /* Estética */
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    
+    /* Layout Interno */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* Alineación Superior */
+    padding: 30px 10px 10px 10px; /* Padding-top alto para bajar el icono */
+    
+    transition: transform 0.3s, border-color 0.3s;
+    overflow: hidden; /* Para que el reproductor no se salga de las esquinas */
+}
+
+.icon-video-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Estilo de la imagen dentro de los botones */
+.audio-play-btn img,
+.universal-audio-btn img {
+    width: 100%;
+    /* height: 100%;  <-- Quitado para que en tarjetas no se estire */
+    object-fit: contain;
+    pointer-events: none; /* CRÍTICO: El clic pasa al botón */
+    transition: transform 0.2s;
+}
+
+/* Ajuste específico de imagen para tarjetas */
+.icon-video-card img {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 0px;
+}
+
+/* Hover solo en botones pequeños */
+.audio-ref .audio-play-btn:hover img,
+.box-audio-s17 .universal-audio-btn:hover img {
+    transform: scale(1.1);
+}
+
+/* Texto dentro de las tarjetas */
+.icon-video-card span {
+    font-size: .8em;
+    font-weight: 700;
+    color: var(--color-azul-gs1);
+    text-align: center;
+    line-height: 1.3;
+}
+
+/* ==================================================
+   MINI REPRODUCTOR FLOTANTE (Inyectado por JS)
+   ================================================== */
+
+/* Contenedor de la barra de controles (Fondo Blanco) */
+.audio-control-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 40px; /* Zona clicable cómoda */
+    
+    background-color: rgba(255, 255, 255, 0.98); /* Casi sólido para tapar el fondo */
+    border-top: 1px solid #e0e0e0;
+    
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    box-sizing: border-box;
+    z-index: 20;
+    
+    /* Animación de entrada */
+    animation: slideUpFade 0.3s ease-out;
+    border-radius: 0 0 15px 15px; /* Sigue la curva de la tarjeta */
+}
+
+
+
+/* Botón Play/Pausa Pequeño (❚❚ o ▶) */
+.mini-play-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2em; /* Tamaño del icono */
+    color: var(--color-azul-gs1);
+    margin-right: 10px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 25px;
+    height: 100%;
+}
+
+.mini-play-btn:hover {
+    color: var(--color-naranja-gs1);
+}
+
+/* El Riel de la barra de tiempo (Gris) */
+.mini-progress-track {
+    flex-grow: 1; /* Ocupa todo el espacio restante */
+    height: 6px;
+    background-color: #e0e0e0;
+    border-radius: 3px;
+    cursor: pointer; /* Manita para indicar clic */
+    position: relative;
+    overflow: hidden;
+}
+
+/* El Relleno de color (Naranja) */
+.mini-progress-fill {
+    height: 100%;
+    width: 0%;
+    background-color: var(--color-naranja-gs1);
+    transition: width 0.1s linear; /* Movimiento fluido */
+    pointer-events: none; /* Deja pasar el clic al track */
+}
+
+/* ESTADO ACTIVO: Borde Naranja en la Tarjeta */
+.universal-audio-btn.playing {
+    border-color: var(--color-naranja-gs1) !important;
+    box-shadow: 0 5px 20px rgba(236, 99, 60, 0.25);
+}
+
+/* =========================================
+   REPRODUCTOR FLOTANTE GLOBAL
+   ========================================= */
+#floating-audio-player {
+    position: fixed;
+    bottom: 90px; /* Justo encima de tu barra de navegación azul */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 600px;
+    background-color: var(--color-azul-gs1); /* Azul GS1 */
+    border-radius: 50px;
+    padding: 10px 25px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    z-index: 9000; /* Encima de todo */
+    transition: bottom 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Estado oculto (se va para abajo) */
+.player-hidden {
+    bottom: -100px !important;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.player-content {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 15px;
+    color: white;
+}
+
+/* Botones del player */
+.fp-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: white;
+    font-size: 1.2em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+    transition: transform 0.2s;
+}
+.fp-btn:hover { transform: scale(1.1); }
+.fp-btn.close { font-size: 1em; color: #ccc; margin-left: 10px; }
+.fp-btn.close:hover { color: var(--color-naranja-gs1); }
+
+/* Barra de progreso */
+.fp-progress-container {
+    flex-grow: 1;
+    height: 6px;
+    background-color: rgba(255,255,255,0.3);
+    border-radius: 3px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.fp-progress-fill {
+    height: 100%;
+    width: 0%;
+    background-color: var(--color-naranja-gs1);
+    border-radius: 3px;
+    transition: width 0.1s linear;
+}
+
+/* Textos de tiempo */
+#fp-current-time, #fp-duration {
+    font-size: 0.8em;
+    font-family: monospace;
+    min-width: 40px;
+}
+
+/* Si no tienes SVG de play, usa esto para simularlo con texto/emoji */
+#fp-play-icon { 
+    width: 20px; 
+    height: 20px; 
+    filter: brightness(0) invert(1); /* Blanco */
+}
+
+/* =============================================== */
+/* ESTILOS ESPECÍFICOS SLIDE 17 (CASO DE ESTUDIO)  */
+/* =============================================== */
+
+/* 1. FONDO DEL SLIDE */
+#slide-17 .slide-scroll-content {
+    /* Imagen de fondo de la oficina borrosa */
+    background-image: url('../img/art_full_slide-16.png');
+    background-size: cover;
+    background-position: center;
+
+    /* Layout vertical */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+    
+    height: 100%;
+    /* Asegura que cubra */
+}
+
+/* 2. CAJA NARANJA SUPERIOR */
+.box-1 {
+    background-color: var(--color-naranja-gs1);
+    width: 90%;
+    max-width: 900px;
+    padding: 15px 25px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    flex-shrink: 0;
+    /* No dejes que se aplaste */
+}
+
+.box-txt-1 p {
+    color: white;
+    margin: 0;
+    font-weight: 600;
+    font-size: 1.1em;
+}
+
+/* 3. TARJETA CENTRAL (LA DEL PROBLEMA) */
+.box-center {
+    /* Esto crea el marco redondeado */
+    position: relative !important;
+    width: 90%;
+    max-width: 900px;
+    min-height: 350px; 
+    height: auto;
+
+
+    border-radius: 20px;
+    overflow: hidden;
+    /* Corta la imagen para que no se salga de las curvas */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+
+    /* Quitamos flex del padre para evitar conflictos con absolute */
+    display: block;
+}
+
+/* --- LA IMAGEN DE FONDO --- */
+.content-img-bg {
+    position: absolute !important;
+    top: 0;
+    left: 0;
+    width: 100% !important;
+    height: 100% !important;
+    z-index: 1;
+    /* Al fondo */
+}
+
+.content-img-bg img {
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    align-items: flex-start;
+    object-fit: cover;
+    /* Llena todo el espacio sin deformarse */
+    display: block;
+}
+
+/* --- EL TEXTO (OVERLAY) --- */
+.content-txt-overlay {
+    position: relative !important;
+    z-index: 10;
+    /* Encima de la imagen */
+
+    width: 50% !important;
+    /* Ocupa todo el ancho */
+    
+    /* Ocupa todo el alto */
+    min-height: 350px;
+    height: auto;
+    /* Asegura que cubra la altura mínima */
+
+    /* EL FONDO NEGRO TRANSPARENTE */
+    background-color: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+
+    /* Centrado del texto */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    padding: 40px;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.content-txt-overlay h3 {
+    color: var(--color-naranja-gs1);
+    font-size: 1.2em;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.content-txt-overlay p {
+    color: white;
+    font-size: 1em;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    max-width: 700px;
+    /* Para que las líneas no sean eternas */
+}
+
+/* 4. CAJA INFERIOR (AUDIO - TEXTO AL LADO) */
+.box-audio-s17 {
+    width: 90%;
+    max-width: 700px;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: var(--color-white);
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 40px;
+
+    /* ALINEACIÓN HORIZONTAL */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    text-align: left;
+}
+
+.box-audio-s17 span {
+    flex: 1;
+    /* El texto ocupa el espacio disponible */
+    font-size: 0.95em;
+    font-weight: 500;
+}
+
+/* Ajuste del botón de audio */
+.box-audio-s17 .universal-audio-btn {
+    width: 60px;
+    height: 60px;
+    flex-shrink: 0;
+    /* Evita que se aplaste */
+    transition: transform 0.2s;
+}
+
+.box-audio-s17 .universal-audio-btn:hover {
+    transform: scale(1.1);
+}
+
+
+/* =============================================== */
+/* RESPONSIVE PARA SLIDE 18 Tabla               */
+/* =============================================== */
+
+#slide-18 .slide-scroll-content {
+    background-image: url(../img/art_full_slide-15.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.txt-STab-1 {
+    width: 90%;
+    max-width: 900px;
+    padding: 30px;
+    flex-shrink: 0;
+    /* No dejes que se aplaste */
+    box-sizing: border-box;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+
+/* 1. CONTENEDOR (CORREGIDO) */
+.table-secction {
+    width: 95%;
+    max-width: 1000px;
+    margin: 5px auto;
+    background-color: var(--color-white);
+
+    /* Aquí está el truco: quitamos overflow: hidden para que no corte */
+    /* overflow: hidden;  <-- Bórralo o coméntalo */
+
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    padding: 0;
+    align-items: center;
+    /* Aseguramos que se comporte como bloque completo */
+    display: block;
+    height: auto;
+    /* Deja que crezca tanto como necesite */
+}
+
+/* Para mantener los bordes redondeados en la tabla sin usar overflow: hidden */
+.table-secction table tr:first-child th:first-child {
+    border-top-left-radius: 15px;
+}
+
+.table-secction table tr:first-child th:last-child {
+    border-top-right-radius: 15px;
+}
+
+.table-secction table tr:last-child td:first-child {
+    border-bottom-left-radius: 15px;
+}
+
+.table-secction table tr:last-child td:last-child {
+    border-bottom-right-radius: 15px;
+}
+
+/* 2. ESTRUCTURA BASE DE LA TABLA */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    /* Elimina doble borde */
+    font-family: 'Montserrat', sans-serif;
+    text-align: left;
+}
+
+/* 3. ENCABEZADOS (Fila Superior) */
+/* Seleccionamos los TH de la primera fila */
+.table-secction tr:first-child th {
+    background-color: var(--color-azul-gs1);
+    color: var(--color-white);
+    padding: 20px;
+    font-size: 1em;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+    border-bottom: 3px solid var(--color-naranja-gs1);
+    /* Detalle de color */
+}
+
+/* 4. CELDAS Y FILAS DEL CUERPO */
+
+/* El "Título" de cada fila (Oportunidad, Claridad...) */
+.table-secction tr:not(:first-child) th {
+    background-color: #f8f9fa;
+    /* Gris muy clarito para diferenciar */
+    color: var(--color-azul-secundario);
+    padding: 15px 20px;
+    font-weight: 700;
+    border-bottom: 1px solid #eee;
+    vertical-align: middle;
+    /* Centrado vertical */
+}
+
+/* El contenido normal (Falla, Consecuencias) */
+td {
+    padding: 15px 20px;
+    color: var(--color-negro-texto);
+    border-bottom: 1px solid #eee;
+    line-height: 1.5;
+    font-size: 0.95em;
+    vertical-align: top;
+}
+
+/* Efecto Hover (Al pasar el mouse por la fila) */
+.table-secction tr:not(:first-child):hover td,
+.table-secction tr:not(:first-child):hover th {
+    background-color: #eef4fc;
+    /* Azul muy pálido */
+    transition: background-color 0.3s ease;
+}
+
+
+.box-C {
+    width: 90%;
+    max-width: 900px;
+    padding: 20px 30px;
+    /* Relleno interno */
+    margin: 20px auto;
+    /* Centrado en la pantalla */
+
+    /* Estilos de la caja (Opcional: fondo y sombra) */
+    background-color: var(--color-white);
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+
+    /* --- LA MAGIA: LADO A LADO --- */
+    display: flex;
+    flex-direction: row;
+    /* Elementos en fila horizontal */
+    align-items: center;
+    /* Centrados verticalmente */
+    gap: 25px;
+    /* Espacio entre el icono y el texto */
+
+    text-align: left;
+    /* Texto alineado a la izquierda */
+}
+
+/* ICONO (Izquierda) */
+.icon-wrapper {
+    flex-shrink: 0;
+    /* Que no se aplaste */
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.icon-wrapper img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+/* TEXTOS (Derecha) */
+.text-content {
+    flex-grow: 1;
+    /* Ocupa el resto del espacio */
+}
+
+.text-content h3 {
+    color: var(--color-naranja-gs1);
+    /* O el color que prefieras */
+    margin: 0 0 5px 0;
+    /* Poco margen abajo */
+    font-size: 1.2em;
+    text-transform: uppercase;
+}
+
+.text-content p {
+    margin: 0;
+    line-height: 1.4;
+    color: var(--color-negro-texto);
+}
+
+/* ==========================================================================
+   Slide 19 Audio y Tabla 
+   ========================================================================== */
+
+#slide-19 .slide-scroll-content {
+    background-image: url(../img/art_full_slide-15.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.box-audio-s19 {
+    width: 90%;
+    max-width: 400px;
+    background-color: var(--color-azul-secundario);
+    color: var(--color-white);
+    margin-top: 5%;
+    padding: 10px;
+    border-radius: 15px;
+    margin-bottom: 10px;
+
+
+    /* ALINEACIÓN HORIZONTAL */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    text-align: center;
+}
+
+.box-audio-s19 span {
+    flex: 1;
+    /* El texto ocupa el espacio disponible */
+    font-size: 0.95em;
+    font-weight: 500;
+}
+
+/* Ajuste del botón de audio */
+.box-audio-s19 .universal-audio-btn {
+    width: 60px;
+    height: 60px;
+    flex-shrink: 0;
+    /* Evita que se aplaste */
+    transition: transform 0.2s;
+}
+
+.box-audio-s19 .universal-audio-btn:hover {
+    transform: scale(1.1);
+}
+
+/* --- CORRECCIÓN DE ANIMACIÓN Y VISIBILIDAD --- */
+
+.content-hidden {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+/* Clase para mostrar el contenedor padre */
+.content-visible {
+    display: block;
+    /* El contenedor aparece, los hijos son los que bailan */
+}
+
+/* 1. ESTILOS BASE DE LOS HIJOS (Corrección de nombre de animación) */
+.content-visible .content-Secret > * {
+    opacity: 0; 
+    transform: translateY(20px);
+    animation: fadeInUpStagger 0.8s ease forwards;
+}
+
+/* 2. RETRASOS (CASCADA) */
+
+/* El Texto de la pregunta (1er hijo) */
+.content-visible .content-Secret > *:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+/* La Tabla (2do hijo) */
+.content-visible .content-Secret > *:nth-child(2) {
+    animation-delay: 0.5s; /* Espera medio segundo */
+}
+
+/* 3. EL BOTÓN DE INSTRUCCIÓN (ESTABA AFUERA) */
+/* Le agregamos animación para que aparezca al final */
+.content-visible .instruccion {
+    opacity: 0;
+    animation: fadeInUpStagger 0.8s ease forwards;
+    animation-delay: 1.5s; /* Aparece hasta el final */
+}
+
+
+/* ==========================================================================
+   Slide 19 Audio y Tabla 
+   ========================================================================== */
+.slide-19 .box-title p {
+    text-align: left;
+}
+
+/* 1. Quitamos los puntos por defecto del navegador */
+ul.lista-gs1 {
+    text-align: left;
+    list-style: none;
+    /* Adiós punto negro */
+    padding-left: 0;
+    /* Quitamos el padding default si quieres alinearlo a la izq */
+    margin: 0;
+}
+
+/* 2. Damos espacio al texto */
+ul.lista-gs1 li {
+    position: relative;
+    /* Necesario para anclar el cuadrado */
+    padding-left: 25px;
+    /* Espacio para que quepa el cuadrado */
+    margin-bottom: 15px;
+    /* Separación entre renglones */
+    line-height: 1.5;
+}
+
+/* 3. Dibujamos el Cuadrado Naranja */
+ul.lista-gs1 li::before {
+    content: '';
+    /* Necesario para que aparezca */
+    position: absolute;
+    /* Lo sacamos del flujo para ubicarlo exacto */
+
+    /* Ubicación */
+    left: 0;
+    top: 6px;
+    /* Ajusta este número para centrarlo con la primera línea de texto */
+
+    /* Tamaño y Forma */
+    width: 12px;
+    height: 12px;
+    background-color: var(--color-naranja-gs1);
+    /* Tu variable de color */
+
+    /* Opcional: Si quisieras círculo en el futuro, pones border-radius: 50% */
+    /* border-radius: 2px;  <-- Descomenta si quieres puntas suavizadas */
+}
+
+#slide-20 .split-col-content p{
+ padding: 5%;
+ text-align: justify;
+}
+#slide-22 .split-col-content h2 {
+    color: var(--color-naranja-gs1);
+}
+
+
+/* ==========================================================================
+   ESTILOS SLIDE 23: PROTOCOLO (DISEÑO FINAL COMPLETO)
+   ========================================================================== */
+.hidden {
+    display: none !important;
+    /* El !important es la clave aquí */
+    opacity: 0 !important;
+    pointer-events: none !important;
+    z-index: -1 !important;
+}
+
+/* 1. SECCIÓN HERO (FONDO ROJO SUPERIOR) */
+.protocol-hero {
+    position: relative;
+    width: 100%;
+    /* Fondo rojo con imagen de oficina */
+    background: linear-gradient(rgba(236, 98, 60, 0.367), rgba(236, 130, 60, 0.808)),
+        url(../img/art_full_slide-23.png);
+    background-size: cover;
+    background-position: top;
+    /* Espacio interno generoso abajo para que los botones tengan espacio para colgar */
+    padding: 30px 20px 170px 20px;
+
+    text-align: center;
+    color: white;
+
+    /* Sin borde redondeado abajo para que corte limpio como en tu imagen */
+
+    z-index: 1;
+}
+
+/* Textos del Hero */
+.hero-text p {
+    max-width: 800px;
+    margin: 20px auto;
+    font-size: 1.1em;
+    color: white !important;
+    line-height: 1.5;
+}
+
+.hero-text strong {
+    color: white;
+}
+
+/* Caja Amarilla */
+.attention-box-yellow {
+    background-color: var(--color-amarillo);
+    color: var(--color-negro-texto);
+    width: 90%;
+    max-width: 650px;
+    margin: 0 auto 15px auto;
+    padding: 15px 25px;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    text-align: left;
+    margin-bottom: 5%;
+    margin-top: 5%;
+}
+
+.attention-box-yellow img {
+    width: 45px;
+    flex-shrink: 0;
+}
+
+.attention-box-yellow p {
+    margin: 0;
+    font-weight: 600;
+    font-size: 0.95em;
+    color: var(--color-negro-texto);
+}
+
+
+/* 2. MENÚ DE FASES (BOTONES COLGANTES) */
+.phases-container {
+    display: flex;
+    justify-content: center;
+    gap: 70px;
+    /* Espacio amplio entre tarjetas */
+
+    /* MARGEN NEGATIVO: Sube los botones sobre lo rojo */
+    margin-top: -90px;
+
+    position: relative;
+    z-index: 10;
+    padding-bottom: 20px;
+}
+
+/* Tarjetas de Fase */
+.phase-card {
+    background: white;
+    border: none;
+    width: 140px;
+    height: 180px;
+
+    /* Sombra con filtro */
+    filter: drop-shadow(0 10px 10px rgba(0, 0, 0, 0.2));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 15px;
+    /* Redondeado superior */
+    transition: transform 0.3s;
+    padding: 10px 10px 30px 10px;
+}
+
+.phase-card:hover {
+    transform: translateY(-10px);
+}
+
+/* Contenido del botón */
+.phase-card img {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+    margin: 10px 0;
+}
+
+.phase-label {
+    text-transform: uppercase;
+    color: var(--color-azul-gs1);
+    font-size: 1.5em;
+    font-weight: 300;
+}
+
+.phase-sub {
+    font-weight: 700;
+    color: var(--color-azul-gs1);
+    font-size: 0.9em;
+    text-transform: uppercase;
+}
+
+/* Estados */
+.phase-card.active {
+    background-color: #f9f9f9;
+    filter: drop-shadow(0 0 5px var(--color-azul-cielo));
+}
+
+.phase-card.active .phase-label {
+    color: var(--color-naranja-gs1);
+    font-weight: 700;
+}
+
+.phase-card.locked {
+    opacity: 0.7;
+    filter: grayscale(100%);
+    cursor: not-allowed;
+}
+
+
+/* 3. VISTAS DE DETALLE (OVERLAYS - PANTALLA COMPLETA) */
+.phase-overlay {
+    /* POSICIONAMIENTO ABSOLUTO TOTAL */
+    position: absolute !important;
+    top: 0;
+    left: 0;
+
+    width: 100% !important;
+    height: 100% !important;
+
+    padding: 40px 20px;
+    /* Margen interior */
+    box-sizing: border-box;
+    text-align: center;
+
+    /* Animación de entrada */
+    animation: fadeIn 0.5s ease;
+
+    /* Capas y Scroll */
+    z-index: 50;
+    /* Tapa al menú */
+    overflow-y: auto;
+
+    /* Centrado Flex */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* Centra verticalmente si hay espacio */
+}
+
+/* Fondos Específicos por Fase */
+#view-fase-1 {
+    /* Tinte oscuro */
+    background: linear-gradient(rgba(29, 29, 29, 0.7), rgba(10, 51, 126, 0.7)),
+        url('../img/art_full_oficina.png');
+    background-size: cover;
+    background-position: center;
+}
+
+#view-fase-1 .split-col-content {
+    /* 1. Ancho automático según el texto */
+    width: fit-content !important;
+    max-width: 500px;
+    /* Un tope para que no se haga eterna si hay mucho texto */
+
+    /* 2. Alto automático (evita que se estire hacia abajo) */
+    height: 300px !important;
+    flex-grow: 0 !important;
+    /* Deja de intentar llenar el espacio vacío */
+
+    /* 3. Alineación */
+    margin: 0 auto;
+    /* Lo centra horizontalmente. Quítalo si lo quieres a la izquierda */
+
+    /* 4. Estética (Caja de cristal ajustada) */
+    background-color: rgba(6, 6, 6, 0.382) !important;
+    /* Semi-transparente */
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.77);
+    border-radius: 15px;
+    padding: 25px !important;
+    /* Espacio interno cómodo */
+    color: white;
+}
+
+#view-fase-1 .video-split-layout {
+    display: flex;
+    flex-direction: row;
+    /* Asegura que estén lado a lado */
+
+    /* ⭐ LA CLAVE: ALINEACIÓN VERTICAL CENTRADA ⭐ */
+    align-items: center;
+
+    /* Distribución horizontal */
+    justify-content: center;
+    gap: 60px;
+    /* Espacio generoso entre el cuadro y los botones */
+
+    width: 100%;
+    max-width: 1100px;
+    
+    /* Limite para que no se separen demasiado en pantallas grandes */
+    
+    /* Centrado en la pantalla */
+}
+
+#view-fase-1 .vertical-buttons {
+    /* Le damos el mismo peso que al texto */
+    width: 45%;
+    max-width: 500px;
+
+    /* Aseguramos que los botones se centren */
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+#view-fase-2 {
+    /* Tinte blanco */
+    background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)),
+        url('../img/art_full_fase2.png');
+    background-size: cover;
+    background-position: center;
+}
+
+#view-fase-3 {
+    background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)),
+        url('../img/art_full_fase3.png');
+    background-size: cover;
+    background-position: center;
+}
+
+/* Títulos dentro del Overlay */
+.phase-overlay h3 {
+    color: var(--color-white);
+    /* Blanco si es fondo oscuro, o cambia a azul */
+    font-size: 2em;
+    margin-top: 10%;
+    margin-bottom: 30px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+
+}
+
+/* Para fondos claros (Fase 2 y 3), sobrescribimos el color */
+#view-fase-2 h3,
+#view-fase-3 h3 {
+    color: var(--color-azul-gs1);
+    text-shadow: none;
+}
+
+.phase-overlay .top-text-box .lista-gs1 {
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-top: 5%;
+    margin-bottom: ;
+}
+
+/* 4. GRIDS DE CONTENIDO INTERNO */
+
+/* FASE 1: Botones Verticales */
+.vertical-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    max-width: 500px;
+}
+
+.btn-video-play {
+    width: 90%;
+    /* Ocupa el ancho del contenedor */
+    height: 70px;
+    background-color: var(--color-naranja-gs1);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    border: 2px solid transparent;
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+.btn-video-play img {
+    width: 40px;
+    margin-right: 15px;
+}
+
+.btn-video-play span {
+    font-size: 1.1em;
+    font-weight: 600;
+    text-align: left;
+}
+
+.btn-video-play:hover {
+    background-color: var(--color-azul-cielo);
+    transform: scale(1.02);
+}
+
+/* FASE 2: Grid 5 Videos */
+.buttons-grid-5 {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 30px;
+}
+/* --- TARJETAS DE AUDIO/VIDEO (Fase 2) --- */
+.icon-video-card {
+    width: 150px;      /* Un poco más ancho para que el texto respire */
+    height: 200px;     /* Más alto para evitar que el texto se corte */
+    
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 15px;
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+    /* --- CAMBIO CLAVE: ALINEACIÓN SUPERIOR --- */
+    justify-content: flex-start; /* Alinea los elementos al inicio (arriba) */
+    padding-top: 30px;           /* Empuja el icono hacia abajo 30px desde el borde */
+    padding-left: 10px;          /* Márgenes laterales para el texto */
+    padding-right: 10px;
+    
+    cursor: pointer;
+    transition: transform 0.3s, border-color 0.3s;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.icon-video-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--color-naranja-gs1);
+}
+
+.icon-video-card img {
+    width: 50px;       /* Tamaño del icono */
+    height: auto;
+    margin-bottom: 15px; /* Espacio entre el icono y el texto */
+    flex-shrink: 0;    /* Evita que el icono se aplaste */
+}
+
+.icon-video-card span {
+    font-size: 1.5em;  /* Tamaño de letra legible */
+    font-weight: 700;
+    color: var(--color-azul-gs1);
+    text-align: center;
+    line-height: 1.3;  /* Mejor espaciado entre líneas de texto */
+}
+
+/* FASE 3: Grid 3 Descargas */
+.buttons-grid-3 {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-top: 30px;
+}
+
+.download-card {
+    width: 200px;
+    padding: 30px;
+    background: white;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.3s;
+    border: 1px solid #eee;
+}
+
+.download-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--color-naranja-gs1);
+}
+
+.download-card:hover span {
+    color: var(--color-naranja-gs1)
+}
+
+.download-card img {
+    width: 60px;
+    margin-bottom: 20px;
+}
+
+.download-card span {
+    font-weight: 700;
+    color: var(--color-azul-gs1);
+    font-size: 1.1em;
+}
+
+
+
+
+/* ==========================================================================
+   ESTILOS SLIDE 24: columnas
+   ========================================================================== */
+#slide-24 .slide-scroll-content {
+    background-color: var(--color-naranja-gs1);
+}
+
+#slide-24 .box-text p {
+    color: white;
+    font-size: 1.5em;
+    padding: 2%;
+    padding-left: 6%;
+    padding-right: 6%;
+}
+
+.seccion-col {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 40px;
+    width: 100%;
+    max-width: 1100px;
+    margin: 20px auto;
+    padding: 0 20px;
+    flex-wrap: wrap;
+
+}
+
+.seccion-col-1,
+.seccion-col-2,
+.seccion-col-3 {
+    width: 300px;
+    max-width: 100%;
+    height: 450px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+    background-color: var(--color-white);
+    box-shadow: 5px 10px 10px rgba(0, 0, 0, 0.301);
+    border-radius: 15px;
+    border-color: rgb(218, 218, 218);
+    padding: 15px;
+}
+
+.seccion-col-1 h3 {
+    color: var(--gs1-color-raspberry);
+    font-size: 1.5em;
+    font-weight: 900;
+    text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.16);
+    padding-bottom: 15px;
+}
+
+#slide-24 .seccion-col-1 ul.lista-gs1 li::before {
+    content: '';
+    /* Necesario para que aparezca */
+    position: absolute;
+    /* Lo sacamos del flujo para ubicarlo exacto */
+
+    /* Ubicación */
+    left: 0;
+    top: 6px;
+    /* Ajusta este número para centrarlo con la primera línea de texto */
+
+    /* Tamaño y Forma */
+    width: 10px;
+    height: 10px;
+    background-color: var(--gs1-color-raspberry);
+    /* Tu variable de color */
+
+    /* Opcional: Si quisieras círculo en el futuro, pones border-radius: 50% */
+    /* border-radius: 2px;  <-- Descomenta si quieres puntas suavizadas */
+}
+
+
+
+.seccion-col-2 h3 {
+    color: var(--color-azul-cielo);
+    font-size: 1.5em;
+    font-weight: 900;
+    text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.16);
+    padding-bottom: 15px;
+}
+
+#slide-24 .seccion-col-2 ul.lista-gs1 li::before {
+    content: '';
+    /* Necesario para que aparezca */
+    position: absolute;
+    /* Lo sacamos del flujo para ubicarlo exacto */
+
+    /* Ubicación */
+    left: 0;
+    top: 6px;
+    /* Ajusta este número para centrarlo con la primera línea de texto */
+
+    /* Tamaño y Forma */
+    width: 10px;
+    height: 10px;
+    background-color: var(--color-azul-cielo);
+    /* Tu variable de color */
+
+    /* Opcional: Si quisieras círculo en el futuro, pones border-radius: 50% */
+    /* border-radius: 2px;  <-- Descomenta si quieres puntas suavizadas */
+}
+
+
+
+.seccion-col-3 h3 {
+    color: var(--color-morado);
+    font-size: 1.5em;
+    font-weight: 900;
+    text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.16);
+    padding-bottom: 15px;
+}
+
+#slide-24 .seccion-col-3 ul.lista-gs1 li::before {
+    content: '';
+    /* Necesario para que aparezca */
+    position: absolute;
+    /* Lo sacamos del flujo para ubicarlo exacto */
+
+    /* Ubicación */
+    left: 0;
+    top: 6px;
+    /* Ajusta este número para centrarlo con la primera línea de texto */
+
+    /* Tamaño y Forma */
+    width: 10px;
+    height: 10px;
+    background-color: var(--color-morado);
+
+    /* Tu variable de color */
+
+    /* Opcional: Si quisieras círculo en el futuro, pones border-radius: 50% */
+    /* border-radius: 2px;  <-- Descomenta si quieres puntas suavizadas */
+}
+
+.btn-descraga-info {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.icon-fase {
+    width: 50px;
+    height: 50px;
+    margin-right: 8px;
+}
+
+/* ==========================================================================
+   6. QUIZ Y RESULTADOS
+   ========================================================================== */
+.quiz-intro {
+    background-image: url(../img/imagen_quiz_p01.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: flex;
+    height: 100%;
+    width: 100%;
+    justify-content: flex-start;
+}
+
+.intro-box {
+    background-color: var(--color-white);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    width: 90%;
+    height: 230px;
+    margin-left: 5%;
+    margin-top: 10%;
+    align-items: center;
+    animation: slideInLeftBounce 1s ease-out forwards;
+}
+
+.quiz-container {
+    background-image: url(../img/imagen_quiz_p02.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+    height: 100%;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+
+.quiz-container.visible {
+    display: flex !important;
+}
+
+.quiz-content-wrapper {
+    background: rgba(0, 0, 0, 0.75);
+    padding: 30px;
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    width: 90%;
+    max-width: 700px;
+    height: auto;
+    max-height: 90%;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+    color: white;
+    margin: 0;
+}
+
+.question-wrapper {
+    display: none;
+    width: 100%;
+}
+
+.question-wrapper.active {
+    display: block;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.question-text {
+    font-size: 1.2em;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 20px;
+    line-height: 1.4;
+}
+
+.question-wrapper h3 {
+    color: #ffc107;
+    font-size: 0.9em;
+    font-weight: 300;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+    letter-spacing: 1px;
+}
+
+.options-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+}
+
+.options-container label {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    padding: 10px 15px;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    font-size: 1em;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    height: auto;
+    min-height: 60px;
+}
+
+.options-container label:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-color: var(--color-naranja-gs1);
+    transform: translateX(5px);
+}
+
+.options-container input[type="radio"] {
+    accent-color: var(--color-naranja-gs1);
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+}
+
+.submit-answer-btn {
+    margin-top: 25px;
+    align-self: flex-start;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+    text-transform: uppercase;
+    background-color: var(--color-naranja-gs1);
+    color: var(--color-white);
+    transition: all 0.2s;
+}
+
+.submit-answer-btn:hover:not(:disabled) {
+    background-color: #ff8c00;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(236, 99, 60, 0.4);
+}
+
+#feedback-popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 5000;
+    background-color: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+#feedback-popup-overlay.show {
+    opacity: 1;
+}
+
+#feedback-popup-box {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 450px;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    transform: scale(0.9);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+#feedback-popup-overlay.show #feedback-popup-box {
+    transform: scale(1);
+}
+
+#feedback-popup-box.is-success {
+    border-top: 8px solid var(--color-acierto-correcto);
+}
+
+#feedback-popup-box.is-success #feedback-title {
+    color: var(--color-acierto-correcto);
+}
+
+/* Error (Rojo) */
+#feedback-popup-box.is-error {
+    border-top: 8px solid var(--color-error-incorrecto);
+}
+
+#feedback-popup-box.is-error #feedback-title {
+    color: var(--color-error-incorrecto);
+}
+
+/* Alerta (Amarillo) */
+#feedback-popup-box.is-warning {
+    border-top: 8px solid #ffc107;
+}
+
+#feedback-title {
+    text-align: center !important;
+    /* Sobrescribe el estilo global de h2 */
+    width: 100%;
+    display: block;
+    margin-bottom: 15px;
+}
+
+#feedback-message {
+    text-align: center !important;
+    width: 100%;
+    display: block;
+}
+
+.quiz-results {
+    background-image: url('../img/imagen_quiz_p02.png');
+    background-size: cover;
+    background-position: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 20;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.7);
+    background-blend-mode: overlay;
+}
+
+.quiz-results.visible {
+    display: flex;
+}
+
+.quiz-results-box {
+    background: white;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    max-width: 600px;
+    width: 90%;
+    position: relative;
+    z-index: 30;
+    animation: bounceInUp 0.8s ease forwards;
+}
+
+.failed-score {
+    color: var(--color-error-incorrecto);
+}
+
+.passed-score {
+    color: var(--color-acierto-correcto);
+}
+
+
+
+#slide-21 .quiz-intro {
+    background-image: url(../img/art_full_slide-19.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: flex;
+    height: 100%;
+    width: 100%;
+    justify-content: flex-start;
+}
+
+#slide-21 .quiz-container {
+    background-image: url(../img/art_full_2_slide-19.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+    height: 100%;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+#slide-21 .quiz-results {
+    background-image: url('../img/art_full_2_slide-19.png');
+    background-size: cover;
+    background-position: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 20;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.7);
+    background-blend-mode: overlay;
+}
+
+
+
+#slide-25 .quiz-intro {
+    background-image: url(../img/art_full_1_quiz-3.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: flex;
+    height: 100%;
+    width: 100%;
+    justify-content: flex-start;
+}
+
+#slide-25 .quiz-container {
+    background-image: url(../img/art_full_2_quiz-3.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+    height: 100%;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+#slide-25 .quiz-results {
+    background-image: url('../img/art_full_3_quiz-3.png');
+    background-size: cover;
+    background-position: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 20;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.7);
+    background-blend-mode: overlay;
+}
+
+#slide-32 .quiz-intro {
+    background-image: url(../img/art_full_1_quiz-4.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: flex;
+    height: 100%;
+    width: 100%;
+    justify-content: flex-start;
+}
+
+#slide-32 .quiz-container {
+    background-image: url(../img/art_full_2_quiz-4.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+    height: 100%;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+#slide-32 .quiz-results {
+    background-image: url('../img/art_full_3_quiz-4.png');
+    background-size: cover;
+    background-position: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 20;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.7);
+    background-blend-mode: overlay;
+}
+
+
+#slide-35 .quiz-intro {
+    background-image: url(../img/art_full_1_quiz-F.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: flex;
+    height: 100%;
+    width: 100%;
+    justify-content: flex-start;
+}
+
+#slide-35 .intro-box{
+    background-color: var(--color-white);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    width: 90%;
+    height: 400px;
+    margin-left: 5%;
+    margin-top: 10%;
+    align-items: center;
+    animation: slideInLeftBounce 1s ease-out forwards;
+}
+
+#slide-35 .quiz-container {
+    background-image: url(../img/art_full_2_quiz-F.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+    height: 100%;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+.step-video p{
+    color: white;
+}
+#slide-35 .quiz-results {
+    background-image: url('../img/art_full_3_quiz-F.png');
+    background-size: cover;
+    background-position: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 20;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.7);
+    background-blend-mode: overlay;
+}
+
+
+/* =============================================== */
+/* ESTILOS SLIDE 27                                */
+/* =============================================== */
+#slide-27 .slide-scroll-content {
+    background-image: url(../img/art_full_slide-27.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    align-items: center;
+}
+
+#slide-27 .box-text {
+    background-color:  rgba(255, 98, 0, 0.796);
+    margin: 5%;
+    padding: 2%;
+    width: 90%;
+    max-width: 100%;
+    border-radius: 15px;
+    height: fit-content;
+    box-shadow: 0px 10px 30px rgba(32, 32, 32, 0.796);;
+}
+
+#slide-27 .box-text ul.lista-gs1 li::before {
+    /* En lugar de color, usa background-color */
+    background-color: var(--color-amarillo);
+}
+#slide-27 .box-text p{
+    color: white;
+    text-align: justify; 
+}
+#slide-27 .lista-gs1{
+    margin: 3%;
+    color: white;
+    
+}
+/* =============================================== */
+/* ESTILOS SLIDE 28: MODELO SBI (MAPA)             */
+/* =============================================== */
+
+#slide-28 .slide-scroll-content {
+    background-image: url(../img/art_full_slide-15.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+/* 1. CAJA MADRE (ARRIBA) */
+.sbi-root-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 0;
+    margin-left: 3%;
+    margin-right: 3%;
+}
+
+.sbi-root-box {
+    background-color: var(--color-naranja-gs1);
+    color: white !important;
+    margin-top: 3%;
+    padding: 15px 30px;
+    border-radius: 10px;
+    max-width: 600px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    position: relative;
+    z-index: 2;
+}
+.sbi-root-box p{
+    color: white !important;
+}
+/* Línea vertical central que baja */
+.sbi-connector-vertical {
+    width: 4px;
+    height: 30px;
+    background-color: #ccc;
+}
+
+/* 2. CONTENEDOR DE COLUMNAS */
+.sbi-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 20px;
+    position: relative;
+    padding-top: 20px; /* Espacio para las líneas */
+}
+
+/* Línea horizontal (el puente que une las 3 columnas) */
+.sbi-connector-horizontal {
+    position: absolute;
+    top: 0; /* Se conecta con la linea vertical de arriba */
+    left: 16.66%; /* Empieza en el centro de la primera columna */
+    right: 16.66%; /* Termina en el centro de la última */
+    height: 4px;
+    background-color: #ccc;
+    z-index: 1;
+}
+/* Ajuste: Si son 3 columnas de 33%, el centro de la primera es 16.6% aprox */
+
+
+/* 3. COLUMNA INDIVIDUAL */
+.sbi-col {
+    flex: 1; /* Ancho igual */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+/* Tallo vertical individual */
+.sbi-stem {
+    width: 4px;
+    height: 20px;
+    background-color: #ccc;
+    position: absolute;
+    top: -20px; /* Sube para tocar la línea horizontal */
+}
+
+/* 4. BOTÓN SBI (TARJETA) */
+.sbi-card {
+    background: white;
+    border: 2px solid #eee;
+    border-radius: 15px;
+    width: 100%;
+    max-width: 220px;
+    padding: 20px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.3s, border-color 0.3s;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+.sbi-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--color-naranja-gs1);
+}
+
+.sbi-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    color: white;
+    font-size: 1.5em;
+    font-weight: 800;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.sbi-label {
+    font-weight: 700;
+    color: var(--color-azul-secundario);
+    font-size: 1em;
+    line-height: 1.2;
+}
+
+/* Estados */
+.sbi-card.active {
+    background-color: #f0f8ff;
+    border-color: var(--color-azul-gs1);
+}
+.sbi-card.locked {
+    opacity: 0.6;
+    filter: grayscale(100%);
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* 5. CONTENIDO OCULTO */
+.sbi-info {
+    margin-top: 15px;
+    margin-left: 10%;
+    margin-right: 10%;
+    background-color: white;
+    border-left: 4px solid var(--color-naranja-gs1);
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    
+    /* Animación de entrada */
+    display: none; /* Oculto con display para no ocupar espacio */
+    animation: fadeIn 0.5s ease forwards;
+}
+.sbi-info.show { display: block; }
+
+
+/* 6. SECCIÓN EJEMPLO */
+
+.example-btn{
+   background-color: transparent;
+    color: var(--color-naranja-gs1);
+    border: 2px solid var(--color-naranja-gs1);
+    padding: 10px 20px;
+    font-size: 0.9em;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 5px;
+    margin: 5%;
+}
+
+.example-btn:hover {
+  background-color: var(--color-naranja-gs1);
+    color: white;
+    border: 2px solid var(--color-naranja-gs1);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(236, 99, 60, 0.3);
+}
+
+.example-box {
+    background-image: url(../img/ejemplo_slide-28.png);
+    background-size: cover;
+    background-position: center;
+    border: 1px solid var(--color-azul-gs1);
+    border-radius: 15px;
+    padding: 30px;
+    max-width: 800px;
+    margin-top: 30px;
+    margin-bottom: 35px;
+    text-align: left;
+    box-shadow: 0 5px 30px rgba(0,0,0,0.15);
+    animation: fadeIn 0.8s ease forwards;
+}
+
+.example-Block-ovelay {
+    /* EL FONDO NEGRO TRANSPARENTE */
+    background-color: rgba(0, 0, 0, 0.303);
+    backdrop-filter: blur(3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.573);
+    border-radius: 10px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: white;
+
+    /* Centrado del texto */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    padding: 15px;
+    box-sizing: border-box;
+    text-align: center;
+
+}
+.example-text {
+    font-size: 1.1em;
+    font-style: italic;
+    color: var(--color-white);
+    margin-bottom: 20px;
+}
+.example-box h3{
+    color: var(--color-white);
+}
+.note-box {
+    background-color: rgba(255,255,255,0.8);
+    padding: 15px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+}
+.note-box p { margin: 0; font-size: 0.9em; }
+
+
+/* ==========================================================================
+   ESTILOS SLIDE 29: MODELO SBI (FLECHAS Y EJEMPLO)
+   ========================================================================== */
+#slide-29 .top-instruction-box h3 {
+    text-align: center;
+}
+/* --- 1. CONTENEDOR DE FLECHAS (PROCESO) --- */
+.arrow-process-container {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    width: 100%;
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 20px 0;
+    /* Sombra general para todo el bloque */
+    filter: drop-shadow(0 10px 10px rgba(0,0,0,0.2)); 
+}
+
+/* Estilo Base de cada Flecha */
+.arrow-step {
+    flex: 1; /* Todos del mismo ancho */
+    position: relative;
+    height: 220px; /* Altura fija */
+    
+    /* Padding ajustado para compensar el corte de la flecha */
+    padding: 20px 10px 20px 30px; 
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    color: white;
+    transition: transform 0.3s;
+}
+
+/* --- FORMAS DE RECORTE (CLIP-PATH) --- */
+
+/* 1. Primera Flecha (Plana izq, Punta der) */
+.step-1 {
+    background-color: var(--color-azul-gs1);
+    clip-path: polygon(
+        0% 0%,          /* Arriba Izq */
+        90% 0%,         /* Arriba Der (Inicio punta) */
+        100% 50%,       /* Punta */
+        90% 100%,       /* Abajo Der */
+        0% 100%         /* Abajo Izq */
+    );
+    z-index: 3; 
+    border-radius: 10px 0 0 10px; 
+}
+
+/* 2. Flechas Intermedias y Final (Muesca izq, Punta der) */
+.step-2, .step-3 {
+    margin-left: -35px; /* Se mete debajo de la anterior */
+    padding-left: 50px; /* Compensa el texto para que no se corte a la izquierda */
+    padding-right: 20px; /* Espacio a la derecha antes de la punta */
+    
+    clip-path: polygon(
+        0% 0%,          /* Arriba Izq */
+        90% 0%,         /* Arriba Der */
+        100% 50%,       /* Punta */
+        90% 100%,       /* Abajo Der */
+        0% 100%,        /* Abajo Izq */
+        10% 50%         /* MUESCA HACIA ADENTRO */
+    );
+}
+
+.step-2 {
+    background-color: var(--gs1-color-raspberry); /* Rosa */
+    z-index: 2;
+}
+
+.step-3 {
+    background-color:var(--color-naranja-gs1); /* Naranja quemado */
+    z-index: 1;
+}
+
+/* --- LA PESTAÑA DE ARRIBA (TAB) --- */
+.step-tab {
+    position: absolute;
+    top: -15px; 
+    left: 30px;
+    width: 60px;
+    height: 20px;
+    border-radius: 10px 10px 0 0;
+    background-color: inherit; /* Toma el color del padre */
+    z-index: -1; 
+}
+/* Ajuste para que la pestaña 2 y 3 se muevan a la derecha por el corte */
+.step-2 .step-tab, .step-3 .step-tab { left: 60px; }
+
+/* --- CONTENIDO INTERNO (ICONO ARRIBA, TEXTO ABAJO) --- */
+.step-content {
+    display: flex;
+    flex-direction: column; /* Apila verticalmente */
+    align-items: center;    /* Centra horizontalmente */
+    justify-content: center;
+    gap: 10px;              
+    width: 100%;
+    text-align: center;     
+}
+
+/* Icono */
+.step-icon {
+    width: 80px;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    /* Fondo circular semitransparente */
+}
+
+.step-icon img {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    filter: brightness(0) invert(1); /* Blanco */
+}
+
+/* Textos */
+.step-text h3 {
+    color: white;
+    font-size: 1.3em;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    font-weight: 800;
+    line-height: 1.1;
+}
+
+.step-text p {
+    color: rgba(255, 255, 255, 0.95);
+    font-size: 0.9em;
+    line-height: 1.3;
+    margin: 0;
+}
+
+/* Efecto Hover */
+.arrow-step:hover {
+    transform: translateY(-5px);
+    filter: brightness(1.1); 
+    z-index: 10; /* Se pone al frente */
+}
+
+
+/* --- 2. SECCIÓN INTERACTIVA (MEDIO) --- */
+.s29-middle-section {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px 0; 
+    min-height: 80px; 
+}
+
+/* Controles (Instrucción + Botón) */
+#s29-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+}
+
+/* Contenedor Oculto del Ejemplo */
+#s29-hidden-example {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+/* La Caja del Ejemplo (Amarilla) */
+#slide-29 .example-box {
+    background-image: url(../img/ejemplo_slide-29.png);
+    background-size: cover;
+    background-position: top;
+    border: 1px solid var(--color-azul-gs1);
+    border-radius: 15px;
+    padding: 30px;
+    max-width: 800px;
+    margin-top: 30px;
+    margin-bottom: 35px;
+    text-align: left;
+    box-shadow: 0 0px 30px rgba(0, 0, 0, 0.295);
+    animation: fadeIn 0.8s ease forwards;
+}
+#slide-29 .example-Block-ovelay{
+    position: relative !important;
+    z-index: 10;
+    /* Encima de la imagen */
+    
+    width: 50%;
+    /* Ocupa todo el ancho */
+    height: 100% !important;
+    /* Ocupa todo el alto */
+    min-height: 350px;
+    /* Asegura que cubra la altura mínima */
+
+    /* EL FONDO NEGRO TRANSPARENTE */
+    background-color: rgba(0, 0, 0, 0.419);
+    backdrop-filter: blur(2px);
+
+    /* Centrado del texto */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    padding: 40px;
+    box-sizing: border-box;
+    text-align: center;
+}
+.example-box h3 { color: var(--color-white) !important; margin-bottom: 10px; font-size: 1.3em; }
+.example-text { font-size: 1.1em; font-style: italic; color: var(--color-white); line-height: 1.6; }
+
+
+/* --- 3. CONCLUSIÓN (CAJA AZUL AL FINAL) --- */
+.s29-static-content {
+    width: 90%;
+    max-width: 800px;
+    margin: 0 auto 50px auto; 
+    transition: transform 0.5s ease; 
+}
+
+.s29-final-text-box {
+    background-color: var(--color-azul-gs1);
+    color: white;
+    padding: 25px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.s29-final-text-box h3 {
+    color: var(--color-naranja-gs1);
+    margin-bottom: 10px;
+    font-size: 1.3em;
+    text-transform: uppercase;
+}
+
+.s29-final-text-box p { color: white; margin: 0; font-size: 1em; line-height: 1.5; }
+
+
+
+/* ==========================================================================
+   ESTILOS SLIDE 30: TÉCNICAS DE COMUNICACIÓN
+   ========================================================================== */
+#slide-30 .slide-scroll-content {
+    background-image: url(../img/art_full_slide-8.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+/* 1. CONTENEDOR PRINCIPAL (Forzar Fila) */
+#slide-30 .video-split-layout {
+   display: flex !important;
+    flex-direction: row !important; 
+    flex-wrap: nowrap !important;   
+    align-items: center !important; 
+    justify-content: center;
+    gap: 40px; 
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    
+    /* ⭐ ESTAS SON LAS LÍNEAS QUE ELIMINAN EL ESPACIO GIGANTE ⭐ */
+    min-height: auto !important; /* Deja de forzar el 100% de altura */
+    height: auto !important;     /* Se ajusta al tamaño de los globos */
+    padding-top: 20px !important; /* Un pequeño respiro arriba, ajusta a 0 si quieres pegarlo más */
+    margin-top: 0 !important;    /* Asegura que no haya margen externo */
+    
+}
+#slide-30 .top-instruction-box {
+    margin-bottom: 0 !important; /* Elimina el espacio debajo del texto */
+    padding-bottom: 5px; /* Un pequeño respiro opcional */
+}
+/* 2. COLUMNA IZQUIERDA (LISTA DE GLOBOS) */
+.bubble-list-container {
+    /* Usamos flex-basis para asegurar que ocupe espacio pero no empuje de más */
+    flex: 1 1 50%; 
+    width: 50%; 
+    
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    
+    /* Limpieza de estilos heredados */
+    background-color: transparent !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+}
+
+/* TARJETA DE GLOBO INDIVIDUAL */
+.bubble-card-list {
+    background-color: white;
+    border-radius: 15px;
+    border-bottom-left-radius: 0; 
+    padding: 15px 20px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    border: 1px solid #eee;
+    width: 400px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    position: relative;
+    transition: transform 0.3s ease;
+}
+.bubble-card-list:hover {
+    transform: translateX(10px);
+    border-color: var(--color-azul-gs1);
+}
+
+/* PICO DEL GLOBO */
+.bubble-card-list::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    border-width: 10px 10px 0 0;
+    border-style: solid;
+    border-color: white transparent transparent transparent;
+    filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.05));
+}
+
+/* 3. COLUMNA DERECHA (IMAGEN) */
+#slide-30 .split-col-image {
+    flex: 1 1 50%; /* La otra mitad */
+    width: 50%;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    background: transparent;
+}
+
+#slide-30 .content-image {
+    width: 100%;
+    height: auto;
+    max-height: 500px;
+    object-fit: cover;
+    border-radius: 20px;
+    box-shadow: 15px 10px 30px rgba(0, 0, 0, 0.402);
+}
+
+/* ICONOS Y TEXTO */
+.bubble-icon-small {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+}
+.bubble-icon-small img { width: 25px; filter: brightness(0) invert(1); }
+
+.bubble-content h4 { color: var(--color-azul-gs1); margin: 0 0 5px 0; font-size: 1em; font-weight: 700; text-align: left; }
+.bubble-content p { margin: 0; font-size: 0.9em; color: var(--color-negro-texto); line-height: 1.4; text-align: left; }
+
+.tab-img-responsive {
+    max-width: 100%;      /* Nunca salirse del contenedor */
+    height: auto;         /* Mantener proporción */
+    display: block;       /* Quitar espacio extra abajo */
+    margin: 15px 0;       /* Separación arriba y abajo */
+    border-radius: 10px;  /* Borde redondeado para que se vea bonita */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Sombra opcional */
+}
+
+
+#slide-31 .slide-scroll-content {
+    background-image: url(../img/art_full_slide-8.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#slide-31 .panel-right {
+    width: 40%;
+    height: 50%;
+    padding: 10px;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+/* =============================================== */
+/* ESTILOS SLIDE 33 (CIERRE CURSO)                 */
+/* =============================================== */
+
+/* 1. FONDO GENERAL (La imagen completa) */
+#slide-33 .slide-scroll-content {
+    background-image: url('../img/art_full_slide-33.png'); /* Tu imagen completa */
+    background-size: cover;
+    background-position: center;
+    
+    /* Quitamos padding para que llegue a los bordes */
+    padding: 0 !important; 
+    height: 100%;
+    width: 100%;
+    
+    /* Desactivar flex centrado del padre si lo tiene */
+    display: block; 
+}
+
+/* 2. LAYOUT DE ALTURA COMPLETA */
+#slide-33 .video-split-layout.full-height {
+    display: flex;
+    width: 100%;
+    height: 100%; /* Ocupa toda la altura disponible */
+    align-items: stretch; /* Estira las columnas de arriba a abajo */
+    margin: 0;
+    padding: 0;
+}
+
+/* 3. COLUMNA IZQUIERDA (Transparente) */
+.split-col-left-transparent {
+    width: 50%;
+    background-color: transparent; /* Deja ver a la mujer de la foto */
+}
+
+/* 4. COLUMNA DERECHA (Overlay Oscuro) */
+.split-col-right-overlay {
+    width: 50%;
+    /* El fondo negro transparente */
+    background-color: rgba(0, 0, 0, 0.6); 
+    /* Opcional: Un borde izquierdo si quieres la línea negra de la imagen */
+    
+    
+    /* Centrar el texto */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start; /* Alineado a la izquierda dentro de su caja */
+    padding-left: 50px; /* Espacio desde la línea central */
+    box-sizing: border-box;
+}
+
+/* 5. TIPOGRAFÍA GIGANTE */
+.big-title-close {
+    color: white !important;
+    font-size: clamp(3em, 5vw, 5em); /* Texto grande y responsivo */
+    font-weight: 800;
+    line-height: 1;
+    text-transform: uppercase;
+    text-align: left;
+    margin: 0;
+    text-shadow: 0 4px 10px rgba(0,0,0,0.5);
+}
+
+
+
+#slide-34 .slide-scroll-content {
+    background-image: url(../img/art_full_slide-8.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#slide-34 .top-text-box {
+    margin-top: 5%;
+    margin-left: 10%;
+    margin-right: 10%;
+    padding: 5px;
+}
+.box-list {
+    /* 1. Centrado y Dimensiones */
+    width: 90%;          /* Ocupa buen espacio en móvil */
+    max-width: 800px;    /* Tope en escritorio */
+    margin: 20px auto;   /* Centrado automático horizontal y aire vertical */
+    
+    /* 2. Estilo Visual (Igual al sbi-info) */
+    background-color: white;
+    border-left: 5px solid var(--color-naranja-gs1); /* El borde grueso de color */
+    border-radius: 5px;  /* Bordes ligeramente redondeados */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08); /* Sombra para flotar */
+    
+    /* 3. Espaciado Interno */
+    padding: 25px 30px;
+    
+    /* 4. Alineación de Texto */
+    text-align: left; /* CRÍTICO: Para que la lista no se centre feo */
+    
+    /* 5. Animación (Opcional, pero segura) */
+    /* Si quieres que entre suave al cargar el slide */
+    animation: slideInUp 0.8s ease-out forwards;
+}
+
+/* =============================================== */
+/* ESTILOS EVALUACIÓN FINAL (SLIDE 35)             */
+/* =============================================== */
+
+/* Pasos (Videos y Preguntas) */
+.final-step {
+    display: none; /* Ocultos por defecto */
+    width: 100%;
+    animation: fadeIn 0.5s ease;
+}
+
+.final-step.active {
+    display: block; /* Solo el activo se ve */
+}
+
+/* Estilo de los pasos de video */
+.step-video {
+    text-align: center;
+}
+
+.step-video h3 {
+    color: var(--color-naranja-gs1);
+    margin-bottom: 10px;
+}
+
+.step-video video {
+    width: 100%;
+    max-width: 600px;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    margin-bottom: 20px;
+}
+
+/* =============================================== */
+/* ESTILOS SLIDE CIERRE                            */
+/* =============================================== */
+#slide-36 .slide-scroll-content {
+
+    background-image: url(../img/art_full_slide-Final.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+}
+
+.Final-box {
+    margin: 4%;
+    text-align: center;
+    padding: 4%;
+    
+    /* Agrega esto para que align-items funcione */
+    display: flex;
+    flex-direction: column; /* Para que los títulos queden uno arriba de otro */
+    align-items: center;    /* AHORA SÍ centrará el quote */
+}
+.Final-box h2 {
+    
+    text-align: center;
+    font-size: 2.8em;
+}
+.Final-box h1 {
+    color: var(--color-white);
+    text-align: center;
+    font-size: 3em;
+}
+
+.Final-box h3 {
+    color: var(--color-white);
+    text-align: center;
+    font-size: 1.8em;
+    font-weight: 400;
+}
+/* --- Estilos para la Cita Estilo Speech Bubble --- */
+.quote {
+    /* 1. Configuración de colores */
+    --color-borde: var(--color-naranja-gs1);
+    --color-fondo-slide: #efefef; 
+    --color-texto: #efefef;
+    
+    box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+    position: relative;
+    border: 1px solid var(--color-white);
+    padding: 20px 34px;
+    background-color:  #0d0d0d46; 
+    font-family: 'Montserrat';
+    text-align: left; /* El texto de adentro sí va a la izquierda */
+    border-radius: 10px;
+
+    /* --- CAMBIOS PARA CENTRAR --- */
+    
+    /* En vez de width fijo, usamos max-width para que no se rompa en móvil */
+    width: 90%;          /* Ocupa el 90% del espacio disponible... */
+    max-width: 600px;    /* ...pero nunca crezcas más de 600px */
+    
+    /* "auto" a los lados centra el bloque */
+    margin: 40px auto;   
+}
+
+/* 3. Las Comillas Gigantes (”) */
+.quote::before {
+    content: '”';                /* El símbolo de comillas */
+    position: absolute;
+    top: 40px;                   /* Ajusta altura vertical */
+    right: -45px;                /* Lo sacamos un poco a la derecha */
+    background-color: transparent; /* El "borrador" del borde */
+    color: var(--color-white);   /* Color de las comillas */
+    
+    font-size: 180px;            /* Tamaño gigante */
+    line-height: 0.8;            /* Ajuste de altura de línea */
+    font-family: 'Montserrat'; /* Fuente con serifa para que se vean bonitas */
+    padding: 0 10px;             /* Espacio para borrar bien el borde */
+    height: 60px;                /* Altura para tapar el borde */
+}
+
+/* 4. La "colita" de diálogo abajo */
+.quote::after {
+    content: '';
+    position: absolute;
+    bottom: -18px;               /* Posición abajo */
+    right: 20%;                  /* Posición horizontal */
+    
+    /* Creamos el triángulo usando bordes */
+    width: 30px; 
+    height: 30px;
+    background-color:  #0d0d0d46; /* Color de fondo para tapar */
+    border-right: 2px solid var(--color-white);
+    border-bottom: 2px solid var(--color-white);
+    
+    /* Rotamos el cuadrado para hacerlo triángulo */
+    transform: rotate(45deg);
+}
+
+/* 5. Estilos del texto interno */
+.quote h3 {
+    color: var(--color-texto);
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.quote p {
+    color: var(--color-texto);
+    font-size: 1.1rem;
+    font-style: italic;          /* Cursiva para la cita */
+    margin-bottom: 10px;
+}
+
+/* El nombre del autor (el último p) */
+.quote p:last-child {
+    font-style: normal;
+    font-weight: bold;
+    text-align: right;           /* Alinear autor a la derecha */
+    margin-top: 20px;
+}
+
+/* --- Estilos para el Confeti Casero --- */
+.confetti-piece {
+    position: fixed;
+    top: -20px;       /* Empieza justo arriba de la pantalla */
+    z-index: 9999;    /* Encima de todo */
+    opacity: 1;
+    pointer-events: none; /* No bloquea clics */
+    /* Aseguramos compatibilidad con navegadores */
+    -webkit-animation: fall linear forwards; 
+    animation: fall linear forwards;
+}
+/* ==========================================================================
+   7. ANIMACIONES Y EFECTOS (ORGANIZADO Y LIMPIO)
+   ========================================================================== */
+
+/* ----------------------------------------------------
+   A. KEYFRAMES: ENTRADAS Y SALIDAS (Fades & Slides)
+   ---------------------------------------------------- */
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideInUp {
+    from { transform: translateY(50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes slideUpFade {
+    /* Usada para el reproductor flotante */
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Rebotes de Entrada (Bounces) */
+@keyframes slideInBounceUp {
+    0% { opacity: 0; transform: translateY(100px); }
+    40% { opacity: 1; transform: translateY(-20px); }
+    60% { transform: translateY(10px); }
+    80% { transform: translateY(-5px); }
+    100% { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes bounceInUp {
+    0% { opacity: 0; transform: translateY(2000px); }
+    60% { opacity: 1; transform: translateY(-30px); }
+    80% { transform: translateY(10px); }
+    100% { transform: translateY(0); }
+}
+
+@keyframes slideInLeftBounce {
+    0% { opacity: 0; transform: translateX(-100px); }
+    40% { opacity: 1; transform: translateX(10px); }
+    60% { transform: translateX(-5px); }
+    80% { transform: translateX(2px); }
+    100% { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideInRightBounce {
+    0% { opacity: 0; transform: translateX(100px); }
+    40% { opacity: 1; transform: translateX(-10px); }
+    60% { transform: translateX(5px); }
+    80% { transform: translateX(-2px); }
+    100% { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes scaleIn {
+    from { transform: scale(0); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes popIn {
+    /* Usada para los globos de texto */
+    0% { opacity: 0; transform: translateX(-50%) scale(0.5); }
+    80% { opacity: 1; transform: translateX(-50%) scale(1.1); }
+    100% { opacity: 1; transform: translateX(-50%) scale(1); }
+}
+
+@keyframes lineSweepUp {
+    /* Usada para gráficos o líneas */
+    from { height: 0; opacity: 0; }
+    to { height: 100%; opacity: 1; }
+}
+
+@keyframes fadeInUpStagger {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+/* ----------------------------------------------------
+   B. KEYFRAMES: EFECTOS CONTINUOS (Loops)
+   ---------------------------------------------------- */
+
+/* Caída de Confeti */
+@-webkit-keyframes fall {
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+}
+
+@keyframes fall {
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+}
+
+/* Rebote del Scroll */
+@keyframes scroll-bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-8px); }
+    60% { transform: translateY(-4px); }
+}
+
+/* Pulso Raspberry (Escala y sombra) */
+@keyframes pulse-effect {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); filter: drop-shadow(0 0 15px var(--gs1-color-raspberry)); }
+    100% { transform: scale(1); }
+}
+
+/* Radar Glow Amarillo (Para indicadores) */
+@keyframes radar-glow {
+    0% { filter: drop-shadow(0 0 15px var(--color-amarillo)); }
+    70% { box-shadow: 0 0 0 20px rgba(236, 99, 60, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(236, 99, 60, 0); }
+}
+
+/* Pulso Sombra Naranja */
+@keyframes pulse-shadow {
+    0% { box-shadow: 0 0 0 0 rgba(236, 99, 60, 0.7); }
+    70% { box-shadow: 0 0 0 15px rgba(236, 99, 60, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(236, 99, 60, 0); }
+}
+
+/* ----------------------------------------------------
+   C. CLASES DE UTILIDAD (Trigger Classes)
+   ---------------------------------------------------- */
+
+/* Estado inicial oculto para elementos animados */
+.anim-target { 
+    opacity: 0; 
+    transform: translateY(0);
+} 
+
+/* Variaciones de entrada */
+.anim-bounce-up { 
+    animation-name: slideInBounceUp;
+    animation-duration: 1s;
+    animation-timing-function: ease-out;
+    animation-fill-mode: forwards; 
+}
+
+.anim-bounce-left { 
+    animation-name: slideInLeftBounce;
+    animation-duration: 1.2s;
+    animation-timing-function: ease-out;
+    animation-fill-mode: forwards; 
+}
+
+.anim-bounce-right {
+    animation-name: slideInRightBounce;
+    animation-duration: 1.7s;
+    animation-timing-function: ease-out;
+    animation-fill-mode: forwards;
+}
+
+/* Retrasos (Delays) */
+.anim-delay-1 { animation-delay: 0.2s; }
+.anim-delay-2 { animation-delay: 0.5s; }
+.anim-delay-3 { animation-delay: 0.8s; }
+.anim-delay-4 { animation-delay: 1.1s; }
+.anim-delay-5 { animation-delay: 1.4s; }
+
+/* Indicadores visuales */
+.glow-indicator {
+    border-radius: 50%;
+    animation: radar-glow 2s infinite;
+}
+
+.pulse-attention, 
+.js-init-pulse {
+    animation-name: pulse-effect;
+    animation-duration: 1.5s;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+    animation-fill-mode: forwards;
+}
+
+/* ==========================================================================
+   8. ZONA MAESTRA RESPONSIVE (MEDIA QUERIES UNIFICADOS)
+   ========================================================================== */
+
+/* -----------------------------------------------------------
+   A. TABLETS Y PANTALLAS MEDIANAS (Max 900px)
+   ----------------------------------------------------------- */
+@media (max-width: 900px) {
+
+    /* 1. Ajustes de Tipografía General */
+    h1 { font-size: 1.8em; }
+    h2, .titulo-unidad { font-size: 1.6em; }
+    .box-title h2 { font-size: 2em; }
+
+    /* 2. Layouts de Columna (Split Layouts) */
+    /* Convierte todo lo que está lado-a-lado en una sola columna */
+    .video-split-layout {
+        flex-direction: column-reverse !important;
+        height: auto !important;
+        display: flex !important;
+        gap: 0;
+    }
+
+    .split-col-image,
+    .split-col-content,
+    .split-col-card1,
+    .split-col-card2 {
+        width: 100% !important;
+        height: auto;
+        min-height: 250px;
+        padding: 20px !important;
+    }
+
+    .split-col-content p { padding-right: 0; }
+
+    /* 3. Ajuste Específico Slide 10 */
+    #slide-10 .video-split-layout {
+        justify-content: flex-start !important;
+        gap: 0 !important;
+        padding-top: 20px !important;
+    }
+    
+    #slide-10 .split-col-content {
+        flex-grow: 0 !important;
+        padding-bottom: 10px !important;
+    }
+
+    .bottom-caption {
+        margin-bottom: 80px !important;
+        margin-top: -100px !important; /* Ajuste para que no tape */
+        padding: 15px 25px !important;
+        width: 100% !important;
+        background-color: rgba(0,0,0,0.5); /* Fondo oscuro para leer mejor */
+        border-radius: 10px;
+    }
+    #slide-12 .arc-contentn .yellow-box{
+        margin-top: 10px;
+    }
+    /* 4. Slide 30 (Globos) */
+    #slide-30 .video-split-layout { gap: 30px !important; }
+    .bubble-list-container, #slide-30 .split-col-image { width: 100% !important; flex: none; }
+    
+    /* 5. Ordenamiento en Móvil */
+    .mob-order-1 { order: -1 !important; margin-bottom: 20px; }
+    .mob-order-2 { order: 10 !important; margin-top: 20px; }
+}
+
+/* -----------------------------------------------------------
+   B. MÓVIL ESTÁNDAR (Max 768px)
+   ----------------------------------------------------------- */
+@media (max-width: 768px) {
+    /* Títulos principales más compactos */
+    h1, .page-title {
+        font-size: 1.4em; /* Reducir tamaño */
+        line-height: 1.2; /* Menos espacio entre líneas */
+        word-break: break-word; /* Evitar que palabras largas rompan el layout */
+    }
+
+    /* Subtítulos */
+    h2, .titulo-unidad {
+        font-size: 1.3em;
+    }
+
+    .instruccion {
+        display: flex;
+        align-items: center !important;
+        border-radius: 50px;
+        border: 2px solid var(--color-azul-gs1)!important;
+        background-color: var(--color-white)!important;
+        width: fit-content;
+        max-width: 95%;
+        border-width: 1.5px;
+        padding: 8px 20px!important;
+        font-size: 0.6em;
+        margin: 15px auto !important;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        animation: fadeInSlideRight 2s ease-in-out forwards;
+        white-space: nowrap;
+
+    }
+
+    .instruccion p { 
+        margin: 0 !important;
+        padding: 0!important;
+        display: flex;
+        align-items: center!important;
+        font-weight: 300 !important;
+        color: var(--color-negro-texto)!important;
+        font-family: 'Montserrat', sans-serif !important;
+        font-style: normal !important;
+        
+
+    }
+
+    .icon-Ins {
+        width: 20px;
+        height: 20px;
+        margin-right: 8px;
+        flex-shrink: 0;
+    }
+    /* --- 1. GUÍA DE NAVEGACIÓN (Slide 1 Overlay) --- */
+    #nav-guide-overlay {
+        align-items: flex-start;
+        padding: 20px;
+        overflow-y: auto; /* Scroll si el celular es horizontal */
+    }
+
+    .guide-box {
+        width: 100%;
+        max-width: 100%;
+        padding: 25px 15px;
+        margin: 20px 0;
+        height: auto;
+    }
+
+    .guide-grid {
+        grid-template-columns: 1fr; /* 1 Columna */
+        gap: 15px;
+    }
+
+    .guide-item { padding: 12px; }
+    
+    /* Iconos Guía */
+    .icon-circle { width: 35px; height: 35px; flex-shrink: 0; }
+    .icon-circle img { width: 18px; }
+    .guide-item p { font-size: 0.9em; }
+
+    /* --- 2. COMPONENTES GENERALES (Intro, Quiz, Textos) --- */
+    .intro-box {
+        margin: 40% auto 0 auto;
+        padding: 10px;
+    }
+
+    .quiz-content-wrapper {
+        padding: 20px;
+        width: 95%;
+    }
+
+    .question-text { font-size: 1.1em; }
+    .options-container label { font-size: 0.9em; padding: 10px; }
+
+     #slide-6 .item-content-row {
+        flex-direction: column; /* Esto hace que se apilen verticalmente */
+        gap: 15px;
+         }
+
+    #slide-6 .answer-btn {
+        width: 100%; /* Que ocupe todo el ancho disponible */
+        max-width: 100%; /* Quitar el límite de 400px de escritorio */
+        height: auto;    /* Que crezca según el texto */
+        min-height: 60px;
+        justify-content: center; /* Centrar el texto si es corto */
+        }
+    
+    #slide-6 .answer-text {
+        text-align: center; /* Texto centrado se ve mejor así */
+         }
+
+    #slide-7 .content-card, .content-card-B{
+        width: 90%;
+        }
+
+    #slide-7 .text-inBox {
+        width: 80%;
+     }
+
+
+    /* --- 3. SLIDE 8 (Plataformas) --- */
+   /* 1. El Contenedor Principal (Quitar columnas lado a lado) */
+   /* 1. El Contenedor Principal */
+    .three-col-layout {
+        flex-direction: column;
+        height: auto !important;
+        align-items: center;
+        padding-right: 0;
+        margin-top: 20px;
+        gap: 20px;
+    }
+
+    /* 2. La Columna Individual */
+    .interactive-column {
+        width: 100% !important;      
+        max-width: 100% !important;
+        margin: 0 !important;        
+        border-bottom: none;
+        padding: 0;
+        height: auto;
+    }
+
+    /* 3. El Contenedor Interno */
+    .platform-container {
+        height: auto !important;
+        min-height: auto !important;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+    }
+
+    /* 4. El Botón (Cubo) */
+    .platform-button {
+        position: relative;
+        z-index: 10;
+        width: 80px; 
+        margin-bottom: 0; /* Sin margen inicial */
+        transition: margin 0.3s;
+    }
+
+    /* 5. Contenedor de Contenido */
+    .platform-content {
+        position: relative !important;
+        bottom: auto !important;
+        left: auto !important;
+        height: auto !important;
+        width: 90% !important;
+        display: flex;
+        justify-content: center;
+    }
+
+    /* 6. Ocultar la línea decorativa */
+    .line-image { display: none !important; }
+
+    /* 7. La Caja de Texto (ESTADO INICIAL: OCULTO) */
+    .feature-text-box {
+        position: relative !important;
+        transform: none !important;
+        
+        /* TRUCO: Colapsado y transparente al inicio */
+        max-height: 0;
+        padding: 0 20px; /* Padding vertical 0 */
+        opacity: 0;
+        overflow: hidden;
+        margin-top: 0;
+        
+        background-color: #f9f9f9;
+        border-radius: 15px;
+        width: 100%;
+        box-shadow: none;
+        
+        /* Flex interno */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        text-align: center;
+        
+        /* Transición suave para el efecto "Acordeón" */
+        transition: max-height 0.5s ease, opacity 0.5s ease, padding 0.5s ease, margin-top 0.5s ease;
+    }
+
+    /* 8. La Caja de Texto (ESTADO VISIBLE) */
+    /* Este selector detecta cuando tu JS agrega 'style="animation: ..."' */
+    .feature-text-box[style*="animation"] {
+        max-height: 500px !important; /* Se abre */
+        padding: 20px !important;     /* Recupera el relleno */
+        opacity: 1 !important;        /* Se hace visible */
+        margin-top: 15px !important;  /* Se separa del botón */
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    /* 9. Ajustes de Texto Interno */
+    .feature-text-wrapper {
+        transform: none !important;
+        text-align: center;
+    }
+
+    .feature-text-wrapper h3 {
+        font-size: 1.1em;
+        margin-bottom: 5px;
+        color: var(--color-azul-gs1);
+    }
+
+    .feature-text-wrapper p { font-size: 0.9em; }
+    .icon-left { left: auto !important; transform: none !important; position: relative; }
+    
+    .feature-icon {
+        width: 40px; height: 40px;
+        animation: none !important; /* Quitamos animación de icono, usamos la de la caja */
+        opacity: 1 !important;
+    }
+   /* ---  SLIDE 10 --- */
+    /* 1. Contenedor Principal: Apilar todo verticalmente */
+    #slide-10 .video-split-layout {
+        display: flex;
+        flex-direction: column !important; /* Forzar columna */
+        justify-content: flex-start;
+        height: 100%;
+        padding-top: 20px;
+        gap: 20px;
+    }
+
+    /* 2. Título y Texto Superior */
+    #slide-10 .split-col-content {
+        width: 100% !important;
+        flex: 0 0 auto; /* No estirar, ocupar solo lo necesario */
+        padding: 0 20px; /* Margen lateral */
+        text-align: left;
+        margin-bottom: 10px;
+    }
+
+    #slide-10 h3 {
+        font-size: 1.8em; /* Tamaño grande para el título */
+        margin-bottom: 10px;
+        line-height: 1.1;
+    }
+
+    /* 3. Contenedor de las Tarjetas (Centro) */
+    #slide-10 .split-col-image {
+        width: 100% !important;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        padding: 0 20px; /* Margen lateral */
+        flex-grow: 0; /* No expandir */
+    }
+
+    #slide-10 .items-container {
+        width: 100%;
+        max-width: 100%; /* Que ocupe todo el ancho */
+        display: flex;
+        flex-direction: column;
+        gap: 15px; /* Espacio entre tarjetas */
+    }
+
+    /* 4. Estilo de cada Tarjeta (Resultados, Análisis, etc) */
+    #slide-10 .arrow-card {
+        width: 100%; /* Ancho total del contenedor */
+        display: flex;
+        flex-direction: row; /* Icono izquierda, texto derecha */
+        align-items: stretch;
+        background-color: transparent; /* Fondo transparente */
+        filter: none; /* Quitamos sombras complejas si estorban */
+    }
+
+    /* Ajuste del Icono */
+    #slide-10 .icon-box {
+        width: 70px; /* Tamaño fijo del icono */
+        height: auto;
+        flex-shrink: 0;
+        margin-right: -5px; /* Para que se pegue al texto */
+        z-index: 2;
+    }
+
+    /* Ajuste de la caja blanca de texto */
+    #slide-10 .text-box {
+        width: auto !important; /* Sobrescribe los 500px de escritorio */
+        flex-grow: 1; /* Ocupa el resto del espacio */
+        height: auto;
+        min-height: 70px;
+        padding: 10px 15px;
+        border-radius: 0 10px 10px 0; /* Bordes redondeados a la derecha */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        background-color: white;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    #slide-10 .text-box h2 {
+        font-size: 1.1em;
+        margin-bottom: 5px;
+        color: var(--color-azul-gs1);
+    }
+
+    #slide-10 .text-box p {
+        font-size: 0.85em;
+        line-height: 1.2;
+    }
+
+    /* 5. Texto Inferior (Bottom Caption) */
+    #slide-10 .bottom-caption {
+        position: relative !important; /* Ya no flotante */
+        margin-top: 10px !important;
+        margin-bottom: 40px !important; /* Espacio para el nav bar */
+        width: 100% !important;
+        padding: 0 20px;
+        text-align: center;
+        background: transparent; /* Sin fondo oscuro */
+    }
+
+    #slide-10 .bottom-caption p {
+        font-size: 0.9em;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.8); /* Sombra para leer sobre fondo */
+    }
+   
+    /* --- 4. SLIDE 11 (Feedback Cards) --- */
+    #slide-11 .slide-scroll-content{
+        background-position: center;
+        align-items: center;
+    }
+
+    .feedback-card {
+        width: 90%;
+        max-width: 350px;
+        margin-bottom: 60px;
+        align-items: center;
+    }
+     .card-button {
+        margin: 100px;
+        transition: transform 0.3s;
+    }
+    .card-content { margin-top: -250px; }
+
+    /* --- 5. SLIDE 12 (Arco Vertical) --- */
+
+    /* 1. Contenedor Principal */
+    .interactive-arc-layout {
+        height: auto !important;
+        display: flex;
+        flex-direction: column; /* Elementos uno debajo del otro */
+        margin-top: 10%;
+        padding-bottom: 50px;
+        gap: 25px; /* Espacio entre cada fila (1, 2, 3...) */
+        width: 100%;
+        max-width: 100%;
+    }
+
+    /* 2. Cada Fila (El Item) */
+    .arc-item {
+        position: relative !important;
+        /* Reseteamos posiciones absolutas de escritorio */
+        top: auto !important; 
+        left: auto !important; 
+        right: auto !important;
+        bottom: auto !important;
+        transform: none !important;
+        
+        width: 100%;
+        
+        /* MAGIA AQUÍ: Flex Row pone el botón y el texto lado a lado */
+        display: flex;
+        flex-direction: row; 
+        align-items: flex-start; /* Alineados arriba */
+        justify-content: flex-start;
+        gap: 15px; /* Espacio entre el número y el texto */
+    }
+
+    /* 3. El Botón (Número a la izquierda) */
+    .btn-number {
+        position: relative;
+        z-index: 20;
+        pointer-events: auto !important;
+        flex-shrink: 0; /* Evita que el botón se aplaste */
+        width: 80px;    /* Tamaño fijo del botón */
+        padding: 0;
+    }
+    
+    .btn-number img {
+        width: 100%;
+        height: auto;
+        display: block;
+        /* Sombra suave para que destaque */
+        filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2));
+    }
+
+    /* 4. El Texto (A la derecha) */
+    .arc-content {
+        position: relative !important; /* Ya no absoluto */
+        top: auto !important; 
+        left: auto !important;
+        right: auto !important;
+        transform: none !important;
+        
+        width: 100% !important; /* Ocupa el resto del espacio */
+        margin: 0;
+        text-align: left !important; /* Texto alineado a la izquierda */
+        
+        /* Estilo visual limpio */
+        background-color: transparent; 
+        box-shadow: none; 
+        padding: 5px 0 0 0; /* Un poco de ajuste vertical */
+        
+        /* ESTADO INICIAL: OCULTO (Acordeón Lateral) */
+        opacity: 0;
+        max-height: 0; 
+        overflow: hidden;
+        transition: all 0.5s ease;
+        
+        /* Color del texto */
+        color: var(--color-negro-texto);
+    }
+    
+    .arc-content h4 {
+        margin-top: 0;
+        color: var(--color-azul-gs1);
+        font-size: 1.1em;
+    }
+    
+    /* 5. ESTADO ACTIVO (Cuando das clic) */
+    .arc-content.active {
+        opacity: 1;
+        max-height: 500px; /* Se despliega */
+    }
+
+    /* 6. Ajuste especial para el elemento central (Resumen final) */
+    .item-center {
+        order: 10; /* Mandarlo al final de la lista */
+        flex-direction: column; /* Este sí que vaya botón arriba, texto abajo */
+        align-items: center;
+        margin-top: 20px;
+    }
+    
+    .content-top-center {
+        
+        text-align: center !important;
+         /* Fondo amarillo suave */
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    /* --- 6. SLIDE 15: ESCENARIO INTERACTIVO (Personajes) --- */
+    .interactive-scene {
+        height: 400px; /* Altura controlada */
+        background-position: center;
+        margin-top: 20px;
+        width: 100% !important;
+    }
+
+    .character-wrapper { width: 45%; } /* Personajes más grandes */
+    .char-woman { left: 2%; }
+    .char-man { right: 2%; }
+
+    .speech-bubble {
+        width: 200px;
+        padding: 10px;
+        top: -105%; /* Subirlos para no tapar la cara */
+        font-size: 0.85em;
+    }
+
+    .interaction-trigger {
+        width: 50px; height: 50px; top: 30%; 
+    }
+
+    /* --- 7. SLIDE 17 (Caso Estudio) --- */
+    .box-center {
+        width: 95%;
+        height: auto;
+        flex-direction: column-reverse;
+    }
+    .content-txt-overlay { padding: 25px; width: 100% !important; }
+    .content-img-bg { position: relative !important; height: 200px !important; }
+
+    /* --- 8. SLIDE 18 (Tablas a Tarjetas) --- */
+    .table-secction table, .table-secction tbody, 
+    .table-secction tr, .table-secction td {
+        display: block; width: 100%;
+    }
+    .table-secction tr:first-child { display: none; } /* Ocultar encabezados */
+    
+    .table-secction tr {
+        margin-bottom: 20px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    }
+    
+    .table-secction td {
+        padding-left: 50%;
+        position: relative;
+        text-align: right;
+    }
+    
+    /* Etiquetas virtuales para la tabla */
+    .table-secction td::before {
+        content: attr(data-label); /* Si usas data attributes */
+        position: absolute; left: 15px; font-weight: bold; text-align: left;
+    }
+    /* Estilos manuales si no usas data-attributes */
+    .table-secction td:nth-of-type(1) { text-align: left; padding-left: 15px; background: #f9f9f9; font-weight: bold; color: var(--color-azul-gs1); }
+    .table-secction td:nth-of-type(2), .table-secction td:nth-of-type(3) { text-align: left; padding-left: 15px; }
+
+    /* --- 9. SLIDE 23: PROTOCOLO (Fases) --- */
+    .protocol-hero { padding-bottom: 60px; }
+    .phases-container { margin-top: -50px; gap: 15px; flex-wrap: wrap; }
+    .phase-card { width: 100px; height: 140px; }
+    .phase-label { font-size: 1.1em; }
+    .phase-card img { width: 35px; }
+
+    .phase-overlay h3 { margin-top: 60px; font-size: 1.5em; }
+    
+    #view-fase-1 .video-split-layout { flex-direction: column; gap: 20px; }
+    .vertical-buttons, .btn-video-play { width: 100% !important; }
+
+    /* --- SLIDE 23  --- */
+
+   #slide-23 .icon-video-card span {
+    font-size: 1.5em;  /* Tamaño de letra legible */
+    }
+
+    .buttons-grid-3{
+        display: block;
+        margin-bottom: 5%;
+    }
+    /* --- 10. SLIDE 28 (SBI Mapa) --- */
+    .sbi-container {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+        padding-top: 0;
+    }
+    .sbi-connector-vertical, .sbi-connector-horizontal, .sbi-stem { display: none; }
+    .sbi-col, .sbi-card { width: 100%; max-width: 100%; }
+    .sbi-card { flex-direction: row; gap: 15px; align-items: center; padding: 15px; }
+    .sbi-icon { margin-bottom: 0; width: 40px; height: 40px; font-size: 1.2em; }
+
+    /* --- 11. SLIDE 29 (Flechas Proceso) --- */
+    .arrow-process-container {
+        flex-direction: column;
+        gap: 20px;
+        margin-top: 30px;
+        padding: 0 20px;
+    }
+    .arrow-step {
+        width: 100%; height: auto; margin-left: 0;
+        clip-path: none; border-radius: 15px;
+        padding: 20px;
+    }
+    .step-tab { display: none; }
+    .step-content { flex-direction: row !important; text-align: left !important; gap: 20px; }
+    .step-icon { width: 50px; height: 50px; background-color: rgba(255,255,255,0.2); border-radius: 50%; }
+
+    #slide-29 .example-Block-ovelay{
+        width: 100%;
+    }
+
+    #slide-29 .top-instruction-box p {
+        text-align: center;
+    }
+     /* 4. Slide 30 (Globos) */
+    #slide-30 .video-split-layout {
+        display: flex !important;
+        
+        /* EL TRUCO: column-reverse invierte el orden del HTML.
+           Como la imagen está al final en el código, 
+           aquí se verá al principio (Arriba). */
+        flex-direction: column-reverse !important; 
+        
+        gap: 30px !important;
+        height: auto !important;
+        padding-top: 20px !important;
+    }
+
+    /* Aseguramos que ocupen todo el ancho */
+    .bubble-list-container, 
+    #slide-30 .split-col-image { 
+        width: 100% !important; 
+        flex: none !important; 
+    }
+
+    /* Controlamos la altura de la imagen para que no tape todo */
+    #slide-30 .split-col-image {
+        height: 250px !important; /* Altura fija para la foto en móvil */
+        min-height: auto !important;
+    }
+
+    #slide-30 .content-image {
+        height: 100%;
+        object-fit: cover;
+        object-position: center; /* Centrar la foto */
+    }
+
+    /* --- 12. SLIDE 33 (Cierre Layout) --- */
+    #slide-33 .video-split-layout.full-height { flex-direction: column; }
+    .split-col-left-transparent, .split-col-right-overlay { width: 100%; height: 50%; }
+    .split-col-right-overlay {
+        background-color: rgba(0, 0, 0, 0.7);
+        padding: 20px;
+        align-items: center;
+    }
+    .big-title-close { font-size: 3em; text-align: center; }
+
+    /* --- 13. SLIDE 35 (Evaluación Final Videos) --- */
+    .step-video video { width: 100%; max-height: 250px; }
+
+    /* --- 14. SLIDE 36: CITA FINAL --- */
+    .quote {
+        margin: 20px auto;
+        padding: 20px;
+        width: 85%;
+    }
+    .quote::before {
+        font-size: 100px;
+        top: -30px; right: 10px; height: 40px;
+    }
+    .quote::after {
+        right: 50%; transform: translateX(50%) rotate(45deg);
+    }
+    .Final-box h1 { font-size: 1.8em; }
+    .Final-box h2 { font-size: 1.4em; }
+
+    /* --- 15. COMPONENTES DE AUDIO (NUEVOS) --- */
+    
+    /* Reproductor Flotante */
+    #floating-audio-player {
+        width: 95%;
+        bottom: 85px; /* Encima del nav bar */
+        padding: 5px 15px;
+    }
+    
+    /* Tarjetas de Audio (Grid) */
+    .buttons-grid-5 { gap: 15px; }
+    
+    .icon-video-card {
+        width: 45%; /* Dos columnas */
+        min-width: 135px;
+        height: auto; min-height: 220px;
+        padding: 20px 5px;
+    }
+}
+
+/* -----------------------------------------------------------
+   C. MÓVIL PEQUEÑO / ACORDEÓN (Max 600px)
+   ----------------------------------------------------------- */
+@media (max-width: 600px) {
+    /* Tabs estilo Acordeón */
+    .tabs-nav { flex-direction: column; border-bottom: none; gap: 5px; }
+    
+    .tab-button {
+        width: 100%;
+        border-radius: 5px;
+        border-bottom: 1px solid #ddd;
+        background-color: #f9f9f9;
+        text-align: left;
+        justify-content: flex-start;
+        padding-left: 20px;
+    }
+    
+    .tab-button.active {
+        background-color: var(--color-azul-gs1);
+        color: white;
+        border-bottom: none;
+        border-left: 5px solid var(--color-naranja-gs1);
+    }
+    
+    .tab-pane { border: 1px solid #E9E9E9; border-radius: 5px; }
+}
+
+/* -----------------------------------------------------------
+   D. PANTALLAS EXTRA PEQUEÑAS (Max 380px)
+   ----------------------------------------------------------- */
+@media (max-width: 380px) {
+    .icon-video-card { width: 100%; } /* Audio cards a 1 columna */
+    .phases-container { gap: 5px; }
+    .phase-card { width: 85px; height: 130px; }
+}
+
+/* -----------------------------------------------------------
+   E. PANTALLAS CON POCA ALTURA (Max Height 650px)
+   ----------------------------------------------------------- */
+@media (max-height: 650px) {
+    .slide-scroll-content { align-items: flex-start; }
+    :root {
+        --alto-header: 60px;
+        --alto-nav-bar: 60px;
+    }
+}
