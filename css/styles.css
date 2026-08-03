@@ -5943,7 +5943,7 @@ ul.lista-gs1 li::before {
 @media (max-width: 600px) {
     /* Asegurar que nav-guide-overlay sea completamente visible en móvil */
     #nav-guide-overlay {
-        position: fixed !important;
+        position: absolute !important;
         top: 0 !important;
         left: 0 !important;
         width: 100% !important;
