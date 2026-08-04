@@ -2046,6 +2046,21 @@ function openNavGuide() {
 
         // Opcional: Ocultamos el título de la portada para que se vea limpia la guía
         if (introContent) introContent.style.opacity = '0';
+
+        // Fix para Safari: Remueve la opacidad inicial y re-dispara la animación
+        const guideBox = guideOverlay.querySelector('.guide-box');
+        if (guideBox) {
+            // Remover animación temporalmente para forzar su re-ejecución
+            guideBox.classList.remove('anim-bounce-up');
+            guideBox.classList.remove('anim-target');
+
+            // Forzar reflow para que el navegador registre el cambio
+            void guideBox.offsetHeight;
+
+            // Re-agregar las clases para que la animación se ejecute
+            guideBox.classList.add('anim-target');
+            guideBox.classList.add('anim-bounce-up');
+        }
     }
 }
 
