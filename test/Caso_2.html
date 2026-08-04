@@ -2,86 +2,324 @@
 <html lang="es"><head><script>window["__codeletBootstrap__"]=JSON.parse('{"A":"A","B":"20260731-05-8d4b1dd","C":{"Abril Fatface":"YACgEZbkUVE,0","Alfa Slab One":"YACgEYS9sJU,0","Anton":"YACgEcYqQ-A,0","Archivo":"YAHO2-t-jNE,0","Arial":"YAGyDvJ_4Ts,0","Bebas Neue":"YACgESME5ew,0","Broken Glyph":"YADZ-exUkv0,0","Canva Sans":"YAFdJjTk5UU,0","Caveat":"YALBs2ploWQ,0","Comic Sans MS":"YAHO2VMiyZo,0","Cormorant Garamond":"YAFdJhX-538,0","Courier New":"YAGzXiGs0_8,0","DM Sans":"YAD1aU3sLnI,0","DM Serif Display":"YAD1aYG82rc,0","Forum":"YACgEcnnqB4,0","Fraunces":"YAEul-FRQw4,0","Georgia":"YAGzXkO0pEM,0","Ghost Mono":"YAHO2EIdDP0,0","Helvetica Neue":"YAFcf6CtJfI,0","Impact":"YAFcfnjI7Vk,0","Inter":"YAFdJvSyp_k,3","Iowan Old Style":"YAGNIFa8j9o,0","Jacques Francois":"YAHO2a5g66Q,0","JetBrains Mono":"YADy3sAhvXQ,0","Oleo Script":"YACgEQQ14jI,0","Playfair Display":"YAFdJhem5V8,1","Poppins":"YAE5fPSY9qM,0","Press Start 2P":"YAFyGr-8pmQ,0","Source Sans 3":"YAG4lO1Mj10,0","Space Grotesk":"YAHO2sjPCSM,0","Times New Roman":"YAGzXW3gftg,0","Times":"YAGzXW3gftg,0","Trebuchet MS":"YAFcfrglpVA,0","Verdana":"YAGzXTctYtQ,0","Work Sans":"YAGXhLOKv44,0","Yellowtail":"YACgEYG4kG4,0"}}');</script><script src="/_sdk/1c274b9c2bdd3519.telemetry_sdk.js" integrity="sha512-QvDGWM2/VIwB7KXA4cwqkIBlxCdJGd0uO9ksM8wsqNKNiFgewrwdYlGY9ioCTg42Djm5Sw7uha/WH60UzzKOhQ=="></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ejercicio Interactivo</title>
+  <title>Caso 2: Pedir apoyo con claridad</title>
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    body { font-family: 'Montserrat', sans-serif; font-weight: 400; }
+    * { font-family: 'Montserrat', sans-serif; }
+    body {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 400;
+      background-image: url('../img/art_full_oficina.png');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      background-color: #f5f5f5;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255, 255, 255, 0.92);
+      pointer-events: none;
+      z-index: -1;
+    }
+    .content-wrapper {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(242, 245, 250, 0.95) 100%);
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(34, 51, 94, 0.1);
+    }
     .question-card > p:first-child { font-weight: 600; }
-    .opt-btn { font-family: 'Montserrat', sans-serif; font-weight: 500; }
-    .question-card p[id^="fb-"] { font-weight: 400; }
-    #score-display { font-family: 'Montserrat', sans-serif; font-weight: 700; }
-    .screen { display: none; }
-    .screen.active { display: flex; }
-    .opt-btn { transition: all 0.2s; }
+    .opt-btn {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
     .opt-btn:disabled { cursor: default; opacity: 0.85; }
     .opt-correct { background: #28a745 !important; color: #fff !important; border-color: #28a745 !important; }
     .opt-incorrect { background: #dc3545 !important; color: #fff !important; border-color: #dc3545 !important; }
+    .character-image {
+      max-width: 100%;
+      height: auto;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    }
+    .case-section {
+      background: rgba(255, 255, 255, 0.95);
+      border-left: 5px solid #ec633c;
+      padding: 2rem;
+      border-radius: 8px;
+      margin-bottom: 2rem;
+    }
+    .scroll-to-section {
+      scroll-margin-top: 2rem;
+    }
+    h1, h2 { font-weight: 700; color: #22335e; }
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #22335e;
+      margin-bottom: 1rem;
+      border-bottom: 3px solid #ec633c;
+      padding-bottom: 0.5rem;
+    }
+    #score-display {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      color: #22335e;
+    }
+    .intro-header {
+      background: linear-gradient(135deg, #22335e 0%, #1f3f6d 100%);
+      color: white;
+      padding: 3rem 2rem;
+      border-radius: 12px 12px 0 0;
+      text-align: center;
+    }
+    .intro-header h1 {
+      color: white;
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+    .intro-header p {
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 1.1rem;
+      margin-bottom: 1.5rem;
+    }
+    .intro-list li {
+      color: rgba(255, 255, 255, 0.85);
+      margin-bottom: 0.5rem;
+    }
+    .start-button {
+      background: #ec633c;
+      color: white;
+      font-weight: 700;
+      padding: 1rem 2rem;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      font-size: 1.1rem;
+      transition: all 0.2s;
+      display: inline-block;
+    }
+    .start-button:hover {
+      background: #d65230;
+      transform: scale(1.05);
+    }
+    .start-button:active {
+      transform: scale(0.95);
+    }
+    .feedback-text {
+      font-weight: 400;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+    .section-hidden {
+      display: none;
+    }
+    .section-visible {
+      display: block;
+      animation: slideDown 0.3s ease-out;
+    }
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js" type="text/javascript"></script>
   <script src="/_sdk/63b5ed99e5b990a7.data_sdk.js" type="text/javascript" integrity="sha512-fLUGE0rNLPgXS9olxs6QORKg6Diqpi0PSKoNistdAaH/GruBuq5/XhrOdSOcKfqcIIRQ1KvO66J1vCBvvLj4rA=="></script>
   <script src="/_sdk/797e0a7e8af7c7f8.resizing_sdk.js" type="text/javascript" integrity="sha512-giNZj5eBnASPpYcJXEVOn6FguxFDnaH+gnf5nbRfUgfRDqtOdV+5Dna/CwvXiPeR//Plhtbt32CML3VF4+oCLw=="></script>
  </head>
  <body data-template-id="__page-root" class="w-full min-h-screen flex items-center justify-center p-4">
-  <!-- Intro -->
-  <div id="screen-intro" class="screen active flex-col items-center gap-6 max-w-2xl text-center">
-   <div class="w-16 h-1 rounded" style="background:#ec633c"></div>
-   <h1 data-template-id="intro-title" class="canva-text font-bold" style="color: rgb(34, 51, 94); font-weight: 700; font-style: normal; font-size: 32px;">Ejercicio Interactivo</h1>
-   <p data-template-id="intro-desc" class="canva-text max-w-lg" style="color: rgb(51, 51, 51); font-weight: 400; font-style: normal; font-size: 16px;">Bienvenido a este ejercicio tipo quiz. Lee las instrucciones y presiona Comenzar cuando estés listo.</p>
-   <ul class="text-left text-sm space-y-1 list-disc list-inside" style="color:#333333">
-    <li>Lee el caso de estudio con atención.</li>
-    <li>Responde las 3 preguntas (1 punto c/u).</li>
-    <li>Recibirás retroalimentación inmediata.</li>
-   </ul><button data-template-id="start-button" type="button" class="canva-button rounded-xl px-8 py-4 font-bold shadow-lg hover:scale-105 active:scale-95 transition-transform" style="background: rgb(236, 99, 60); color: rgb(255, 255, 255); font-weight: 700; font-style: normal; font-size: 18px;">Comenzar</button>
-  </div><!-- Case Study -->
-  <div id="screen-case" class="screen flex-col items-center gap-6 max-w-2xl text-center">
-   <h2 data-template-id="case-title" class="canva-text font-bold" style="color: rgb(34, 51, 94); font-weight: 700; font-style: normal; font-size: 26px;">Caso Integral: Todo es urgente en el corporativo</h2>
-   <div class="text-left border rounded-xl p-6" style="background:#ffffff; border-color:#22335e20">
-    <p data-template-id="case-text" class="canva-text leading-relaxed" style="color: rgb(51, 51, 51); font-weight: 400; font-style: normal; font-size: 16px;">Mariana es coordinadora de proyectos en una empresa de servicios. Su semana comenzó con varios pendientes, los cuales son:
+  <div class="w-full max-w-4xl">
+    <!-- Intro Section -->
+    <div id="intro-section" class="content-wrapper scroll-to-section">
+      <div class="intro-header">
+        <h1>Caso: Pedir apoyo con claridad</h1>
+        <p>Ejercicio interactivo sobre comunicación efectiva en situaciones de estrés laboral</p>
+      </div>
+      <div class="p-6 md:p-8">
+        <ul class="intro-list text-left space-y-2 mb-6 ml-4">
+          <li>✓ Lee el caso de Sofía con atención</li>
+          <li>✓ Responde las 3 preguntas (1 punto c/u)</li>
+          <li>✓ Recibe retroalimentación inmediata</li>
+          <li>✓ Aprende a comunicar con profesionalismo y claridad</li>
+        </ul>
+        <div class="text-center">
+          <button id="start-btn" class="start-button">Comenzar ejercicio</button>
+        </div>
+      </div>
+    </div>
 
-Entregar el miércoles un reporte mensual a dirección.
-Asistir a cinco reuniones virtuales, dos de las cuales originalmente no estaban agendadas.
-Entregar a su jefe una presentación especial para una visita de clientes, que le pidió de último momento 
-Además, su equipo le ha estado enviando mensajes fuera de horario pidiéndole aprobaciones rápidas.
+    <!-- Case Study Section -->
+    <div id="case-section" class="section-hidden mt-6 scroll-to-section">
+      <div class="content-wrapper">
+        <h2 class="section-title px-6 md:px-8 pt-6">El Caso de Sofía</h2>
 
-Mariana siente que trabaja todo el día, pero no avanza. Revisa el correo cada cinco minutos, cambia de tarea constantemente y termina agotada. Al final de la semana, el reporte se retrasa y la presentación termina a medianoche.</p>
-   </div><button data-template-id="continue-button" type="button" class="canva-button rounded-xl px-8 py-4 font-bold shadow-lg hover:scale-105 active:scale-95 transition-transform" style="background: rgb(31, 63, 109); color: rgb(255, 255, 255); font-weight: 700; font-style: normal; font-size: 18px;">Continuar a las preguntas</button>
-  </div><!-- Questions -->
-  <div id="screen-questions" class="screen flex-col items-center gap-8 max-w-2xl w-full">
-   <h2 data-template-id="questions-title" class="canva-text font-bold" style="color: rgb(34, 51, 94); font-weight: 700; font-style: normal; font-size: 26px;">Preguntas</h2>
-   <div id="questions-container" class="w-full"></div><button data-template-id="next-question-button" id="btn-next" type="button" class="hidden canva-button rounded-xl px-8 py-4 font-bold shadow-lg hover:scale-105 active:scale-95 transition-transform" style="background: rgb(34, 51, 94); color: rgb(255, 255, 255); font-weight: 700; font-style: normal; font-size: 18px;">Siguiente pregunta</button> <button data-template-id="finish-button" id="btn-results" type="button" class="hidden canva-button rounded-xl px-8 py-4 font-bold shadow-lg hover:scale-105 active:scale-95 transition-transform" style="background: rgb(34, 51, 94); color: rgb(255, 255, 255); font-weight: 700; font-style: normal; font-size: 18px;">Ver resultado</button>
-  </div><!-- Results -->
-  <div id="screen-results" class="screen flex-col items-center gap-6 max-w-2xl text-center">
-   <h2 data-template-id="results-title" class="canva-text font-bold" style="color: rgb(34, 51, 94); font-weight: 700; font-style: normal; font-size: 28px;">Resultado Final</h2>
-   <p id="score-display" class="text-5xl font-bold" style="color:#22335e"></p>
-   <p data-template-id="results-subtitle" class="canva-text" style="color: rgb(51, 51, 51); font-weight: 400; font-style: normal; font-size: 16px;">¡Gracias por completar el ejercicio!</p><button data-template-id="retry-button" id="btn-retry" type="button" class="canva-button rounded-xl px-8 py-4 font-bold shadow-lg hover:scale-105 active:scale-95 transition-transform" style="background: rgb(236, 99, 60); color: rgb(255, 255, 255); font-weight: 700; font-style: normal; font-size: 18px;">Reintentar</button>
+        <div class="px-6 md:px-8 pb-8">
+          <!-- Case with Image Layout -->
+          <div class="flex flex-col md:flex-row gap-6 mb-6">
+            <!-- Character Image -->
+            <div class="md:w-2/5 flex-shrink-0">
+              <img
+                src="../img/caso2_Burnout_GS1.png"
+                alt="Sofía - Analista Administrativa"
+                class="character-image w-full"
+                loading="lazy"
+              />
+            </div>
+
+            <!-- Case Text -->
+            <div class="md:w-3/5">
+              <div class="case-section">
+                <h3 style="color: #22335e; font-size: 1.1rem; margin-bottom: 1rem;">Sofía es analista administrativa en el corporativo.</h3>
+
+                <p class="mb-4 text-gray-700 leading-relaxed">
+                  <strong>Situación actual:</strong> Durante los últimos dos meses, su equipo ha tenido más proyectos de los habituales. Ella se ha quedado varias noches conectada, cubriendo pendientes de otros compañeros y revisando reportes que no eran originalmente su responsabilidad.
+                </p>
+
+                <p class="mb-4 text-gray-700 leading-relaxed">
+                  <strong>Síntomas:</strong> Aunque se entrega a tiempo, nota que su energía baja, su concentración se reduce y su ánimo cambia: está irritable, duerme mal y siente que ya no disfruta su trabajo.
+                </p>
+
+                <p class="text-gray-700 leading-relaxed">
+                  <strong>El dilema:</strong> Sofía sabe que necesita hacer algo, pero no está segura de cómo pedir apoyo sin parecer poco comprometida.
+                </p>
+              </div>
+
+              <div class="bg-blue-50 border-l-4 border-blue-400 p-4 rounded">
+                <p class="text-sm text-gray-700 italic">
+                  "¿Cómo puedo comunicar que necesito ayuda sin que parezca que no estoy comprometida con el trabajo?"
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Questions Section -->
+    <div id="questions-section" class="section-hidden mt-6 scroll-to-section">
+      <div class="content-wrapper">
+        <h2 class="section-title px-6 md:px-8 pt-6">Preguntas - Analiza la situación</h2>
+
+        <div class="px-6 md:px-8 pb-8">
+          <div id="questions-container" class="space-y-6"></div>
+
+          <div class="flex gap-4 justify-center mt-8">
+            <button id="btn-next" type="button" class="hidden px-8 py-3 rounded-xl font-bold shadow-lg transition-transform hover:scale-105 active:scale-95" style="background: #22335e; color: white;">Siguiente pregunta</button>
+            <button id="btn-results" type="button" class="hidden px-8 py-3 rounded-xl font-bold shadow-lg transition-transform hover:scale-105 active:scale-95" style="background: #22335e; color: white;">Ver resultado</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Results Section -->
+    <div id="results-section" class="section-hidden mt-6 scroll-to-section">
+      <div class="content-wrapper">
+        <h2 class="section-title px-6 md:px-8 pt-6 text-center">Resultado Final</h2>
+
+        <div class="px-6 md:px-8 pb-8 text-center">
+          <div class="mb-6">
+            <p id="score-display" class="text-6xl font-bold mb-2">0 / 3</p>
+            <p class="text-lg text-gray-600">¡Gracias por completar el ejercicio!</p>
+          </div>
+
+          <div class="bg-green-50 border-l-4 border-green-500 p-6 rounded mb-6 text-left">
+            <h3 class="font-bold text-green-800 mb-2">Retroalimentación Final</h3>
+            <p class="text-gray-700 mb-2">
+              La clave para pedir apoyo de manera efectiva es <strong>comunicar con claridad y profesionalismo</strong>:
+            </p>
+            <ul class="list-disc list-inside space-y-1 text-gray-700 text-sm">
+              <li>Presenta hechos concretos, no emociones generales</li>
+              <li>Explica el impacto en tu desempeño</li>
+              <li>Propone soluciones colaborativas</li>
+              <li>Mantén un tono responsable y abierto</li>
+              <li>Evita culpar o justificarse en exceso</li>
+            </ul>
+          </div>
+
+          <button id="btn-retry" type="button" class="start-button">Reintentar ejercicio</button>
+        </div>
+      </div>
+    </div>
   </div>
-  <script src="/_sdk/afc2d393c2ac926b.editing_sdk.js" integrity="sha512-Ue7lZoRec1IGq7j3H/38aWZalTxanTjFGoCKdWTFUGFJwCO6Pinekpb6vP1nEQ3ZFuEOglmaFKfrRMeLheTxnw=="></script>
+
   <script>
     const questions = [
-      { q: "¿Cuál es el principal problema que enfrenta la empresa del caso?", options: ["Falta de presupuesto", "Baja retención de clientes", "Problemas legales"], correct: 1, feedback: "La empresa pierde clientes porque no logra fidelizarlos después de la primera compra." },
-      { q: "¿Qué estrategia sería más adecuada para resolver el problema?", options: ["Reducir precios drásticamente", "Implementar un programa de lealtad", "Cerrar sucursales"], correct: 1, feedback: "Un programa de lealtad incentiva compras recurrentes y mejora la retención." },
-      { q: "¿Qué métrica debería monitorear la empresa para evaluar el éxito?", options: ["Número de empleados", "Tasa de retención mensual", "Metros cuadrados de oficina"], correct: 1, feedback: "La tasa de retención mensual mide directamente si los clientes regresan." }
+      {
+        q: "¿Cuál de las siguientes formas de pedir apoyo sería la más adecuada para cuidar tu bienestar y mantener una comunicación profesional?",
+        options: [
+          "La carga de trabajo me está superando, no puedo más. Necesito que alguien me ayude porque esto es demasiado.",
+          "No te preocupes, yo me encargo. Solo necesito unos días más y todo saldrá bien.",
+          "He notado que en las últimas semanas el volumen de tareas ha aumentado y estoy teniendo dificultades para mantener la calidad de mis entregas. Me gustaría revisar juntos las prioridades o definir si podemos redistribuir algunos pendientes."
+        ],
+        correct: 2,
+        feedback: "Esta es la opción más profesional. Sofía explica hechos concretos, menciona el impacto en su desempeño y propone una solución colaborativa. Comunica responsabilidad y apertura al diálogo, sin sonar quejosa ni evasiva."
+      },
+      {
+        q: "¿Qué muestra que la primera opción ('no puedo más...') no es la más adecuada?",
+        options: [
+          "Es honesta y directa",
+          "Es demasiado emocional y general. Expresa frustración sin información clara ni soluciones",
+          "Es la que muestra más compromiso"
+        ],
+        correct: 1,
+        feedback: "Aunque es honesta, esta respuesta es demasiado emocional. Puede generar empatía pero no facilita una solución ni muestra claridad sobre qué se necesita específicamente. El jefe no sabrá cómo ayudar."
+      },
+      {
+        q: "¿Por qué la segunda opción ('no te preocupes, yo me encargo...') puede ser perjudicial a largo plazo?",
+        options: [
+          "Porque muestra poco compromiso",
+          "Porque evita pedir apoyo, perpetúa el problema y puede llevar al agotamiento completo",
+          "Porque el jefe no creería que hay un problema"
+        ],
+        correct: 1,
+        feedback: "Aunque parece comprometida, esta respuesta evita el problema. Sofía se sobrecarga más, refuerza la idea de que 'siempre puede con todo', y a largo plazo puede llevarla al burnout completo. La comunicación clara es esencial."
+      }
     ];
 
     let score = 0, answered = 0, currentQuestion = 0;
 
-    function showScreen(id) {
-      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-      document.getElementById(id).classList.add('active');
+    function showSection(sectionId) {
+      document.querySelectorAll('[id$="-section"]').forEach(s => {
+        s.classList.remove('section-visible');
+        s.classList.add('section-hidden');
+      });
+      const section = document.getElementById(sectionId);
+      section.classList.remove('section-hidden');
+      section.classList.add('section-visible');
+
+      // Scroll to top of section
+      setTimeout(() => {
+        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
     }
 
+    // Build questions
     const container = document.getElementById('questions-container');
     questions.forEach((q, i) => {
       const div = document.createElement('div');
-      div.className = `question-card bg-white border rounded-xl p-5 shadow-sm ${i === 0 ? '' : 'hidden'}`;
-      div.style.borderColor = '#22335e20';
+      div.className = `question-card bg-white border rounded-xl p-6 shadow-sm ${i === 0 ? '' : 'hidden'}`;
+      div.style.borderColor = '#22335e40';
       div.innerHTML = `
-        <p class="font-medium mb-3" style="color:#22335e">${i+1}. ${q.q}</p>
-        <div class="space-y-2" id="opts-${i}">
-          ${q.options.map((o, j) => `<button type="button" class="opt-btn w-full text-left px-4 py-3 rounded-lg border border-gray-200 hover:border-blue-400 hover:bg-blue-50" style="color:#333333" data-qi="${i}" data-oi="${j}">${o}</button>`).join('')}
+        <p class="font-bold mb-4 text-lg" style="color:#22335e">${i+1}. ${q.q}</p>
+        <div class="space-y-3" id="opts-${i}">
+          ${q.options.map((o, j) => `
+            <button type="button" class="opt-btn w-full text-left px-4 py-3 rounded-lg border-2 border-gray-300 hover:border-blue-400 hover:bg-blue-50 transition-all" style="color:#333333" data-qi="${i}" data-oi="${j}">
+              <span class="font-semibold">Opción ${String.fromCharCode(65+j)}:</span> ${o}
+            </button>
+          `).join('')}
         </div>
-        <p id="fb-${i}" class="mt-3 text-sm hidden" style="color:#333333"></p>
+        <p id="fb-${i}" class="mt-4 text-sm feedback-text hidden p-3 bg-gray-50 rounded border-l-4" style="color:#333333; border-color:#22335e"></p>
       `;
       container.appendChild(div);
     });
@@ -92,10 +330,16 @@ Mariana siente que trabaja todo el día, pero no avanza. Revisa el correo cada c
       const qi = +btn.dataset.qi, oi = +btn.dataset.oi;
       const opts = document.querySelectorAll(`#opts-${qi} .opt-btn`);
       opts.forEach(b => b.disabled = true);
-      if (oi === questions[qi].correct) { btn.classList.add('opt-correct'); score++; }
-      else { btn.classList.add('opt-incorrect'); opts[questions[qi].correct].classList.add('opt-correct'); }
+      if (oi === questions[qi].correct) {
+        btn.classList.add('opt-correct');
+        score++;
+      }
+      else {
+        btn.classList.add('opt-incorrect');
+        opts[questions[qi].correct].classList.add('opt-correct');
+      }
       const fb = document.getElementById(`fb-${qi}`);
-      fb.textContent = (oi === questions[qi].correct ? "✓ Correcto. " : "✗ Incorrecto. ") + questions[qi].feedback;
+      fb.innerHTML = (oi === questions[qi].correct ? "<strong style='color:#28a745'>✓ Correcto.</strong> " : "<strong style='color:#dc3545'>✗ Incorrecto.</strong> ") + questions[qi].feedback;
       fb.classList.remove('hidden');
       answered++;
       if (answered < questions.length) document.getElementById('btn-next').classList.remove('hidden');
@@ -109,20 +353,42 @@ Mariana siente que trabaja todo el día, pero no avanza. Revisa el correo cada c
       document.getElementById('btn-next').classList.add('hidden');
     });
 
-    document.querySelector('[data-template-id="start-button"]').addEventListener('click', () => showScreen('screen-case'));
-    document.querySelector('[data-template-id="continue-button"]').addEventListener('click', () => showScreen('screen-questions'));
-    document.getElementById('btn-results').addEventListener('click', () => { showScreen('screen-results'); document.getElementById('score-display').textContent = `${score} / 3`; });
+    document.getElementById('start-btn').addEventListener('click', () => {
+      showSection('case-section');
+      setTimeout(() => showSection('questions-section'), 500);
+    });
+
+    document.getElementById('btn-results').addEventListener('click', () => {
+      showSection('results-section');
+      document.getElementById('score-display').textContent = `${score} / 3`;
+    });
+
     document.getElementById('btn-retry').addEventListener('click', () => {
-      score = 0; answered = 0; currentQuestion = 0;
+      score = 0;
+      answered = 0;
+      currentQuestion = 0;
       document.querySelectorAll('.question-card').forEach((card, i) => {
         card.classList.toggle('hidden', i !== 0);
-        card.querySelectorAll('.opt-btn').forEach(o => { o.disabled = false; o.classList.remove('opt-correct','opt-incorrect'); });
-        card.querySelectorAll('[id^="fb-"]').forEach(f => { f.textContent = ''; f.classList.add('hidden'); });
+        card.querySelectorAll('.opt-btn').forEach(o => {
+          o.disabled = false;
+          o.classList.remove('opt-correct','opt-incorrect');
+        });
+        card.querySelectorAll('[id^="fb-"]').forEach(f => {
+          f.textContent = '';
+          f.classList.add('hidden');
+        });
       });
       document.getElementById('btn-next').classList.add('hidden');
       document.getElementById('btn-results').classList.add('hidden');
-      showScreen('screen-intro');
+      showSection('case-section');
+    });
+
+    // Post message to parent for SCORM tracking
+    window.addEventListener('load', () => {
+      if (window.parent !== window) {
+        window.parent.postMessage({ type: 'bn-test-height', height: document.body.scrollHeight }, '*');
+      }
     });
   </script>
- 
-</body></html>
+  <script src="/_sdk/afc2d393c2ac926b.editing_sdk.js" integrity="sha512-Ue7lZoRec1IGq7j3H/38aWZalTxanTjFGoCKdWTFUGFJwCO6Pinekpb6vP1nEQ3ZFuEOglmaFKfrRMeLheTxnw=="></script>
+ </body></html>
