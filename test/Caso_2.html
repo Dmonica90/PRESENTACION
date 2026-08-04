@@ -153,19 +153,7 @@
           <li>✓ Recibe retroalimentación inmediata</li>
           <li>✓ Aprende a comunicar con profesionalismo y claridad</li>
         </ul>
-        <div class="text-center">
-          <button id="start-btn" class="start-button">Comenzar ejercicio</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Case Section -->
-    <div id="case-section" class="section-hidden mt-6 scroll-to-section">
-      <div class="content-wrapper">
-        <h2 class="section-title px-6 md:px-8 pt-6">El Caso de Sofía</h2>
-        <div class="px-6 md:px-8 pb-8">
-          <!-- Case with Image Layout -->
-          <div class="flex flex-col md:flex-row gap-6 mb-6">
+        <div class="flex flex-col md:flex-row gap-6 mb-6">
             <!-- Character Image -->
             <div class="md:w-2/5 flex-shrink-0">
               <img
@@ -201,11 +189,12 @@
               </div>
             </div>
           </div>
+        <div class="text-center">
+          <button id="start-btn" class="start-button">Comenzar ejercicio</button>
         </div>
       </div>
     </div>
 
-    
 
     <!-- Questions Section -->
     <div id="questions-section" class="section-hidden mt-6 scroll-to-section">
@@ -355,8 +344,7 @@
     });
 
     document.getElementById('start-btn').addEventListener('click', () => {
-      showSection('case-section');
-      setTimeout(() => showSection('questions-section'), 500);
+      showSection('questions-section');
     });
 
     document.getElementById('btn-results').addEventListener('click', () => {
