@@ -190,43 +190,9 @@
         <!-- Question Box (initially hidden) -->
         <div id="question-box" class="section-hidden mt-8 mb-6">
           <div id="question-container" class="space-y-6"></div>
-          <p id="next-instruction" class="hidden text-center text-sm font-semibold mt-6 px-4" style="color:#22335e;">
-            ✓ Respuesta registrada. Haz clic en <strong>Avanzar</strong> para ver tu resultado.
-          </p>
           <div class="flex gap-4 justify-center mt-8">
-            <button id="btn-avanzar" type="button" class="hidden px-8 py-3 rounded-xl font-bold shadow-lg transition-transform hover:scale-105 active:scale-95" style="background: #22335e; color: white;">Avanzar</button>
+            <button id="btn-retry-question" type="button" class="hidden px-8 py-3 rounded-xl font-bold shadow-lg transition-transform hover:scale-105 active:scale-95" style="background: #ec633c; color: white;">Reintentar</button>
           </div>
-        </div>
-      </div>
-    </div>
-
-
-    <!-- Results Section -->
-    <div id="results-section" class="section-hidden mt-6 scroll-to-section">
-      <div class="content-wrapper">
-        <h2 class="section-title px-6 md:px-8 pt-6 text-center">Resultado Final</h2>
-
-        <div class="px-6 md:px-8 pb-8 text-center">
-          <div class="mb-6">
-            <p id="score-display" class="text-6xl font-bold mb-2">0 / 1</p>
-            <p class="text-lg text-gray-600">¡Gracias por completar el ejercicio!</p>
-          </div>
-
-          <div class="bg-green-50 border-l-4 border-green-500 p-6 rounded mb-6 text-left">
-            <h3 class="font-bold text-green-800 mb-2">Retroalimentación Final</h3>
-            <p class="text-gray-700 mb-2">
-              La clave para pedir apoyo de manera efectiva es <strong>comunicar con claridad y profesionalismo</strong>:
-            </p>
-            <ul class="list-disc list-inside space-y-1 text-gray-700 text-sm">
-              <li>Presenta hechos concretos, no emociones generales</li>
-              <li>Explica el impacto en tu desempeño</li>
-              <li>Propone soluciones colaborativas</li>
-              <li>Mantén un tono responsable y abierto</li>
-              <li>Evita culpar o justificarse en exceso</li>
-            </ul>
-          </div>
-
-          <button id="btn-retry" type="button" class="start-button">Reintentar ejercicio</button>
         </div>
       </div>
     </div>
@@ -301,8 +267,7 @@
       fb.innerHTML = (oi === question.correct ? "<strong style='color:#28a745'>✓ Correcto.</strong> " : "<strong style='color:#dc3545'>✗ Incorrecto.</strong> ") + question.feedback[oi];
       fb.classList.remove('hidden');
       answered = true;
-      document.getElementById('next-instruction').classList.remove('hidden');
-      document.getElementById('btn-avanzar').classList.remove('hidden');
+      document.getElementById('btn-retry-question').classList.remove('hidden');
     });
 
     document.getElementById('start-btn').addEventListener('click', () => {
@@ -313,12 +278,7 @@
       }, 100);
     });
 
-    document.getElementById('btn-avanzar').addEventListener('click', () => {
-      showSection('results-section');
-      document.getElementById('score-display').textContent = `${score} / 1`;
-    });
-
-    document.getElementById('btn-retry').addEventListener('click', () => {
+    document.getElementById('btn-retry-question').addEventListener('click', () => {
       score = 0;
       answered = false;
       document.getElementById('question-box').classList.add('section-hidden');
@@ -329,8 +289,7 @@
       });
       document.getElementById('fb-0').textContent = '';
       document.getElementById('fb-0').classList.add('hidden');
-      document.getElementById('next-instruction').classList.add('hidden');
-      document.getElementById('btn-avanzar').classList.add('hidden');
+      document.getElementById('btn-retry-question').classList.add('hidden');
       showSection('intro-section');
     });
 
