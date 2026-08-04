@@ -6,22 +6,61 @@
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
   <style>
-    body { font-family: 'Montserrat', sans-serif; font-weight: 400; }
+    * { font-family: 'Montserrat', sans-serif; }
+    body {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 400;
+      background-image: url('../img/art_full_2_quiz-4.png');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      background-color: #f5f5f5;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255, 255, 255, 0.92);
+      pointer-events: none;
+      z-index: -1;
+    }
     .question-card > p:first-child { font-weight: 600; }
-    .opt-btn { font-family: 'Montserrat', sans-serif; font-weight: 500; }
+    .opt-btn {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
     .question-card p[id^="fb-"] { font-weight: 400; }
-    #score-display { font-family: 'Montserrat', sans-serif; font-weight: 700; }
+    #score-display { font-family: 'Montserrat', sans-serif; font-weight: 700; color: #22335e; }
     .screen { display: none; }
     .screen.active { display: flex; }
     .opt-btn { transition: all 0.2s; }
     .opt-btn:disabled { cursor: default; opacity: 0.85; }
     .opt-correct { background: #28a745 !important; color: #fff !important; border-color: #28a745 !important; }
     .opt-incorrect { background: #dc3545 !important; color: #fff !important; border-color: #dc3545 !important; }
-    body.case-bg {
-      background-image: url('../img/art_full_2_quiz-4.png');
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
+    h1, h2 { font-weight: 700; color: #22335e; }
+    .canva-button {
+      transition: all 0.2s;
+      border: none;
+      cursor: pointer;
+      display: inline-block;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(34, 51, 94, 0.15);
+    }
+    .canva-button:hover {
+      transform: scale(1.05);
+    }
+    .canva-button:active {
+      transform: scale(0.95);
+    }
+    .question-card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(34, 51, 94, 0.08);
+      border: 1px solid rgba(34, 51, 94, 0.1);
     }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js" type="text/javascript"></script>
