@@ -153,16 +153,18 @@
           <li>✓ Recibe retroalimentación inmediata</li>
           <li>✓ Aprende a comunicar con profesionalismo y claridad</li>
         </ul>
+
+        <!-- Character Image - Full Width -->
+        <div class="mb-6">
+          <img
+          src="../img/Caso2_Burnout_GS1.png"
+          alt="Sofía - Analista Administrativa"
+          class="character-image w-full"
+          loading="lazy">
+        </div>
+
+        <!-- Case Text Grid -->
         <div class="flex flex-col md:flex-row gap-6 mb-6">
-            <!-- Character Image -->
-            <div class="md:w-2/5 flex-shrink-0">
-              <img
-                src="../img/Caso2_Burnout_GS1.png"
-                alt="Sofía - Analista Administrativa"
-                class="character-image w-full"
-                loading="lazy"
-              />
-            </div>
 
             <!-- Case Study Text -->
             <div class="md:w-3/5">
@@ -369,7 +371,7 @@
       });
       document.getElementById('btn-next').classList.add('hidden');
       document.getElementById('btn-results').classList.add('hidden');
-      showSection('case-section');
+      showSection('intro-section');
     });
 
     // Post message to parent for SCORM tracking
