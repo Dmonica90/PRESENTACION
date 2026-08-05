@@ -269,11 +269,6 @@ Mariana siente que trabaja todo el día, pero no avanza. Revisa el correo cada c
       const section = document.getElementById(sectionId);
       section.classList.remove('section-hidden');
       section.classList.add('section-visible');
-
-      // Scroll to top of section
-      setTimeout(() => {
-        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }, 100);
     }
 
     // Build all questions
@@ -334,9 +329,6 @@ Mariana siente que trabaja todo el día, pero no avanza. Revisa el correo cada c
     document.getElementById('start-btn').addEventListener('click', () => {
       document.getElementById('question-box').classList.remove('section-hidden');
       document.getElementById('question-box').classList.add('section-visible');
-      setTimeout(() => {
-        document.getElementById('question-box').scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }, 100);
     });
 
     document.getElementById('btn-retry-question').addEventListener('click', () => {
