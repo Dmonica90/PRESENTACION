@@ -299,6 +299,14 @@
         window.parent.postMessage({ type: 'bn-test-height', height: document.body.scrollHeight }, '*');
       }
     });
+
+    // Monitor height changes and update parent iframe dynamically
+    const resizeObserver = new ResizeObserver(() => {
+      if (window.parent !== window) {
+        window.parent.postMessage({ type: 'bn-test-height', height: document.body.scrollHeight }, '*');
+      }
+    });
+    resizeObserver.observe(document.body);
   </script>
   <script src="/_sdk/afc2d393c2ac926b.editing_sdk.js" integrity="sha512-Ue7lZoRec1IGq7j3H/38aWZalTxanTjFGoCKdWTFUGFJwCO6Pinekpb6vP1nEQ3ZFuEOglmaFKfrRMeLheTxnw=="></script>
  </body></html>

@@ -247,7 +247,9 @@ window.addEventListener('message', function (e) {
     // Ajuste automático de alto del iframe del test
     if (d.type === 'bn-test-height') {
         const f = document.getElementById('test-u1-frame');
-        if (f && d.height) f.style.height = (d.height + 8) + 'px';
+        if (f && d.height && typeof d.height === 'number' && d.height > 0) {
+            f.style.height = (d.height + 8) + 'px';
+        }
     }
 
     // El test terminó: reportar a SCORM / registrar puntaje
