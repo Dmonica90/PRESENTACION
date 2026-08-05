@@ -284,6 +284,9 @@
     line-height: 1.35;
 }
 #slide-23 .bn-banner-text { width: 50%; }
+#slide-33 .bn-banner-text { width: 70%; }
+#slide-33 .bn-banner { min-height: 280px; }
+
 
 .bn-banner-desc {
     margin: 0;
