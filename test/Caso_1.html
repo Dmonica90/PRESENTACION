@@ -2,15 +2,15 @@
 <html lang="es"><head><script>window["__codeletBootstrap__"]=JSON.parse('{"A":"A","B":"20260731-05-8d4b1dd","C":{"Abril Fatface":"YACgEZbkUVE,0","Alfa Slab One":"YACgEYS9sJU,0","Anton":"YACgEcYqQ-A,0","Archivo":"YAHO2-t-jNE,0","Arial":"YAGyDvJ_4Ts,0","Bebas Neue":"YACgESME5ew,0","Broken Glyph":"YADZ-exUkv0,0","Canva Sans":"YAFdJjTk5UU,0","Caveat":"YALBs2ploWQ,0","Comic Sans MS":"YAHO2VMiyZo,0","Cormorant Garamond":"YAFdJhX-538,0","Courier New":"YAGzXiGs0_8,0","DM Sans":"YAD1aU3sLnI,0","DM Serif Display":"YAD1aYG82rc,0","Forum":"YACgEcnnqB4,0","Fraunces":"YAEul-FRQw4,0","Georgia":"YAGzXkO0pEM,0","Ghost Mono":"YAHO2EIdDP0,0","Helvetica Neue":"YAFcf6CtJfI,0","Impact":"YAFcfnjI7Vk,0","Inter":"YAFdJvSyp_k,3","Iowan Old Style":"YAGNIFa8j9o,0","Jacques Francois":"YAHO2a5g66Q,0","JetBrains Mono":"YADy3sAhvXQ,0","Oleo Script":"YACgEQQ14jI,0","Playfair Display":"YAFdJhem5V8,1","Poppins":"YAE5fPSY9qM,0","Press Start 2P":"YAFyGr-8pmQ,0","Source Sans 3":"YAG4lO1Mj10,0","Space Grotesk":"YAHO2sjPCSM,0","Times New Roman":"YAGzXW3gftg,0","Times":"YAGzXW3gftg,0","Trebuchet MS":"YAFcfrglpVA,0","Verdana":"YAGzXTctYtQ,0","Work Sans":"YAGXhLOKv44,0","Yellowtail":"YACgEYG4kG4,0"}}');</script><script src="/_sdk/1c274b9c2bdd3519.telemetry_sdk.js" integrity="sha512-QvDGWM2/VIwB7KXA4cwqkIBlxCdJGd0uO9ksM8wsqNKNiFgewrwdYlGY9ioCTg42Djm5Sw7uha/WH60UzzKOhQ=="></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ejercicio Interactivo</title>
+  <title>Caso 1: Gestión de Prioridades y Estrés Laboral</title>
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     * { font-family: 'Montserrat', sans-serif; }
     body {
       font-family: 'Montserrat', sans-serif;
       font-weight: 400;
-      background-image: url('../img/art_full_2_quiz-4.png');
+      background-image: url('../img/art_full_oficina.png');
       background-size: cover;
       background-position: center;
       background-attachment: fixed;
@@ -27,40 +27,111 @@
       pointer-events: none;
       z-index: -1;
     }
+    .content-wrapper {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(242, 245, 250, 0.95) 100%);
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(34, 51, 94, 0.1);
+    }
     .question-card > p:first-child { font-weight: 600; }
     .opt-btn {
       font-family: 'Montserrat', sans-serif;
       font-weight: 500;
       transition: all 0.2s;
     }
-    .question-card p[id^="fb-"] { font-weight: 400; }
-    #score-display { font-family: 'Montserrat', sans-serif; font-weight: 700; color: #22335e; }
-    .screen { display: none; }
-    .screen.active { display: flex; }
-    .opt-btn { transition: all 0.2s; }
     .opt-btn:disabled { cursor: default; opacity: 0.85; }
     .opt-correct { background: #28a745 !important; color: #fff !important; border-color: #28a745 !important; }
     .opt-incorrect { background: #dc3545 !important; color: #fff !important; border-color: #dc3545 !important; }
+    .character-image {
+      max-width: 100%;
+      height: auto;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    }
+    .case-section {
+      background: rgba(255, 255, 255, 0.95);
+      border-left: 5px solid #ec633c;
+      padding: 2rem;
+      border-radius: 8px;
+      margin-bottom: 2rem;
+    }
+    .scroll-to-section {
+      scroll-margin-top: 2rem;
+    }
     h1, h2 { font-weight: 700; color: #22335e; }
-    .canva-button {
-      transition: all 0.2s;
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #22335e;
+      margin-bottom: 1rem;
+      border-bottom: 3px solid #ec633c;
+      padding-bottom: 0.5rem;
+    }
+    #score-display {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      color: #22335e;
+    }
+    .intro-header {
+      background: linear-gradient(135deg, #22335e 0%, #1f3f6d 100%);
+      color: white;
+      padding: 3rem 2rem;
+      border-radius: 12px 12px 0 0;
+      text-align: center;
+    }
+    .intro-header h1 {
+      color: white;
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+    .intro-header p {
+      color: rgba(245, 245, 245, 0.9);
+      font-size: 1.1rem;
+      margin-bottom: 1.5rem;
+    }
+    .intro-list li {
+      color: #22335e;
+      margin-bottom: 0.5rem;
+    }
+    .start-button {
+      background: #ec633c;
+      color: white;
+      font-weight: 700;
+      padding: 1rem 2rem;
+      border-radius: 8px;
       border: none;
       cursor: pointer;
+      font-size: 1.1rem;
+      transition: all 0.2s;
       display: inline-block;
-      border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(34, 51, 94, 0.15);
     }
-    .canva-button:hover {
+    .start-button:hover {
+      background: #d65230;
       transform: scale(1.05);
     }
-    .canva-button:active {
+    .start-button:active {
       transform: scale(0.95);
     }
-    .question-card {
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 2px 12px rgba(34, 51, 94, 0.08);
-      border: 1px solid rgba(34, 51, 94, 0.1);
+    .feedback-text {
+      font-weight: 400;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+    .section-hidden {
+      display: none;
+    }
+    .section-visible {
+      display: block;
+      animation: slideDown 0.3s ease-out;
+    }
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js" type="text/javascript"></script>
@@ -68,110 +139,221 @@
   <script src="/_sdk/797e0a7e8af7c7f8.resizing_sdk.js" type="text/javascript" integrity="sha512-giNZj5eBnASPpYcJXEVOn6FguxFDnaH+gnf5nbRfUgfRDqtOdV+5Dna/CwvXiPeR//Plhtbt32CML3VF4+oCLw=="></script>
  </head>
  <body data-template-id="__page-root" class="w-full min-h-screen flex items-center justify-center p-4">
-  <!-- Intro -->
-  <div id="screen-intro" class="screen active flex-col items-center gap-6 max-w-2xl text-center">
-   <div class="w-16 h-1 rounded" style="background:#ec633c"></div>
-   <h1 data-template-id="intro-title" class="canva-text font-bold" style="color: rgb(34, 51, 94); font-weight: 700; font-style: normal; font-size: 32px;">Ejercicio Interactivo</h1>
-   <p data-template-id="intro-desc" class="canva-text max-w-lg" style="color: rgb(51, 51, 51); font-weight: 400; font-style: normal; font-size: 16px;">Bienvenido a este ejercicio tipo quiz. Lee las instrucciones y presiona Comenzar cuando estés listo.</p>
-   <ul class="text-left text-sm space-y-1 list-disc list-inside" style="color:#333333">
-    <li>Lee el caso de estudio con atención.</li>
-    <li>Responde las 3 preguntas (1 punto c/u).</li>
-    <li>Recibirás retroalimentación inmediata.</li>
-   </ul><button data-template-id="start-button" type="button" class="canva-button rounded-xl px-8 py-4 font-bold shadow-lg hover:scale-105 active:scale-95 transition-transform" style="background: rgb(236, 99, 60); color: rgb(255, 255, 255); font-weight: 700; font-style: normal; font-size: 18px;">Comenzar</button>
-  </div><!-- Case Study -->
-  <div id="screen-case" class="screen flex-col items-center gap-6 max-w-2xl text-center">
-   <h2 data-template-id="case-title" class="canva-text font-bold" style="color: rgb(34, 51, 94); font-weight: 700; font-style: normal; font-size: 26px;">Caso Integral: Todo es urgente en el corporativo</h2>
-   <div class="text-left border rounded-xl p-6" style="background:#ffffff; border-color:#22335e20">
-    <p data-template-id="case-text" class="canva-text leading-relaxed" style="color: rgb(51, 51, 51); font-weight: 400; font-style: normal; font-size: 16px;">
-Mariana es coordinadora de proyectos en una empresa de servicios. Su semana comenzó con varios pendientes, los cuales son:
-</p>
-<ul class="canva-text list-disc list-inside space-y-1" style="color: rgb(51, 51, 51); font-weight: 400; font-style: normal; font-size: 16px;">
- <li>Entregar el miércoles un reporte mensual a dirección.</li>
- <li>Asistir a cinco reuniones virtuales, dos de las cuales originalmente no estaban agendadas.</li>
- <li>Entregar a su jefe una presentación especial para una visita de clientes, que le pidió de último momento.</li>
- <li>Además, su equipo le ha estado enviando mensajes fuera de horario pidiéndole aprobaciones rápidas.</li>
-</ul>
-<p class="canva-text leading-relaxed mt-3" style="color: rgb(51, 51, 51); font-weight: 400; font-style: normal; font-size: 16px;">Mariana siente que trabaja todo el día, pero no avanza. Revisa el correo cada cinco minutos, cambia de tarea constantemente y termina agotada. Al final de la semana, el reporte se retrasa y la presentación termina a medianoche.</p>
-<img data-template-id="case-image" src="../img/035_Burnout_GS1.jpg" alt="Imagen del caso" class="w-full rounded-xl shadow-sm mt-4">
-</div><button data-template-id="continue-button" type="button" class="canva-button rounded-xl px-8 py-4 font-bold shadow-lg hover:scale-105 active:scale-95 transition-transform" style="background: rgb(31, 63, 109); color: rgb(255, 255, 255); font-weight: 700; font-style: normal; font-size: 18px;">Continuar a las preguntas</button>
-  </div><!-- Questions -->
-  <div id="screen-questions" class="screen flex-col items-center gap-8 max-w-2xl w-full">
-   <h2 data-template-id="questions-title" class="canva-text font-bold" style="color: rgb(34, 51, 94); font-weight: 700; font-style: normal; font-size: 26px;">Preguntas</h2>
-   <div id="questions-container" class="w-full"></div><button data-template-id="next-question-button" id="btn-next" type="button" class="hidden canva-button rounded-xl px-8 py-4 font-bold shadow-lg hover:scale-105 active:scale-95 transition-transform" style="background: rgb(34, 51, 94); color: rgb(255, 255, 255); font-weight: 700; font-style: normal; font-size: 18px;">Siguiente pregunta</button> <button data-template-id="finish-button" id="btn-results" type="button" class="hidden canva-button rounded-xl px-8 py-4 font-bold shadow-lg hover:scale-105 active:scale-95 transition-transform" style="background: rgb(34, 51, 94); color: rgb(255, 255, 255); font-weight: 700; font-style: normal; font-size: 18px;">Ver resultado</button>
-  </div><!-- Results -->
-  <div id="screen-results" class="screen flex-col items-center gap-6 max-w-2xl text-center">
-   <h2 data-template-id="results-title" class="canva-text font-bold" style="color: rgb(34, 51, 94); font-weight: 700; font-style: normal; font-size: 28px;">Resultado Final</h2>
-   <p id="score-display" class="text-5xl font-bold" style="color:#22335e"></p>
-   <p data-template-id="results-subtitle" class="canva-text" style="color: rgb(51, 51, 51); font-weight: 400; font-style: normal; font-size: 16px;">¡Gracias por completar el ejercicio!</p><button data-template-id="retry-button" id="btn-retry" type="button" class="canva-button rounded-xl px-8 py-4 font-bold shadow-lg hover:scale-105 active:scale-95 transition-transform" style="background: rgb(236, 99, 60); color: rgb(255, 255, 255); font-weight: 700; font-style: normal; font-size: 18px;">Reintentar</button>
+  <div class="w-full max-w-4xl">
+    <!-- Intro Section -->
+    <div id="intro-section" class="content-wrapper scroll-to-section">
+      <div class="intro-header">
+        <h1>Caso: Gestión de Prioridades y Estrés Laboral</h1>
+        <p>Ejercicio interactivo sobre priorización, límites y comunicación efectiva</p>
+      </div>
+      <div class="p-6 md:p-8 pb-12">
+        <ul class="intro-list text-left space-y-2 mb-6 ml-4">
+          <li>✓ Lee el caso de Mariana con atención</li>
+          <li>✓ Responde las 3 preguntas (3 puntos)</li>
+          <li>✓ Recibe retroalimentación inmediata en cada respuesta</li>
+          <li>✓ Aprende estrategias para gestionar prioridades y límites laborales</li>
+        </ul>
+
+        <!-- Character Image - Full Width -->
+        <div class="mb-6">
+          <img
+          src="../img/035_Burnout_GS1.jpg"
+          alt="Sofía - Analista Administrativa"
+          class="character-image w-full"
+          loading="lazy">
+        </div>
+
+        <!-- Case Text Grid -->
+        <div class="flex flex-col md:flex-row gap-6 mb-6">
+
+            <!-- Case Study Text -->
+            <div class="w-full">
+              <div class="case-section">
+                <h3 style="color: #22335e; font-size: 1.1rem; margin-bottom: 1rem;">Caso: Mariana y la sobrecarga laboral</h3>
+
+                <p class="mb-4 text-gray-700 leading-relaxed">
+                 Mariana es coordinadora de proyectos en una empresa de servicios. Su semana comenzó con varios pendientes, los cuales son:
+                </p>
+                <ul class="list-disc list-inside mb-4 text-gray-700 leading-relaxed">
+                  <li>Entregar el miércoles un reporte mensual a dirección.</li>
+                  <li>Asistir a cinco reuniones virtuales, dos de las cuales originalmente no estaban agendadas.</li>
+                  <li>Entregar a su jefe una presentación especial para una visita de clientes, que le pidió de último momento</li>
+                  <li>Además, su equipo le ha estado enviando mensajes fuera de horario pidiéndole aprobaciones rápidas.</li>
+                </ul>
+                <p class="mb-4 text-gray-700 leading-relaxed">
+Mariana siente que trabaja todo el día, pero no avanza. Revisa el correo cada cinco minutos, cambia de tarea constantemente y termina agotada. Al final de la semana, el reporte se retrasa y la presentación termina a medianoche.
+                </p>
+
+              
+            </div>
+          </div>
+        <div class="text-center">
+          <button id="start-btn" class="start-button">Comenzar ejercicio</button>
+        </div>
+
+        <!-- Question Box (initially hidden) -->
+        <div id="question-box" class="section-hidden mt-8 mb-6">
+          <div id="question-container" class="space-y-6"></div>
+          <div class="flex gap-4 justify-center mt-8">
+            <button id="btn-retry-question" type="button" class="hidden px-8 py-3 rounded-xl font-bold shadow-lg transition-transform hover:scale-105 active:scale-95" style="background: #ec633c; color: white;">Reintentar</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-  <script src="/_sdk/afc2d393c2ac926b.editing_sdk.js" integrity="sha512-Ue7lZoRec1IGq7j3H/38aWZalTxanTjFGoCKdWTFUGFJwCO6Pinekpb6vP1nEQ3ZFuEOglmaFKfrRMeLheTxnw=="></script>
+
   <script>
     const questions = [
-      { q: "¿Cuál es el principal problema que enfrenta la empresa del caso?", options: ["Falta de presupuesto", "Baja retención de clientes", "Problemas legales"], correct: 1, feedback: "La empresa pierde clientes porque no logra fidelizarlos después de la primera compra." },
-      { q: "¿Qué estrategia sería más adecuada para resolver el problema?", options: ["Reducir precios drásticamente", "Implementar un programa de lealtad", "Cerrar sucursales"], correct: 1, feedback: "Un programa de lealtad incentiva compras recurrentes y mejora la retención." },
-      { q: "¿Qué métrica debería monitorear la empresa para evaluar el éxito?", options: ["Número de empleados", "Tasa de retención mensual", "Metros cuadrados de oficina"], correct: 1, feedback: "La tasa de retención mensual mide directamente si los clientes regresan." }
+      {
+        q: "Si Mariana aplicará la Matriz de Eisenhower, ¿qué debería hacer con las reuniones que no estaban planeadas y que no impactan directamente sus entregables prioritarios?",
+        options: [
+          "Atender todas las reuniones, porque pueden surgir temas importantes inesperados.",
+          "Evaluar si son realmente necesarias y reprogramar o delegar las que no son urgentes ni importantes.",
+          "Cancelarlas sin avisar, para enfocarse únicamente en el reporte y no hacer caso a otras áreas."
+        ],
+        correct: 1,
+        feedback: {
+          0: "La clave es distinguir lo urgente de lo importante. Si las reuniones no contribuyen directamente a los resultados o plazos críticos, Mariana puede negociar su asistencia o delegar a un representante.",
+          1: "Correcto. La clave es distinguir lo urgente de lo importante. Si las reuniones no contribuyen directamente a los resultados o plazos críticos, Mariana puede negociar su asistencia o delegar a un representante.",
+          2: "La clave es distinguir lo urgente de lo importante. Si las reuniones no contribuyen directamente a los resultados o plazos críticos, Mariana puede negociar su asistencia o delegar a un representante."
+        }
+      },
+      {
+        q: "¿Cuál sería la mejor estrategia diaria para evitar la sensación de caos y mejorar su enfoque?",
+        options: [
+          "Revisar el correo constantemente para mantenerse actualizada y responder los urgentes.",
+          "Definir al inicio del día sus tres prioridades clave y organizar la agenda en torno a ellas.",
+          "Dejar que los mensajes y solicitudes determinen qué hacer primero, de acuerdo al nivel de urgencia."
+        ],
+        correct: 1,
+        feedback: {
+          0: "Tener tres prioridades concretas ayuda a mantener claridad y control. Dejar que las notificaciones dicten el ritmo lleva al agotamiento y al multitasking improductivo.",
+          1: "Correcto. Tener tres prioridades concretas ayuda a mantener claridad y control. Dejar que las notificaciones dicten el ritmo lleva al agotamiento y al multitasking improductivo.",
+          2: "Tener tres prioridades concretas ayuda a mantener claridad y control. Dejar que las notificaciones dicten el ritmo lleva al agotamiento y al multitasking improductivo."
+        }
+      },
+      {
+        q: "Mariana nota que sus jornadas se están alargando y siente que ya no rinde igual. Quiere mantener la calidad de su trabajo sin afectar su salud. ¿Qué acción sería la más efectiva para gestionar sus límites y comunicar sus necesidades?",
+        options: [
+          "Dedicar una hora más cada noche para ponerse al corriente, al menos hasta que termine la semana.",
+          "Evitar mencionar el tema por ahora y enfocarse en cumplir todo, confiando en que luego podrá descansar.",
+          "Hablar con su jefe para revisar prioridades y proponer opciones: apoyo en el reporte o ampliar el plazo de entrega."
+        ],
+        correct: 2,
+        feedback: {
+          0: "La mejor forma de gestionar límites es comunicar las necesidades de manera asertiva y buscar soluciones con la jefatura. Extender la jornada o guardar silencio solo aumenta el agotamiento y no resuelve la causa del problema.",
+          1: "La mejor forma de gestionar límites es comunicar las necesidades de manera asertiva y buscar soluciones con la jefatura. Extender la jornada o guardar silencio solo aumenta el agotamiento y no resuelve la causa del problema.",
+          2: "Correcto. La mejor forma de gestionar límites es comunicar las necesidades de manera asertiva y buscar soluciones con la jefatura. Extender la jornada o guardar silencio solo aumenta el agotamiento y no resuelve la causa del problema."
+        }
+      }
     ];
 
-    let score = 0, answered = 0, currentQuestion = 0;
+    let score = 0, answered = 0, currentQuestionIndex = 0;
 
-    function showScreen(id) {
-      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-      document.getElementById(id).classList.add('active');
-      document.body.classList.toggle('case-bg', id === 'screen-case');
+    function showSection(sectionId) {
+      document.querySelectorAll('[id$="-section"]').forEach(s => {
+        s.classList.remove('section-visible');
+        s.classList.add('section-hidden');
+      });
+      const section = document.getElementById(sectionId);
+      section.classList.remove('section-hidden');
+      section.classList.add('section-visible');
+
+      // Scroll to top of section
+      setTimeout(() => {
+        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
     }
 
-    const container = document.getElementById('questions-container');
-    questions.forEach((q, i) => {
-      const div = document.createElement('div');
-      div.className = `question-card bg-white border rounded-xl p-5 shadow-sm ${i === 0 ? '' : 'hidden'}`;
-      div.style.borderColor = '#22335e20';
-      div.innerHTML = `
-        <p class="font-medium mb-3" style="color:#22335e">${i+1}. ${q.q}</p>
-        <div class="space-y-2" id="opts-${i}">
-          ${q.options.map((o, j) => `<button type="button" class="opt-btn w-full text-left px-4 py-3 rounded-lg border border-gray-200 hover:border-blue-400 hover:bg-blue-50" style="color:#333333" data-qi="${i}" data-oi="${j}">${o}</button>`).join('')}
-        </div>
-        <p id="fb-${i}" class="mt-3 text-sm hidden" style="color:#333333"></p>
-      `;
-      container.appendChild(div);
-    });
+    // Build all questions
+    function renderAllQuestions() {
+      const container = document.getElementById('question-container');
+      container.innerHTML = '';
 
-    container.addEventListener('click', (e) => {
+      questions.forEach((question, qIndex) => {
+        const div = document.createElement('div');
+        div.className = 'question-card bg-white border rounded-xl p-6 shadow-sm mb-6';
+        div.style.borderColor = '#22335e40';
+        div.innerHTML = `
+          <p class="font-bold mb-4 text-lg" style="color:#22335e">${qIndex + 1}. ${question.q}</p>
+          <div class="space-y-3" id="opts-${qIndex}">
+            ${question.options.map((o, j) => `
+              <button type="button" class="opt-btn w-full text-left px-4 py-3 rounded-lg border-2 border-gray-300 hover:border-blue-400 hover:bg-blue-50 transition-all" style="color:#333333" data-qi="${qIndex}" data-oi="${j}">
+                <span class="font-semibold">Opción ${String.fromCharCode(65+j)}:</span> ${o}
+              </button>
+            `).join('')}
+          </div>
+          <p id="fb-${qIndex}" class="mt-4 text-sm feedback-text hidden p-3 bg-gray-50 rounded border-l-4" style="color:#333333; border-color:#22335e"></p>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    renderAllQuestions();
+
+    document.getElementById('question-container').addEventListener('click', (e) => {
       const btn = e.target.closest('.opt-btn');
       if (!btn || btn.disabled) return;
-      const qi = +btn.dataset.qi, oi = +btn.dataset.oi;
+
+      const qi = +btn.dataset.qi;
+      const oi = +btn.dataset.oi;
+      const question = questions[qi];
+
       const opts = document.querySelectorAll(`#opts-${qi} .opt-btn`);
       opts.forEach(b => b.disabled = true);
-      if (oi === questions[qi].correct) { btn.classList.add('opt-correct'); score++; }
-      else { btn.classList.add('opt-incorrect'); opts[questions[qi].correct].classList.add('opt-correct'); }
+
+      if (oi === question.correct) {
+        btn.classList.add('opt-correct');
+        score++;
+      } else {
+        btn.classList.add('opt-incorrect');
+        opts[question.correct].classList.add('opt-correct');
+      }
+
       const fb = document.getElementById(`fb-${qi}`);
-      fb.textContent = (oi === questions[qi].correct ? "✓ Correcto. " : "✗ Incorrecto. ") + questions[qi].feedback;
+      fb.innerHTML = (oi === question.correct ? "<strong style='color:#28a745'>✓ Correcto.</strong> " : "<strong style='color:#dc3545'>✗ Incorrecto.</strong> ") + question.feedback[oi];
       fb.classList.remove('hidden');
       answered++;
-      if (answered < questions.length) document.getElementById('btn-next').classList.remove('hidden');
-      else document.getElementById('btn-results').classList.remove('hidden');
+
+      if (answered === questions.length) {
+        document.getElementById('btn-retry-question').classList.remove('hidden');
+      }
     });
 
-    document.getElementById('btn-next').addEventListener('click', () => {
-      document.querySelectorAll('.question-card')[currentQuestion].classList.add('hidden');
-      currentQuestion++;
-      document.querySelectorAll('.question-card')[currentQuestion].classList.remove('hidden');
-      document.getElementById('btn-next').classList.add('hidden');
+    document.getElementById('start-btn').addEventListener('click', () => {
+      document.getElementById('question-box').classList.remove('section-hidden');
+      document.getElementById('question-box').classList.add('section-visible');
+      setTimeout(() => {
+        document.getElementById('question-box').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
     });
 
-    document.querySelector('[data-template-id="start-button"]').addEventListener('click', () => showScreen('screen-case'));
-    document.querySelector('[data-template-id="continue-button"]').addEventListener('click', () => showScreen('screen-questions'));
-    document.getElementById('btn-results').addEventListener('click', () => { showScreen('screen-results'); document.getElementById('score-display').textContent = `${score} / 3`; });
-    document.getElementById('btn-retry').addEventListener('click', () => {
-      score = 0; answered = 0; currentQuestion = 0;
-      document.querySelectorAll('.question-card').forEach((card, i) => {
-        card.classList.toggle('hidden', i !== 0);
-        card.querySelectorAll('.opt-btn').forEach(o => { o.disabled = false; o.classList.remove('opt-correct','opt-incorrect'); });
-        card.querySelectorAll('[id^="fb-"]').forEach(f => { f.textContent = ''; f.classList.add('hidden'); });
+    document.getElementById('btn-retry-question').addEventListener('click', () => {
+      score = 0;
+      answered = 0;
+      document.getElementById('question-box').classList.add('section-hidden');
+      document.getElementById('question-box').classList.remove('section-visible');
+      document.querySelectorAll('.opt-btn').forEach(o => {
+        o.disabled = false;
+        o.classList.remove('opt-correct','opt-incorrect');
       });
-      document.getElementById('btn-next').classList.add('hidden');
-      document.getElementById('btn-results').classList.add('hidden');
-      showScreen('screen-intro');
+      questions.forEach((_, idx) => {
+        const fb = document.getElementById(`fb-${idx}`);
+        if (fb) {
+          fb.textContent = '';
+          fb.classList.add('hidden');
+        }
+      });
+      document.getElementById('btn-retry-question').classList.add('hidden');
+      showSection('intro-section');
+    });
+
+    // Post message to parent for SCORM tracking
+    window.addEventListener('load', () => {
+      if (window.parent !== window) {
+        window.parent.postMessage({ type: 'bn-test-height', height: document.body.scrollHeight }, '*');
+      }
     });
   </script>
- 
-</body></html>
+  <script src="/_sdk/afc2d393c2ac926b.editing_sdk.js" integrity="sha512-Ue7lZoRec1IGq7j3H/38aWZalTxanTjFGoCKdWTFUGFJwCO6Pinekpb6vP1nEQ3ZFuEOglmaFKfrRMeLheTxnw=="></script>
+ </body></html>
