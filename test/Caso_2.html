@@ -218,7 +218,12 @@
       }
     };
 
-    let score = 0, answered = false;
+    // Namespace global variables to prevent conflicts with parent window
+    const caso2 = {
+      score: 0,
+      answered: false,
+      resizeObserver: null
+    };
 
     function showSection(sectionId) {
       document.querySelectorAll('[id$="-section"]').forEach(s => {
@@ -261,7 +266,7 @@
       opts.forEach(b => b.disabled = true);
       if (oi === question.correct) {
         btn.classList.add('opt-correct');
-        score++;
+        caso2.score++;
       }
       else {
         btn.classList.add('opt-incorrect');
@@ -270,7 +275,7 @@
       const fb = document.getElementById('fb-0');
       fb.innerHTML = (oi === question.correct ? "<strong style='color:#28a745'>✓ Correcto.</strong> " : "<strong style='color:#dc3545'>✗ Incorrecto.</strong> ") + question.feedback[oi];
       fb.classList.remove('hidden');
-      answered = true;
+      caso2.answered = true;
       document.getElementById('btn-retry-question').classList.remove('hidden');
     });
 
@@ -283,8 +288,8 @@
     });
 
     document.getElementById('btn-retry-question').addEventListener('click', () => {
-      score = 0;
-      answered = false;
+      caso2.score = 0;
+      caso2.answered = false;
       document.getElementById('question-box').classList.add('section-hidden');
       document.getElementById('question-box').classList.remove('section-visible');
       document.querySelectorAll('.opt-btn').forEach(o => {
@@ -297,6 +302,18 @@
       showSection('intro-section');
     });
 
+    // Throttle function to limit postMessage frequency
+    function throttle(func, delay) {
+      let lastCall = 0;
+      return function() {
+        const now = Date.now();
+        if (now - lastCall >= delay) {
+          lastCall = now;
+          func();
+        }
+      };
+    }
+
     // Post message to parent for SCORM tracking
     window.addEventListener('load', () => {
       if (window.parent !== window) {
@@ -304,13 +321,21 @@
       }
     });
 
-    // Monitor height changes and update parent iframe dynamically
-    const resizeObserver = new ResizeObserver(() => {
+    // Monitor height changes and update parent iframe dynamically with throttling
+    caso2.resizeObserver = new ResizeObserver(throttle(() => {
       if (window.parent !== window) {
         window.parent.postMessage({ type: 'bn-test-height', height: document.body.scrollHeight }, '*');
       }
+    }, 300));  // Fire max once per 300ms
+
+    caso2.resizeObserver.observe(document.body);
+
+    // Cleanup on unload to prevent memory leaks
+    window.addEventListener('beforeunload', () => {
+      if (caso2.resizeObserver) {
+        caso2.resizeObserver.disconnect();
+      }
     });
-    resizeObserver.observe(document.body);
   </script>
   <script src="/_sdk/afc2d393c2ac926b.editing_sdk.js" integrity="sha512-Ue7lZoRec1IGq7j3H/38aWZalTxanTjFGoCKdWTFUGFJwCO6Pinekpb6vP1nEQ3ZFuEOglmaFKfrRMeLheTxnw=="></script>
  </body></html>

@@ -246,9 +246,15 @@ window.addEventListener('message', function (e) {
 
     // Ajuste automático de alto del iframe del test
     if (d.type === 'bn-test-height') {
-        const f = document.getElementById('test-u1-frame');
-        if (f && d.height && typeof d.height === 'number' && d.height > 0) {
-            f.style.height = (d.height + 8) + 'px';
+        // Auto-detect which iframe sent this message and update it
+        const iframes = document.querySelectorAll('iframe[class*="bn-embed"]');
+        for (let iframe of iframes) {
+            if (iframe.contentWindow === e.source) {
+                if (d.height && typeof d.height === 'number' && d.height > 0) {
+                    iframe.style.height = (d.height + 8) + 'px';
+                }
+                break;
+            }
         }
     }
 

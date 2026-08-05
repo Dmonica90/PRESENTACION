@@ -253,7 +253,13 @@ Mariana siente que trabaja todo el día, pero no avanza. Revisa el correo cada c
       }
     ];
 
-    let score = 0, answered = 0, currentQuestionIndex = 0;
+    // Namespace global variables to prevent conflicts with parent window
+    const caso1 = {
+      score: 0,
+      answered: 0,
+      currentQuestionIndex: 0,
+      resizeObserver: null
+    };
 
     function showSection(sectionId) {
       document.querySelectorAll('[id$="-section"]').forEach(s => {
@@ -309,7 +315,7 @@ Mariana siente que trabaja todo el día, pero no avanza. Revisa el correo cada c
 
       if (oi === question.correct) {
         btn.classList.add('opt-correct');
-        score++;
+        caso1.score++;
       } else {
         btn.classList.add('opt-incorrect');
         opts[question.correct].classList.add('opt-correct');
@@ -318,9 +324,9 @@ Mariana siente que trabaja todo el día, pero no avanza. Revisa el correo cada c
       const fb = document.getElementById(`fb-${qi}`);
       fb.innerHTML = (oi === question.correct ? "<strong style='color:#28a745'>✓ Correcto.</strong> " : "<strong style='color:#dc3545'>✗ Incorrecto.</strong> ") + question.feedback[oi];
       fb.classList.remove('hidden');
-      answered++;
+      caso1.answered++;
 
-      if (answered === questions.length) {
+      if (caso1.answered === questions.length) {
         document.getElementById('btn-retry-question').classList.remove('hidden');
       }
     });
@@ -334,8 +340,8 @@ Mariana siente que trabaja todo el día, pero no avanza. Revisa el correo cada c
     });
 
     document.getElementById('btn-retry-question').addEventListener('click', () => {
-      score = 0;
-      answered = 0;
+      caso1.score = 0;
+      caso1.answered = 0;
       document.getElementById('question-box').classList.add('section-hidden');
       document.getElementById('question-box').classList.remove('section-visible');
       document.querySelectorAll('.opt-btn').forEach(o => {
@@ -353,6 +359,18 @@ Mariana siente que trabaja todo el día, pero no avanza. Revisa el correo cada c
       showSection('intro-section');
     });
 
+    // Throttle function to limit postMessage frequency
+    function throttle(func, delay) {
+      let lastCall = 0;
+      return function() {
+        const now = Date.now();
+        if (now - lastCall >= delay) {
+          lastCall = now;
+          func();
+        }
+      };
+    }
+
     // Post message to parent for SCORM tracking
     window.addEventListener('load', () => {
       if (window.parent !== window) {
@@ -360,13 +378,21 @@ Mariana siente que trabaja todo el día, pero no avanza. Revisa el correo cada c
       }
     });
 
-    // Monitor height changes and update parent iframe dynamically
-    const resizeObserver = new ResizeObserver(() => {
+    // Monitor height changes and update parent iframe dynamically with throttling
+    caso1.resizeObserver = new ResizeObserver(throttle(() => {
       if (window.parent !== window) {
         window.parent.postMessage({ type: 'bn-test-height', height: document.body.scrollHeight }, '*');
       }
+    }, 300));  // Fire max once per 300ms
+
+    caso1.resizeObserver.observe(document.body);
+
+    // Cleanup on unload to prevent memory leaks
+    window.addEventListener('beforeunload', () => {
+      if (caso1.resizeObserver) {
+        caso1.resizeObserver.disconnect();
+      }
     });
-    resizeObserver.observe(document.body);
   </script>
   <script src="/_sdk/afc2d393c2ac926b.editing_sdk.js" integrity="sha512-Ue7lZoRec1IGq7j3H/38aWZalTxanTjFGoCKdWTFUGFJwCO6Pinekpb6vP1nEQ3ZFuEOglmaFKfrRMeLheTxnw=="></script>
  </body></html>
