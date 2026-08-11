@@ -2189,54 +2189,102 @@
                         <img src="img/icon_clic.svg" alt="Icono de clic"> Haz clic en cada práctica.
                     </div>
 
-                    <div class="bn-tab-group">
-                        <button class="bn-tab active" data-gate-btn
-                            onclick="bnShowPanel(this, 'panel-org-practices')">1. Ajuste de cargas</button>
-                        <button class="bn-tab" data-gate-btn onclick="bnShowPanel(this, 'panel-org-practices')">2.
-                            Capacitación</button>
-                        <button class="bn-tab" data-gate-btn onclick="bnShowPanel(this, 'panel-org-practices')">3.
-                            Participación</button>
-                        <button class="bn-tab" data-gate-btn onclick="bnShowPanel(this, 'panel-org-practices')">4.
-                            Desconexión</button>
-                        <button class="bn-tab" data-gate-btn onclick="bnShowPanel(this, 'panel-org-practices')">5.
-                            Flexibilidad</button>
-                        <button class="bn-tab" data-gate-btn onclick="bnShowPanel(this, 'panel-org-practices')">6.
-                            Apoyo</button>
-                        <button class="bn-tab" data-gate-btn onclick="bnShowPanel(this, 'panel-org-practices')">7.
-                            Reconocimiento</button>
-                    </div>
+                    <div class="bn-accordion">
+                        <div class="bn-accordion-item" data-accordion-id="0">
+                            <button class="bn-accordion-header" data-gate-btn onclick="bnToggleAccordion(this, 0)">
+                                <span class="bn-acc-num">1</span>
+                                <span class="bn-acc-title">Ajuste continuo de cargas</span>
+                                <span class="bn-acc-toggle">›</span>
+                            </button>
+                            <div class="bn-accordion-body is-collapsed">
+                                <div class="bn-acc-content">
+                                    <p class="bn-popup-lead">Evaluar y ajustar las cargas de trabajo regularmente.</p>
+                                </div>
+                            </div>
+                        </div>
 
-                    <div class="bn-tab-panel" id="panel-org-practices">
-                        <div class="bn-panel-content" style="display:none;">
-                            <p class="bn-popup-lead"><strong>Ajuste continuo de cargas</strong></p>
-                            <p>Evaluar y ajustar las cargas de trabajo regularmente.</p>
+                        <div class="bn-accordion-item" data-accordion-id="1">
+                            <button class="bn-accordion-header" data-gate-btn onclick="bnToggleAccordion(this, 1)">
+                                <span class="bn-acc-num">2</span>
+                                <span class="bn-acc-title">Capacitación para el bienestar</span>
+                                <span class="bn-acc-toggle">›</span>
+                            </button>
+                            <div class="bn-accordion-body is-collapsed">
+                                <div class="bn-acc-content">
+                                    <p class="bn-popup-lead">Ofrecer capacitaciones sobre manejo del estrés, liderazgo
+                                        y comunicación efectiva.</p>
+                                </div>
+                            </div>
                         </div>
-                        <div class="bn-panel-content" style="display:none;">
-                            <p class="bn-popup-lead"><strong>Capacitación para el bienestar</strong></p>
-                            <p>Ofrecer capacitaciones sobre manejo del estrés, liderazgo y comunicación efectiva.</p>
+
+                        <div class="bn-accordion-item" data-accordion-id="2">
+                            <button class="bn-accordion-header" data-gate-btn onclick="bnToggleAccordion(this, 2)">
+                                <span class="bn-acc-num">3</span>
+                                <span class="bn-acc-title">Participación activa del equipo</span>
+                                <span class="bn-acc-toggle">›</span>
+                            </button>
+                            <div class="bn-accordion-body is-collapsed">
+                                <div class="bn-acc-content">
+                                    <p class="bn-popup-lead">Fomentar la participación en decisiones y en la mejora
+                                        continua.</p>
+                                </div>
+                            </div>
                         </div>
-                        <div class="bn-panel-content" style="display:none;">
-                            <p class="bn-popup-lead"><strong>Participación activa del equipo</strong></p>
-                            <p>Fomentar la participación en decisiones y en la mejora continua.</p>
+
+                        <div class="bn-accordion-item" data-accordion-id="3">
+                            <button class="bn-accordion-header" data-gate-btn onclick="bnToggleAccordion(this, 3)">
+                                <span class="bn-acc-num">4</span>
+                                <span class="bn-acc-title">Política de desconexión digital</span>
+                                <span class="bn-acc-toggle">›</span>
+                            </button>
+                            <div class="bn-accordion-body is-collapsed">
+                                <div class="bn-acc-content">
+                                    <p class="bn-popup-lead">Establecer políticas de desconexión digital: sin correos,
+                                        llamadas o mensajes fuera de horario.</p>
+                                </div>
+                            </div>
                         </div>
-                        <div class="bn-panel-content" style="display:none;">
-                            <p class="bn-popup-lead"><strong>Política de desconexión digital</strong></p>
-                            <p>Establecer políticas de desconexión digital: sin correos, llamadas o mensajes fuera de
-                                horario.</p>
+
+                        <div class="bn-accordion-item" data-accordion-id="4">
+                            <button class="bn-accordion-header" data-gate-btn onclick="bnToggleAccordion(this, 4)">
+                                <span class="bn-acc-num">5</span>
+                                <span class="bn-acc-title">Flexibilidad laboral efectiva</span>
+                                <span class="bn-acc-toggle">›</span>
+                            </button>
+                            <div class="bn-accordion-body is-collapsed">
+                                <div class="bn-acc-content">
+                                    <p class="bn-popup-lead">Promover la flexibilidad laboral: home office, horarios
+                                        escalonados y permisos familiares.</p>
+                                </div>
+                            </div>
                         </div>
-                        <div class="bn-panel-content" style="display:none;">
-                            <p class="bn-popup-lead"><strong>Flexibilidad laboral efectiva</strong></p>
-                            <p>Promover la flexibilidad laboral: home office, horarios escalonados y permisos
-                                familiares.</p>
+
+                        <div class="bn-accordion-item" data-accordion-id="5">
+                            <button class="bn-accordion-header" data-gate-btn onclick="bnToggleAccordion(this, 5)">
+                                <span class="bn-acc-num">6</span>
+                                <span class="bn-acc-title">Canales seguros de apoyo</span>
+                                <span class="bn-acc-toggle">›</span>
+                            </button>
+                            <div class="bn-accordion-body is-collapsed">
+                                <div class="bn-acc-content">
+                                    <p class="bn-popup-lead">Contar con canales de atención confidenciales para apoyo
+                                        psicológico o quejas de clima laboral.</p>
+                                </div>
+                            </div>
                         </div>
-                        <div class="bn-panel-content" style="display:none;">
-                            <p class="bn-popup-lead"><strong>Canales seguros de apoyo</strong></p>
-                            <p>Contar con canales de atención confidenciales para apoyo psicológico o quejas de clima
-                                laboral.</p>
-                        </div>
-                        <div class="bn-panel-content" style="display:none;">
-                            <p class="bn-popup-lead"><strong>Reconocimiento significativo</strong></p>
-                            <p>Reconocer públicamente los logros y las contribuciones.</p>
+
+                        <div class="bn-accordion-item" data-accordion-id="6">
+                            <button class="bn-accordion-header" data-gate-btn onclick="bnToggleAccordion(this, 6)">
+                                <span class="bn-acc-num">7</span>
+                                <span class="bn-acc-title">Reconocimiento significativo</span>
+                                <span class="bn-acc-toggle">›</span>
+                            </button>
+                            <div class="bn-accordion-body is-collapsed">
+                                <div class="bn-acc-content">
+                                    <p class="bn-popup-lead">Reconocer públicamente los logros y las contribuciones.
+                                    </p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

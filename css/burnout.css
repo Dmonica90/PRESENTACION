@@ -1156,6 +1156,17 @@
     background: var(--color-naranja-gs1, #ec633c);
 }
 
+/* Marca de "ya visitada". bnMarkViewed() añade .viewed al pulsar; sirve para
+   que se vea cuántas faltan, porque AVANZAR no se habilita hasta pulsarlas
+   todas. Una palomita discreta, sin competir con la pestaña activa. */
+.bn-tab.viewed:not(.active)::before {
+    content: '✓';
+    color: var(--color-verde, #7dbb4b);
+    font-weight: bold;
+    margin-right: 6px;
+    font-size: 0.85em;
+}
+
 .bn-tab-panel {
     min-height: 200px;
     background: #fafbfc;
@@ -1165,20 +1176,38 @@
     position: relative;
 }
 
+/* Móvil: las pestañas se acomodan en varias filas.
+   ANTES estaban en 'display:none' esperando un <select class="bn-tab-select">
+   que nunca se llegó a añadir al HTML, así que en móvil desaparecían y no las
+   sustituía nada. Además de dejar el interactivo inservible, bloqueaba el
+   curso: las pestañas llevan data-gate-btn y bnSlideAllowsNext() exige que
+   todas estén 'viewed' para habilitar AVANZAR. */
 @media (max-width: 600px) {
     .bn-tab-group {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .bn-tab {
+        flex: 1 1 auto;
+        text-align: center;
+        font-size: 0.9rem;
+        padding: 10px 12px;
+        border: 1px solid #e0e5ef;
+    }
+
+    /* El indicador de activa es un ::after en bottom:-12px; al envolverse en
+       varias filas se solaparía con la fila de abajo. En móvil se marca la
+       pestaña activa con fondo en vez de subrayado. */
+    .bn-tab:hover::after,
+    .bn-tab.active::after {
         display: none;
     }
 
-    .bn-tab-select {
-        display: block;
-        width: 100%;
-        padding: 12px;
-        margin-bottom: 16px;
-        border: 1px solid #e0e5ef;
-        border-radius: 8px;
-        font-size: 1rem;
-        cursor: pointer;
+    .bn-tab.active {
+        background: var(--color-naranja-gs1, #ec633c);
+        border-color: var(--color-naranja-gs1, #ec633c);
+        color: #fff;
     }
 }
 
@@ -1305,6 +1334,22 @@
 
 .bn-acc-toggle {
     display: none;
+}
+
+/* Marca de "ya visitada" en el acordeón, igual que en las pestañas: indica
+   cuántas faltan por abrir para que se habilite AVANZAR. Se usa ::after
+   porque ::before ya es la barra de color del item. */
+.bn-accordion-header.viewed::after {
+    content: '✓';
+    color: var(--color-verde, #7dbb4b);
+    font-weight: bold;
+    font-size: 0.9rem;
+    margin-top: 6px;
+}
+
+/* El item abierto ya se distingue solo; ahí sobra la palomita. */
+.bn-accordion-item.is-open .bn-accordion-header.viewed::after {
+    content: none;
 }
 
 .bn-accordion-body {
