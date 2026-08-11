@@ -336,6 +336,11 @@ p {
     height: auto;
     width: 100%;
 
+    /* 0. IMPRESCINDIBLE EN FLEX: sin min-height:0 un flex item no puede
+       encogerse por debajo del tamaño de su contenido, así que en vez de
+       scrollear CRECE por encima del slide y se recorta (sin barras). */
+    min-height: 0;
+
     box-sizing: border-box;
     background-color: var(--color-white);
 
@@ -343,6 +348,9 @@ p {
     /* 'scroll' fuerza que el carril gris aparezca SIEMPRE, incluso si cabe el texto */
     overflow-y: scroll;
     overflow-x: hidden;
+
+    /* Inercia de scroll en iOS */
+    -webkit-overflow-scrolling: touch;
 
     /* Configuración para Firefox (Estándar nuevo) */
     scrollbar-width: auto;

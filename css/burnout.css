@@ -114,7 +114,11 @@
 /* --- Pantalla de cierre ¡Felicidades! --- */
 #slide-44 .slide-scroll-content {
     background-color: #fff0ee !important;
-    min-height: 100vh;
+    /* SIN min-height. Ni 100vh (el viewport incluye header y barra de
+       navegación) ni 100% (el 100% del slide incluye el header): ambos
+       desbordan el hueco real y recortan el pie. Como flex item con
+       flex-grow:1 ya ocupa exactamente el espacio disponible, y
+       align-items:center centra el contenido dentro de él. */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -534,30 +538,39 @@
     .bn-grid.cols-3 { grid-template-columns: 1fr; }
 }
 
-/* ---- Interactivo embebido (iframe) — ocupa todo el ancho y el largo ---- */
+/* ---- Interactivo embebido (iframe) — ocupa todo el ancho y el largo ----
+   Modelo de scroll: el iframe crece hasta el alto real de su contenido
+   (js/burnout.js escucha 'bn-test-height' y le fija style.height) y el
+   contenedor del slide es el ÚNICO que scrollea. Una sola barra.
+   En iOS los iframes ignoran su altura CSS y se expanden solos, así que
+   el scroll interno del iframe no es fiable: el exterior tiene que existir. */
 .bn-embed-wrap {
     width: 100%;
-    height: 100%;
+    height: auto;
     max-width: none;
     margin: 0;
 }
 .bn-embed {
     width: 100%;
     height: 100%;
-    min-height: 620px;
+    /* Alto de reserva mientras no llega 'bn-test-height'. Relativo al
+       viewport para que nunca desborde en pantallas cortas. */
+    min-height: 60vh;
     border: 0;
     border-radius: 0;
     display: block;
     background: transparent;
 }
 /* El slide del test embebido no lleva relleno ni fondo gris:
-   el iframe es la pantalla completa. El scroll lo maneja el propio
-   iframe (no el contenedor exterior) para evitar doble barra. */
+   el iframe es la pantalla completa. El scroll lo maneja el contenedor
+   exterior (igual que en slide-25 y slide-31, que ya funcionan). */
 #slide-10 .slide-scroll-content,
 #slide-15 .slide-scroll-content {
     padding: 0;
     background: transparent;
-    overflow: hidden;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
 }
 
 /* ---- Organizador de dimensiones (ej. MBI, 3 columnas) ---- */

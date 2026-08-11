@@ -38,7 +38,11 @@
         body {
             font-family: 'Montserrat', sans-serif;
             background: radial-gradient(ellipse at 50% 0%, #dce8f5 0%, var(--color-gris-claro) 50%, #e8f0f8 100%);
-            min-height: calc(100 * min(var(--vh, 1vh), 1vh));
+            /* SIN min-height de viewport: este documento va dentro de un iframe
+               cuyo alto lo fija el curso a partir de body.scrollHeight. Un
+               min-height en vh haría que el body creciera con el iframe y el
+               iframe con el body — bucle infinito hasta el tope del navegador. */
+            min-height: 0;
         }
 
         .display-font {
@@ -183,7 +187,7 @@
         integrity="sha512-giNZj5eBnASPpYcJXEVOn6FguxFDnaH+gnf5nbRfUgfRDqtOdV+5Dna/CwvXiPeR//Plhtbt32CML3VF4+oCLw=="></script>
 </head>
 
-<body data-template-id="__page-root" class="w-full min-h-screen"
+<body data-template-id="__page-root" class="w-full"
     style="background: radial-gradient(rgb(220, 232, 245), rgb(242, 242, 242), rgb(220, 238, 255));">
     <header data-template-id="header-section" class="canva-header w-full py-8 text-center"
         style="background: rgb(71, 88, 131);">
@@ -332,6 +336,7 @@
             });
             updateNav();
             hideError();
+            reportHeight();
         }
 
         function selectAnswer(idx, value) { answers[idx] = value; hideError(); }
@@ -349,12 +354,25 @@
         function showError() { document.getElementById('error-msg').classList.remove('hidden'); }
         function hideError() { document.getElementById('error-msg').classList.add('hidden'); }
 
+        /* El scroll lo hace el contenedor del curso, no el iframe, así que
+           window.scrollTo() aquí dentro no mueve nada. Pedimos al padre que
+           traiga el iframe a la vista (mismo origen); si falla, fallback local. */
+        function scrollToTop() {
+            try {
+                if (window.frameElement) {
+                    window.frameElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    return;
+                }
+            } catch (e) { }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
         function nextSection() {
             if (!validateSection()) { showError(); return; }
             if (currentSection === SECTIONS.length - 1) { showResults(); return; }
-            currentSection++; renderSection(); window.scrollTo({ top: 0, behavior: 'smooth' });
+            currentSection++; renderSection(); scrollToTop();
         }
-        function prevSection() { if (currentSection > 0) { currentSection--; renderSection(); } }
+        function prevSection() { if (currentSection > 0) { currentSection--; renderSection(); scrollToTop(); } }
 
         function calcScore(items) { return items.reduce((s, i) => s + (answers[i] || 0), 0); }
         function getLevel(score, ranges) { if (score <= ranges[0]) return 'Bajo'; if (score <= ranges[1]) return 'Medio'; return 'Alto'; }
@@ -395,6 +413,10 @@
             const modal = document.getElementById('results-modal');
             modal.classList.remove('hidden'); modal.classList.add('flex');
             modal.querySelector('button').focus();
+
+            // Avisar al curso de que el test terminó (SCORM / desbloqueo).
+            reportDone(ee + dp + pa, 132, category);
+            reportHeight();
         }
 
         function resetTest() {
@@ -411,7 +433,8 @@
             document.getElementById('progress-bar').style.width = '0%';
             document.getElementById('progress-percent').textContent = '0%';
 
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            scrollToTop();
+            reportHeight();
         }
 
         function attemptScormCompletion() {
@@ -421,7 +444,51 @@
             try { if (win.API) return win.API; if (win.parent && win.parent !== win && win.parent.API) return win.parent.API; if (win.opener && win.opener.API) return win.opener.API; } catch (e) { } return null;
         }
 
-        lucide.createIcons();
+        /* ============================================================
+           Comunicación con el curso contenedor (iframe)
+           El curso escucha 'bn-test-height' y ajusta el alto del iframe
+           para que sea el contenedor del slide el que scrollee (una sola
+           barra). Sin esto el iframe se queda a su alto de reserva y el
+           contenido de abajo — incluido el botón "Siguiente" — queda
+           fuera de alcance.
+           ============================================================ */
+        function throttle(func, delay) {
+            let lastCall = 0;
+            return function () {
+                const now = Date.now();
+                if (now - lastCall >= delay) { lastCall = now; func(); }
+            };
+        }
+
+        function reportHeight() {
+            try {
+                if (window.parent === window) return;
+                /* SOLO body.scrollHeight. documentElement.scrollHeight nunca es
+                   menor que el alto del viewport del iframe, así que usarlo
+                   realimentaría el alto que el propio curso acaba de fijar. */
+                const h = document.body.scrollHeight;
+                window.parent.postMessage({ type: 'bn-test-height', height: h }, '*');
+            } catch (e) { }
+        }
+
+        function reportDone(score, max, tier) {
+            try {
+                if (window.parent === window) return;
+                window.parent.postMessage({ type: 'bn-test-done', score: score, max: max, tier: tier }, '*');
+            } catch (e) { }
+        }
+
+        window.addEventListener('load', reportHeight);
+        window.addEventListener('resize', reportHeight);
+
+        const mbiResizeObserver = new ResizeObserver(throttle(reportHeight, 300));
+        mbiResizeObserver.observe(document.body);
+        window.addEventListener('unload', () => mbiResizeObserver.disconnect());
+
+        /* lucide viene de una CDN: si falla no debe impedir que reportemos el
+           alto, o el iframe se quedaría en su alto de reserva. */
+        try { lucide.createIcons(); } catch (e) { }
+        reportHeight();
     </script>
 
 </body>

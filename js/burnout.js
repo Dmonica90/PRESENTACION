@@ -241,6 +241,11 @@ function bnMarkTema(spokeEl) {
 /* ============================================================
    Interactivos embebidos (iframe) — auto-alto y completado
    ============================================================ */
+
+/* Alto máximo que aceptamos de un interactivo embebido. Ningún test del
+   curso llega a tanto; por encima de esto es un bucle de realimentación. */
+const BN_MAX_EMBED_HEIGHT = 6000;
+
 window.addEventListener('message', function (e) {
     const d = e.data || {};
 
@@ -251,7 +256,16 @@ window.addEventListener('message', function (e) {
         for (let iframe of iframes) {
             if (iframe.contentWindow === e.source) {
                 if (d.height && typeof d.height === 'number' && d.height > 0) {
-                    iframe.style.height = (d.height + 8) + 'px';
+                    /* Tope de seguridad: si el documento embebido usa alturas de
+                       viewport (100vh, min-h-screen) se realimenta con el alto que
+                       le acabamos de fijar y crece sin parar hasta bloquear el
+                       slide. Recortamos a un máximo razonable y evitamos reescribir
+                       por diferencias mínimas (que también realimentan). */
+                    const h = Math.min(Math.round(d.height), BN_MAX_EMBED_HEIGHT);
+                    const actual = parseFloat(iframe.style.height) || 0;
+                    if (Math.abs(h + 8 - actual) > 4) {
+                        iframe.style.height = (h + 8) + 'px';
+                    }
                 }
                 break;
             }
