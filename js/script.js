@@ -390,91 +390,87 @@ const allQuizDefinitions = {
         }
     },
 
-    // --- EVALUACIÓN FINAL (10 PREGUNTAS) ---
-    'quiz-final-slide35': {
+    // --- EVALUACIÓN FINAL (10 REACTIVOS · guion_11_Burnout_interactivo_evaluacion) ---
+    // 5 casos x 2 preguntas. 10 puntos por reactivo, 100 maximo, aprobacion en 80.
+    // La retro va en 'default' para que salga igual se acierte o no: el guion da
+    // una sola retroalimentacion por reactivo, no una por opcion.
+    'quiz-final': {
         mode: 'final_exam',
         totalQuestions: 10,
         pointsPerQuestion: 10,
         correctAnswerCount: 0,
         questions: {
-            // --- CASO 1 ---
+            // --- CASO 1 · Arturo, la semana interminable ---
             'fq1': {
-                answer: 'd',
+                answer: 'b',
                 feedback: {
-                    'd': 'Prepararse con datos y ejemplos concretos permite una retroalimentación objetiva, constructiva y orientada a la mejora.',
-                    'default': ''
+                    'default': 'Arturo presenta señales de cansancio constante, errores recurrentes y pérdida de energía, lo cual coincide con el agotamiento emocional.'
                 }
             },
             'fq2': {
-                answer: 'b',
-                feedback: {
-                    'b': 'Describe el hecho con datos, evita juicios y fomenta la reflexión conjunta.',
-                    'default': ''
-                }
-            },
-            'fq3': {
                 answer: 'c',
                 feedback: {
-                    'c': 'Reconoce el contexto, mantiene empatía y promueve soluciones conjuntas.',
-                    'default': ''
+                    'default': 'Hay acciones que ayudan a evitar que el agotamiento avance y mantener la motivación.'
                 }
             },
 
-            // --- CASO 2 ---
+            // --- CASO 2 · Mariela y las reuniones inesperadas ---
+            'fq3': {
+                answer: 'b',
+                feedback: {
+                    'default': 'La Matriz de Eisenhower permite clasificar tareas; las reuniones no urgentes ni importantes deben delegarse o reprogramarse.'
+                }
+            },
             'fq4': {
                 answer: 'b',
                 feedback: {
-                    'b': 'Equilibra reconocimiento y apertura a la mejora, generando un ambiente constructivo.',
-                    'default': ''
-                }
-            },
-            'fq5': {
-                answer: 'a',
-                feedback: {
-                    'a': 'Mantiene empatía y fomenta el diálogo constructivo sin invalidar su punto de vista.',
-                    'default': ''
-                }
-            },
-            'fq6': {
-                answer: 'd',
-                feedback: {
-                    'd': 'Describe situación, comportamiento e impacto, cumpliendo con el modelo SBI.',
-                    'default': ''
-                }
-            },
-            'fq7': {
-                answer: 'b',
-                feedback: {
-                    'b': 'Promueve aprendizaje continuo y práctica real, fortaleciendo la colaboración.',
-                    'default': ''
+                    'default': 'Hay acciones que ayudan a organizar la jornada y a prevenir la multitarea improductiva que incrementa el agotamiento.'
                 }
             },
 
-            // --- CASO 3 ---
-            'fq8': {
-                answer: 'a',
+            // --- CASO 3 · Laura ya no disfruta su trabajo ---
+            'fq5': {
+                answer: 'c',
                 feedback: {
-                    'a': 'Mantiene equilibrio entre reconocimiento y orientación al logro.',
-                    'default': ''
+                    'default': 'El Burnout se distingue por síntomas crónicos, afectación emocional y deterioro del desempeño, y no solo por cansancio o semanas pesadas.'
                 }
             },
-            'fq9': {
+            'fq6': {
+                answer: 'c',
+                feedback: {
+                    'default': 'Hay prácticas que permiten regular el sistema nervioso, reducir ansiedad y recuperar claridad mental y así sentirse mejor.'
+                }
+            },
+
+            // --- CASO 4 · El equipo de contabilidad en modo supervivencia ---
+            'fq7': {
+                answer: 'c',
+                feedback: {
+                    'default': 'La carga excesiva sin ajuste de prioridades es un factor de riesgo psicosocial claro según la NOM-035.'
+                }
+            },
+            'fq8': {
                 answer: 'd',
                 feedback: {
-                    'd': 'Escucha activa y búsqueda de soluciones compartidas.',
-                    'default': ''
+                    'default': 'Las organizaciones saludables promueven límites claros, ajustes de carga y desconexión digital para prevenir agotamiento.'
+                }
+            },
+
+            // --- CASO 5 · Sofía está al límite ---
+            'fq9': {
+                answer: 'c',
+                feedback: {
+                    'default': 'Los cambios físicos, emocionales y sociales son señales clave para solicitar apoyo antes de que el Burnout avance.'
                 }
             },
             'fq10': {
-                answer: 'b',
+                answer: 'c',
                 feedback: {
-                    'b': 'Garantiza seguimiento sistemático y claridad de compromisos.',
-                    'default': ''
+                    'default': 'La comunicación asertiva basada en hecho, impacto y solicitud demuestra profesionalismo y permite soluciones reales.'
                 }
             }
         }
-    },
-}
+    },}
 
 // ===============================================
 // 2. LÓGICA DE NAVEGACIÓN Y CONTROL
@@ -843,7 +839,8 @@ function submitAnswer(quizId) {
     const quizDef = allQuizDefinitions[quizId];
     const quizContainer = document.getElementById(quizId);
 
-    if (quizDef.mode === 'final') return submitFinalQuiz();
+    // El examen final tiene su propio flujo (submitFinalAnswer), invocado
+    // desde el botón de cada .final-question; no pasa por aquí.
 
     const activeQuestion = quizContainer.querySelector('.question-wrapper.active');
     if (!activeQuestion) return;
@@ -1024,47 +1021,9 @@ function resetToQuizIntro(quizId) {
     currentQuestionIndex = 0;
 }
 
-function submitFinalAnswer() {
-    const quizId = 'quiz-final-slide35';
-    const quizDef = allQuizDefinitions[quizId];
-    const container = document.getElementById(quizId);
-    const activeStep = container.querySelector('.final-step.active');
-
-    const qId = activeStep.getAttribute('data-question-id');
-    const selected = activeStep.querySelector('input:checked');
-
-    if (!selected) {
-        showPopupFeedback('Atención', 'Selecciona una opción.', 'alerta');
-        return;
-    }
-
-    // Bloquear
-    activeStep.querySelectorAll('input').forEach(i => i.disabled = true);
-    activeStep.querySelector('button').style.display = 'none';
-
-    // Evaluar
-    const userAnswer = selected.value;
-    const isCorrect = userAnswer === quizDef.questions[qId].answer;
-
-    if (isCorrect) quizDef.correctAnswerCount++;
-
-    // --- LÓGICA DE TEXTO LIMPIO ---
-    let feedbackText = "";
-
-    if (quizDef.questions[qId].feedback && quizDef.questions[qId].feedback[userAnswer]) {
-        feedbackText = quizDef.questions[qId].feedback[userAnswer];
-    } else if (quizDef.questions[qId].feedback && typeof quizDef.questions[qId].feedback['default'] !== 'undefined') {
-        feedbackText = quizDef.questions[qId].feedback['default'];
-    }
-
-    // Mostrar Feedback
-    const type = isCorrect ? 'success' : 'error';
-    const title = isCorrect ? '¡Muy bien!' : 'Respuesta incorrecta';
-
-    showPopupFeedback(title, feedbackText, type, () => {
-        nextFinalStep();
-    });
-}
+// NOTA: aqui habia una copia duplicada de submitFinalAnswer(). La definicion
+// buena esta mas abajo, junto al resto del motor del examen final, y era la
+// que ganaba por orden de declaracion. Se elimina la copia muerta.
 // Función específica para REINICIAR el quiz desde la pantalla de resultados
 function retryQuiz(quizId) {
     const quizContainer = document.getElementById(quizId);
@@ -1563,13 +1522,9 @@ function initializeCourse() {
         exitCourse();
     });
 
-    const finalQuizForm = document.getElementById('quiz-form');
-    if (finalQuizForm) {
-        finalQuizForm.addEventListener('submit', function (e) {
-            e.preventDefault();
-            submitFinalQuiz();
-        });
-    }
+    // (Se eliminó un listener sobre #quiz-form que llamaba a submitFinalQuiz(),
+    //  función que no existe en este archivo: heredado del curso base, habría
+    //  lanzado un ReferenceError si ese formulario llegara a existir.)
 
     menuBtn.addEventListener('click', () => {
         updateModuleDropdown();
@@ -2158,30 +2113,83 @@ function revealS29Content() {
 // LÓGICA EVALUACIÓN FINAL (SLIDE 35)
 // ===============================================
 
+/* ===============================================
+   INTENTOS DE LA EVALUACIÓN FINAL
+   Se permiten 3. El contador vive en cmi.suspend_data (libre en este
+   curso) para que el límite sobreviva al cierre del navegador; sin LMS
+   se degrada a un contador en memoria que solo dura la sesión.
+   =============================================== */
+const FINAL_EXAM_MAX_ATTEMPTS = 3;
+let finalExamAttemptsLocal = 0;
+
+function getFinalExamAttempts() {
+    try {
+        if (typeof scorm !== 'undefined' && scorm.connection.isActive) {
+            const raw = scorm.get('cmi.suspend_data');
+            if (raw) {
+                const data = JSON.parse(raw);
+                if (data && typeof data.examAttempts === 'number') return data.examAttempts;
+            }
+        }
+    } catch (e) { }
+    return finalExamAttemptsLocal;
+}
+
+function setFinalExamAttempts(n) {
+    finalExamAttemptsLocal = n;
+    try {
+        if (typeof scorm !== 'undefined' && scorm.connection.isActive) {
+            let data = {};
+            const raw = scorm.get('cmi.suspend_data');
+            if (raw) { try { data = JSON.parse(raw) || {}; } catch (e) { data = {}; } }
+            data.examAttempts = n;
+            scorm.set('cmi.suspend_data', JSON.stringify(data));
+            scorm.save();
+        }
+    } catch (e) { }
+}
+
+function finalExamAttemptsLeft() {
+    return Math.max(0, FINAL_EXAM_MAX_ATTEMPTS - getFinalExamAttempts());
+}
+
 function startFinalEvaluation() {
-    const intro = document.querySelector('#slide-35 .quiz-intro');
-    const container = document.getElementById('quiz-final-slide35');
+    const container = document.getElementById('quiz-final');
+    if (!container) return;
+
+    // La intro es la del propio slide del examen (antes estaba fijada a #slide-35).
+    const slide = container.closest('.slide');
+    const intro = slide ? slide.querySelector('.quiz-intro') : null;
+    const resultsDiv = document.getElementById('final-results-screen');
 
     if (intro) intro.style.display = 'none';
-    if (container) {
-        container.style.display = 'flex';
-        container.classList.add('visible');
+    if (resultsDiv) {
+        resultsDiv.style.display = 'none';
+        resultsDiv.classList.remove('visible');
     }
 
-    // Resetear puntaje
-    allQuizDefinitions['quiz-final-slide35'].correctAnswerCount = 0;
+    container.style.display = 'flex';
+    container.classList.add('visible');
 
-    // Mostrar primer paso (Video 1)
-    // Ocultar todos primero
+    // Resetear puntaje
+    allQuizDefinitions['quiz-final'].correctAnswerCount = 0;
+
+    // Reactivar todas las preguntas de todos los pasos
+    container.querySelectorAll('.final-question').forEach(q => {
+        q.classList.remove('answered');
+        q.querySelectorAll('input').forEach(i => { i.disabled = false; i.checked = false; });
+        const btn = q.querySelector('.final-submit-btn');
+        if (btn) btn.style.display = '';
+    });
+
+    // Mostrar el primer paso
     const allSteps = container.querySelectorAll('.final-step');
     allSteps.forEach(s => s.classList.remove('active'));
-
-    // Activar el primero
     if (allSteps.length > 0) allSteps[0].classList.add('active');
 }
 
 function nextFinalStep() {
-    const container = document.getElementById('quiz-final-slide35');
+    const container = document.getElementById('quiz-final');
     const currentStep = container.querySelector('.final-step.active');
 
     // Pausar video si había uno
@@ -2202,53 +2210,73 @@ function nextFinalStep() {
     }
 }
 
-function submitFinalAnswer() {
-    // ... (El inicio de tu función sigue igual) ...
-    const quizId = 'quiz-final-slide35';
+/**
+ * Contesta UNA pregunta del examen final. Cada caso ocupa un .final-step y
+ * lleva dos .final-question dentro, así que se evalúa la pregunta concreta
+ * desde la que se pulsó el botón, no el paso entero.
+ * Al contestar se bloquean sus opciones (no se puede corregir) y se muestra
+ * la retro; si el reactivo no tuviera texto de retro, sale solo el título
+ * de correcto/incorrecto.
+ * Cuando ya están contestadas las dos preguntas del caso, avanza al siguiente.
+ * @param {HTMLElement} btn - El botón pulsado dentro de la .final-question.
+ */
+function submitFinalAnswer(btn) {
+    const quizId = 'quiz-final';
     const quizDef = allQuizDefinitions[quizId];
     const container = document.getElementById(quizId);
     const activeStep = container.querySelector('.final-step.active');
+    if (!activeStep) return;
 
-    const qId = activeStep.getAttribute('data-question-id');
-    const selected = activeStep.querySelector('input:checked');
+    // La pregunta es la que contiene al botón. Si no se pasó botón (por
+    // compatibilidad), se toma la primera sin contestar del paso.
+    const question = (btn && btn.closest('.final-question'))
+        || activeStep.querySelector('.final-question:not(.answered)');
+    if (!question || question.classList.contains('answered')) return;
+
+    const qId = question.getAttribute('data-question-id');
+    const selected = question.querySelector('input:checked');
 
     if (!selected) {
         showPopupFeedback('Atención', 'Selecciona una opción.', 'alerta');
         return;
     }
 
-    // Bloquear
-    activeStep.querySelectorAll('input').forEach(i => i.disabled = true);
-    activeStep.querySelector('button').style.display = 'none';
+    // Bloquear esta pregunta: ya no se puede cambiar la respuesta
+    question.classList.add('answered');
+    question.querySelectorAll('input').forEach(i => i.disabled = true);
+    const submitBtn = question.querySelector('.final-submit-btn');
+    if (submitBtn) submitBtn.style.display = 'none';
 
     // Evaluar
     const isCorrect = selected.value === quizDef.questions[qId].answer;
     if (isCorrect) quizDef.correctAnswerCount++;
 
-    // ⭐⭐ AQUÍ ESTÁ LA CORRECCIÓN ⭐⭐
-    let feedbackText = ""; // Empezamos vacío
-
-    // 1. ¿Existe texto para la letra exacta? (Ej. 'a')
-    if (quizDef.questions[qId].feedback && quizDef.questions[qId].feedback[selected.value]) {
-        feedbackText = quizDef.questions[qId].feedback[selected.value];
+    // Texto de retro: primero el específico de la opción, si no el 'default'.
+    // Si no hay ninguno, queda vacío y el popup muestra solo el título.
+    let feedbackText = "";
+    const fb = quizDef.questions[qId].feedback;
+    if (fb && fb[selected.value]) {
+        feedbackText = fb[selected.value];
+    } else if (fb && fb['default']) {
+        feedbackText = fb['default'];
     }
-    // 2. Si no, ¿existe texto 'default'? (Para las incorrectas genéricas)
-    else if (quizDef.questions[qId].feedback && quizDef.questions[qId].feedback['default']) {
-        feedbackText = quizDef.questions[qId].feedback['default'];
-    }
-    // 3. Si no hay nada, se queda vacío ("")
 
-    // Mostrar Feedback
     const type = isCorrect ? 'success' : 'error';
     const title = isCorrect ? '¡Muy bien!' : 'Respuesta incorrecta';
 
     showPopupFeedback(title, feedbackText, type, () => {
-        nextFinalStep();
+        // ¿Quedan preguntas sin contestar en este caso?
+        const pending = activeStep.querySelector('.final-question:not(.answered)');
+        if (pending) {
+            pending.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        } else {
+            nextFinalStep();
+        }
     });
 }
 
 function finishFinalExam() {
-    const quizId = 'quiz-final-slide35';
+    const quizId = 'quiz-final';
     const quizDef = allQuizDefinitions[quizId];
     const score = quizDef.correctAnswerCount * 10;
     const passed = score >= 80;
@@ -2265,45 +2293,50 @@ function finishFinalExam() {
     resultsDiv.style.display = 'flex';
     resultsDiv.classList.add('visible');
 
-    let title, msg, colorClass, htmlBotones;
+    // 3. Registrar el intento consumido y ver cuántos quedan
+    const attemptsUsed = getFinalExamAttempts() + 1;
+    setFinalExamAttempts(attemptsUsed);
+    const attemptsLeft = Math.max(0, FINAL_EXAM_MAX_ATTEMPTS - attemptsUsed);
 
-    if (score < 80) {
-        // --- REPROBADO ---
+    let title, msg, colorClass, htmlBotones, htmlIntentos = '';
+
+    if (passed) {
+        // --- APROBADO --- No se ofrece reintentar: la evaluación está superada.
+        colorClass = "passed-score";
+        if (score === 100) {
+            title = `<div style="text-align: center;">¡Excelente resultado! <br>100 Puntos`;
+            msg = "Dominio completo del contenido. ¡Felicidades! Haz clic en la flecha 'Avanzar' para finalizar.";
+        } else {
+            title = `<div style="text-align: center;">¡Aprobado! <br>${score} Puntos`;
+            msg = "Superaste la evaluación final del curso. Haz clic en la flecha 'Avanzar' para finalizar.";
+        }
+        htmlBotones = ``;
+
+    } else if (attemptsLeft > 0) {
+        // --- REPROBADO, quedan intentos (1.º y 2.º) ---
         title = `<div style="text-align: center;">No aprobado <br>${score} Puntos`;
-        msg = "Es importante reforzar los conocimientos. Puedes intentar de nuevo o repasar el contenido.";
+        msg = "Se requieren 80 puntos para aprobar. Repasa el contenido y vuelve a intentarlo.";
         colorClass = "failed-score";
-
-        // Botones para reintentar o estudiar
+        htmlIntentos = `<p style="margin:10px 0; font-weight:bold;">Te ${attemptsLeft === 1 ? 'queda 1 intento' : `quedan ${attemptsLeft} intentos`}.</p>`;
         htmlBotones = `
             <button class="nav-button primary-blue-btn" onclick="retryFinalExam()">Intentar de nuevo</button>
-            <button class="nav-button" onclick="showSlide(0); resetFinalExamUI();" style="background-color:#666; margin-left:10px;">Revisar Curso</button>
-        `;
-
-    } else if (score < 100) {
-        // --- APROBADO (80-90) ---
-        title = `<div style="text-align: center;">¡Buen desempeño! <br>${score} Puntos`;
-        msg = "Aprobaste la evaluación. Tienes un sólido entendimiento. Puedes avanzar a la siguiente unidad usando la flecha 'Siguiente'.";
-        colorClass = "passed-score";
-
-        // Solo botón para mejorar nota (Opcional), NO botón de continuar
-        htmlBotones = `
-            <button class="nav-button" onclick="retryFinalExam()" style="background-color:#666;">Mejorar mi nota</button>
         `;
 
     } else {
-        // --- PERFECTO (100) ---
-        title = `<div style="text-align: center;">¡Excelente resultado! <br>100 Puntos`;
-        msg = "Dominio completo del contenido. ¡Felicidades! Por favor, haz clic en la flecha 'Siguiente' para finalizar.";
-        colorClass = "passed-score";
-
-        // Sin botones, solo instrucción de usar la barra
-        htmlBotones = ``;
+        // --- REPROBADO y sin intentos: solo queda repasar el curso ---
+        title = `<div style="text-align: center;">No aprobado <br>${score} Puntos`;
+        msg = "Has agotado los 3 intentos disponibles. Te invitamos a revisar de nuevo el contenido del curso.";
+        colorClass = "failed-score";
+        htmlBotones = `
+            <button class="nav-button primary-blue-btn" onclick="showSlide(0); resetFinalExamUI();">Volver a ver el curso</button>
+        `;
     }
 
     resultsDiv.innerHTML = `
         <div class="quiz-results-box anim-target anim-bounce-up">
             <h2 class="${colorClass}" style="font-size: 2.5em;">${title}</h2>
             <p style="margin: 20px 0;">${msg}</p>
+            ${htmlIntentos}
             <div style="margin-top: 30px; display: flex; justify-content: center; flex-wrap: wrap; gap: 10px;">
                 ${htmlBotones}
             </div>
@@ -2315,60 +2348,22 @@ function finishFinalExam() {
     }
 }
 
+/**
+ * Reintenta la evaluación final. Solo se ofrece si se reprobó y quedan
+ * intentos; el contador ya se incrementó en finishFinalExam().
+ * El reinicio es idéntico al arranque, así que se reutiliza
+ * startFinalEvaluation() en lugar de duplicar la limpieza.
+ */
 function retryFinalExam() {
-    const quizId = 'quiz-final-slide35';
-    const quizContainer = document.getElementById(quizId);
-    const resultsDiv = document.getElementById('final-results-screen');
-
-    if (!quizContainer || !resultsDiv) return;
-
-    // 1. Ocultar Resultados y Mostrar Contenedor del Quiz
-    resultsDiv.classList.remove('visible');
-    resultsDiv.style.display = 'none';
-
-    quizContainer.style.display = 'flex';
-    quizContainer.classList.add('visible');
-
-    // 2. Resetear Puntaje
-    allQuizDefinitions[quizId].correctAnswerCount = 0;
-
-    // 3. Limpiar Inputs y Botones de Preguntas
-    const questionWrappers = quizContainer.querySelectorAll('.question-wrapper');
-    questionWrappers.forEach(wrapper => {
-        // Habilitar y desmarcar radios
-        const inputs = wrapper.querySelectorAll('input');
-        inputs.forEach(input => {
-            input.checked = false;
-            input.disabled = false;
-        });
-
-        // Mostrar botón de enviar
-        const btn = wrapper.querySelector('.submit-answer-btn');
-        if (btn) btn.style.display = 'inline-block';
-    });
-
-    // 4. Resetear Videos (Opcional, para que empiecen desde 0)
-    const videos = quizContainer.querySelectorAll('video');
-    videos.forEach(video => {
-        video.pause();
-        video.currentTime = 0;
-    });
-
-    // 5. REINICIAR PASOS (Ir al Paso 1)
-    const allSteps = quizContainer.querySelectorAll('.final-step');
-    allSteps.forEach(step => step.classList.remove('active'));
-
-    // Activar el primero
-    if (allSteps.length > 0) {
-        allSteps[0].classList.add('active');
-    }
+    if (finalExamAttemptsLeft() <= 0) return;
+    startFinalEvaluation();
 }
 
 // Función para resetear visualmente la Evaluación Final al entrar al slide
 function resetFinalExamUI() {
     // 1. Elementos
     const intro = document.getElementById('final-intro');
-    const container = document.getElementById('quiz-final-slide35');
+    const container = document.getElementById('quiz-final');
     const resultsDiv = document.getElementById('final-results-screen');
 
     // 2. OCULTAR RESULTADOS Y PREGUNTAS
@@ -2401,8 +2396,10 @@ function resetFinalExamUI() {
             i.disabled = false;
         });
 
-        // Restaurar botones
+        // Restaurar botones y desmarcar las preguntas ya contestadas
         container.querySelectorAll('.submit-answer-btn').forEach(btn => btn.style.display = 'inline-block');
+        container.querySelectorAll('.final-question').forEach(q => q.classList.remove('answered'));
+        container.querySelectorAll('.final-submit-btn').forEach(btn => btn.style.display = '');
     }
 
     // 4. MOSTRAR INTRODUCCIÓN (SOLUCIÓN AL PROBLEMA VISUAL)
@@ -2424,8 +2421,8 @@ function resetFinalExamUI() {
     }
 
     // 5. Resetear variables
-    if (allQuizDefinitions && allQuizDefinitions['quiz-final-slide35']) {
-        allQuizDefinitions['quiz-final-slide35'].correctAnswerCount = 0;
+    if (allQuizDefinitions && allQuizDefinitions['quiz-final']) {
+        allQuizDefinitions['quiz-final'].correctAnswerCount = 0;
     }
 }
 

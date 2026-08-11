@@ -1156,6 +1156,17 @@
     background: var(--color-naranja-gs1, #ec633c);
 }
 
+/* Marca de "ya visitada". bnMarkViewed() añade .viewed al pulsar; sirve para
+   que se vea cuántas faltan, porque AVANZAR no se habilita hasta pulsarlas
+   todas. Una palomita discreta, sin competir con la pestaña activa. */
+.bn-tab.viewed:not(.active)::before {
+    content: '✓';
+    color: var(--color-verde, #7dbb4b);
+    font-weight: bold;
+    margin-right: 6px;
+    font-size: 0.85em;
+}
+
 .bn-tab-panel {
     min-height: 200px;
     background: #fafbfc;
@@ -1165,20 +1176,38 @@
     position: relative;
 }
 
+/* Móvil: las pestañas se acomodan en varias filas.
+   ANTES estaban en 'display:none' esperando un <select class="bn-tab-select">
+   que nunca se llegó a añadir al HTML, así que en móvil desaparecían y no las
+   sustituía nada. Además de dejar el interactivo inservible, bloqueaba el
+   curso: las pestañas llevan data-gate-btn y bnSlideAllowsNext() exige que
+   todas estén 'viewed' para habilitar AVANZAR. */
 @media (max-width: 600px) {
     .bn-tab-group {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .bn-tab {
+        flex: 1 1 auto;
+        text-align: center;
+        font-size: 0.9rem;
+        padding: 10px 12px;
+        border: 1px solid #e0e5ef;
+    }
+
+    /* El indicador de activa es un ::after en bottom:-12px; al envolverse en
+       varias filas se solaparía con la fila de abajo. En móvil se marca la
+       pestaña activa con fondo en vez de subrayado. */
+    .bn-tab:hover::after,
+    .bn-tab.active::after {
         display: none;
     }
 
-    .bn-tab-select {
-        display: block;
-        width: 100%;
-        padding: 12px;
-        margin-bottom: 16px;
-        border: 1px solid #e0e5ef;
-        border-radius: 8px;
-        font-size: 1rem;
-        cursor: pointer;
+    .bn-tab.active {
+        background: var(--color-naranja-gs1, #ec633c);
+        border-color: var(--color-naranja-gs1, #ec633c);
+        color: #fff;
     }
 }
 
@@ -1305,6 +1334,22 @@
 
 .bn-acc-toggle {
     display: none;
+}
+
+/* Marca de "ya visitada" en el acordeón, igual que en las pestañas: indica
+   cuántas faltan por abrir para que se habilite AVANZAR. Se usa ::after
+   porque ::before ya es la barra de color del item. */
+.bn-accordion-header.viewed::after {
+    content: '✓';
+    color: var(--color-verde, #7dbb4b);
+    font-weight: bold;
+    font-size: 0.9rem;
+    margin-top: 6px;
+}
+
+/* El item abierto ya se distingue solo; ahí sobra la palomita. */
+.bn-accordion-item.is-open .bn-accordion-header.viewed::after {
+    content: none;
 }
 
 .bn-accordion-body {
@@ -1462,5 +1507,147 @@
 @media (max-width: 600px) {
     .bn-content-with-image {
         grid-template-columns: 1fr;
+    }
+}
+
+/* ============================================================
+   EVALUACIÓN FINAL (slide-43) · guion_11
+   5 casos, cada uno con su texto y sus dos preguntas en la misma
+   página. El motor (script.js) muestra un .final-step a la vez.
+   ============================================================ */
+
+/* La intro reutiliza .quiz-intro solo para que startFinalEvaluation()
+   la encuentre; hay que neutralizar el fondo heredado del curso base. */
+#slide-43 .quiz-intro {
+    background-image: none;
+    height: auto;
+    width: auto;
+    display: block;
+}
+
+.bn-exam-instructions {
+    text-align: left;
+    max-width: 560px;
+    margin: 0 auto 22px;
+}
+
+#quiz-final {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 26px 28px 40px;
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
+    color: var(--color-negro-texto, #333);
+}
+
+.bn-exam-case {
+    border-left: 5px solid var(--color-naranja-gs1, #ec633c);
+    margin-bottom: 22px;
+}
+
+.bn-exam-case h3 {
+    color: var(--color-azul-gs1, #22335e);
+    margin: 0 0 10px;
+    font-size: 1.15rem;
+}
+
+.final-question {
+    background: #fff;
+    border: 1px solid #e0e5ef;
+    border-radius: 14px;
+    padding: 20px 22px;
+    margin-bottom: 18px;
+    box-shadow: 0 6px 20px rgba(34, 51, 94, 0.06);
+}
+
+.bn-exam-q {
+    font-weight: 600;
+    color: var(--color-azul-gs1, #22335e);
+    margin: 0 0 14px;
+    line-height: 1.45;
+}
+
+.bn-exam-num {
+    display: inline-grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    margin-right: 8px;
+    border-radius: 50%;
+    background: var(--color-naranja-gs1, #ec633c);
+    color: #fff;
+    font-size: 0.85rem;
+    font-weight: 700;
+    vertical-align: middle;
+}
+
+.final-question .options-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.final-question .options-container label {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 11px 14px;
+    border: 1px solid #e0e5ef;
+    border-radius: 10px;
+    cursor: pointer;
+    line-height: 1.45;
+    transition: background .15s ease, border-color .15s ease;
+}
+
+.final-question .options-container label:hover {
+    border-color: var(--color-naranja-gs1, #ec633c);
+    background: #fff8f6;
+}
+
+.final-question .options-container input {
+    margin-top: 3px;
+    flex: 0 0 auto;
+    accent-color: var(--color-azul-gs1, #22335e);
+}
+
+/* Pregunta ya contestada: se atenúa y deja de responder al puntero,
+   porque la respuesta queda bloqueada y no se puede corregir. */
+.final-question.answered .options-container label {
+    cursor: default;
+    opacity: .75;
+}
+
+.final-question.answered .options-container label:hover {
+    border-color: #e0e5ef;
+    background: transparent;
+}
+
+.final-question.answered {
+    border-color: var(--color-azul-gs1, #22335e);
+}
+
+#final-results-screen {
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 30px 20px;
+    /* No hay box-sizing global en este proyecto: sin esto, el padding se
+       suma al 100% de ancho y desborda 40px en horizontal. */
+    box-sizing: border-box;
+}
+
+@media (max-width: 600px) {
+    #quiz-final {
+        padding: 18px 16px 34px;
+    }
+
+    .final-question {
+        padding: 16px 14px;
+    }
+
+    .final-question .options-container label {
+        padding: 10px 12px;
+        font-size: 0.95rem;
     }
 }
