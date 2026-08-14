@@ -2211,13 +2211,17 @@ function nextFinalStep() {
 }
 
 /**
- * Contesta UNA pregunta del examen final. Cada caso ocupa un .final-step y
- * lleva dos .final-question dentro, así que se evalúa la pregunta concreta
- * desde la que se pulsó el botón, no el paso entero.
+ * Contesta una pregunta del examen final.
+ * El examen va de una pantalla en una: cada caso tiene la suya (con su botón
+ * Continuar) y cada pregunta la suya, así que normalmente hay una sola
+ * .final-question por .final-step. Aun así se evalúa la pregunta concreta
+ * desde la que se pulsó el botón, no el paso entero, para que el paso pueda
+ * contener varias sin cambiar nada.
  * Al contestar se bloquean sus opciones (no se puede corregir) y se muestra
  * la retro; si el reactivo no tuviera texto de retro, sale solo el título
  * de correcto/incorrecto.
- * Cuando ya están contestadas las dos preguntas del caso, avanza al siguiente.
+ * Al cerrar la retro pasa a la siguiente pantalla; si el paso tuviera más
+ * preguntas pendientes, salta a la siguiente antes de avanzar.
  * @param {HTMLElement} btn - El botón pulsado dentro de la .final-question.
  */
 function submitFinalAnswer(btn) {

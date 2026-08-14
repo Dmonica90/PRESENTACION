@@ -2429,24 +2429,27 @@
                         evaluación</button>
                 </div>
 
-                <!-- ===== EXAMEN · 5 casos × 2 preguntas ===== -->
+                <!-- ===== EXAMEN · 5 casos · cada caso y cada pregunta en su propia
+                     pantalla. nextFinalStep() avanza un .final-step cada vez. ===== -->
                 <div id="quiz-final" style="display:none;">
 
-                    <!-- CASO 1 -->
+                    <!-- ---- Caso 1 · La semana interminable de Arturo ---- -->
                     <div class="final-step active">
                         <div class="bn-card bn-exam-case">
-                            <h3>Caso 1 · La semana interminable de Arturo</h3>
-                            <p>Arturo es analista de datos. Durante los últimos meses ha tenido entregas urgentes,
-                                reuniones continuas y cambios en prioridades. Ha perdido la motivación, siente cansancio
-                                desde que se levanta y ha comenzado a cometer errores en reportes que antes dominaba.</p>
+                            <span class="bn-exam-case-kicker">Caso 1 de 5</span>
+                            <h3>La semana interminable de Arturo</h3>
+                            <p>Arturo es analista de datos. Durante los últimos meses ha tenido entregas urgentes, reuniones continuas y cambios en prioridades. Ha perdido la motivación, siente cansancio desde que se levanta y ha comenzado a cometer errores en reportes que antes dominaba.</p>
                         </div>
+                        <div class="bn-exam-nav">
+                            <button class="nav-button primary-blue-btn" onclick="nextFinalStep()">Continuar</button>
+                        </div>
+                    </div>
 
+                    <div class="final-step">
                         <div class="final-question" data-question-id="fq1">
-                            <p class="bn-exam-q"><span class="bn-exam-num">1</span> ¿Con qué etapa del Burnout se
-                                relaciona más la situación de Arturo?</p>
+                            <p class="bn-exam-q"><span class="bn-exam-num">1</span> ¿Con qué etapa del Burnout se relaciona más la situación de Arturo?</p>
                             <div class="options-container">
-                                <label><input type="radio" name="fq1" value="a"> Estrés agudo por alta demanda
-                                    puntual</label>
+                                <label><input type="radio" name="fq1" value="a"> Estrés agudo por alta demanda puntual</label>
                                 <label><input type="radio" name="fq1" value="b"> Agotamiento emocional avanzado</label>
                                 <label><input type="radio" name="fq1" value="c"> Automatismo y somatización</label>
                                 <label><input type="radio" name="fq1" value="d"> Problemas personales externos</label>
@@ -2454,196 +2457,176 @@
                             <button class="nav-button primary-blue-btn final-submit-btn"
                                 onclick="submitFinalAnswer(this)">Responder</button>
                         </div>
+                    </div>
 
+                    <div class="final-step">
                         <div class="final-question" data-question-id="fq2">
-                            <p class="bn-exam-q"><span class="bn-exam-num">2</span> ¿Qué acción sería más útil para
-                                Arturo en este punto?</p>
+                            <p class="bn-exam-q"><span class="bn-exam-num">2</span> ¿Qué acción sería más útil para Arturo en este punto?</p>
                             <div class="options-container">
-                                <label><input type="radio" name="fq2" value="a"> Aumentar el número de horas laborales
-                                    para ponerse al día</label>
-                                <label><input type="radio" name="fq2" value="b"> Evitar hablar del tema para no parecer
-                                    poco comprometido</label>
-                                <label><input type="radio" name="fq2" value="c"> Conversar con su líder para revisar
-                                    prioridades y carga laboral</label>
-                                <label><input type="radio" name="fq2" value="d"> Cambiar de trabajo de inmediato y que
-                                    sea uno mejor</label>
+                                <label><input type="radio" name="fq2" value="a"> Aumentar el número de horas laborales para ponerse al día</label>
+                                <label><input type="radio" name="fq2" value="b"> Evitar hablar del tema para no parecer poco comprometido</label>
+                                <label><input type="radio" name="fq2" value="c"> Conversar con su líder para revisar prioridades y carga laboral</label>
+                                <label><input type="radio" name="fq2" value="d"> Cambiar de trabajo de inmediato y que sea uno mejor</label>
                             </div>
                             <button class="nav-button primary-blue-btn final-submit-btn"
                                 onclick="submitFinalAnswer(this)">Responder</button>
                         </div>
                     </div>
 
-                    <!-- CASO 2 -->
+                    <!-- ---- Caso 2 · Mariela y las reuniones inesperadas ---- -->
                     <div class="final-step">
                         <div class="bn-card bn-exam-case">
-                            <h3>Caso 2 · Mariela y las reuniones inesperadas</h3>
-                            <p>Mariela es coordinadora de proyectos. Tiene un reporte clave que entregar en dos días,
-                                pero durante la semana agendó cinco reuniones que no estaban planificadas. Se siente
-                                saturada y no logra avanzar en sus pendientes.</p>
+                            <span class="bn-exam-case-kicker">Caso 2 de 5</span>
+                            <h3>Mariela y las reuniones inesperadas</h3>
+                            <p>Mariela es coordinadora de proyectos. Tiene un reporte clave que entregar en dos días, pero durante la semana agendó cinco reuniones que no estaban planificadas. Se siente saturada y no logra avanzar en sus pendientes.</p>
                         </div>
+                        <div class="bn-exam-nav">
+                            <button class="nav-button primary-blue-btn" onclick="nextFinalStep()">Continuar</button>
+                        </div>
+                    </div>
 
+                    <div class="final-step">
                         <div class="final-question" data-question-id="fq3">
-                            <p class="bn-exam-q"><span class="bn-exam-num">3</span> ¿Qué debería hacer Mariela con las
-                                reuniones no esenciales según la Matriz de Eisenhower?</p>
+                            <p class="bn-exam-q"><span class="bn-exam-num">3</span> ¿Qué debería hacer Mariela con las reuniones no esenciales según la Matriz de Eisenhower?</p>
                             <div class="options-container">
-                                <label><input type="radio" name="fq3" value="a"> Asistir a todas para evitar perder
-                                    información que más adelante puede utilizar para sus actividades.</label>
-                                <label><input type="radio" name="fq3" value="b"> Evaluar su importancia y reprogramar o
-                                    delegar las que no sean urgentes ni importantes, y dar aviso.</label>
-                                <label><input type="radio" name="fq3" value="c"> Cancelar las cinco reuniones sin
-                                    avisar, ya que no le avisaron con anticipación, y seguir adelante.</label>
-                                <label><input type="radio" name="fq3" value="d"> Simplemente ignorarlas por completo:
-                                    quizá nadie se dé cuenta de que no acudirá.</label>
+                                <label><input type="radio" name="fq3" value="a"> Asistir a todas para evitar perder información que más adelante puede utilizar para sus actividades.</label>
+                                <label><input type="radio" name="fq3" value="b"> Evaluar su importancia y reprogramar o delegar las que no sean urgentes ni importantes, y dar aviso.</label>
+                                <label><input type="radio" name="fq3" value="c"> Cancelar las cinco reuniones sin avisar, ya que no le avisaron con anticipación, y seguir adelante.</label>
+                                <label><input type="radio" name="fq3" value="d"> Simplemente ignorarlas por completo: quizá nadie se dé cuenta de que no acudirá.</label>
                             </div>
                             <button class="nav-button primary-blue-btn final-submit-btn"
                                 onclick="submitFinalAnswer(this)">Responder</button>
                         </div>
+                    </div>
 
+                    <div class="final-step">
                         <div class="final-question" data-question-id="fq4">
-                            <p class="bn-exam-q"><span class="bn-exam-num">4</span> ¿Qué estrategia le ayudaría más a
-                                reducir el caos diario?</p>
+                            <p class="bn-exam-q"><span class="bn-exam-num">4</span> ¿Qué estrategia le ayudaría más a reducir el caos diario?</p>
                             <div class="options-container">
-                                <label><input type="radio" name="fq4" value="a"> Revisar el correo
-                                    constantemente</label>
-                                <label><input type="radio" name="fq4" value="b"> Definir tres prioridades clave al
-                                    iniciar el día</label>
-                                <label><input type="radio" name="fq4" value="c"> Responder mensajes conforme
-                                    llegan</label>
-                                <label><input type="radio" name="fq4" value="d"> Trabajar durante la noche o más
-                                    tiempo</label>
+                                <label><input type="radio" name="fq4" value="a"> Revisar el correo constantemente</label>
+                                <label><input type="radio" name="fq4" value="b"> Definir tres prioridades clave al iniciar el día</label>
+                                <label><input type="radio" name="fq4" value="c"> Responder mensajes conforme llegan</label>
+                                <label><input type="radio" name="fq4" value="d"> Trabajar durante la noche o más tiempo</label>
                             </div>
                             <button class="nav-button primary-blue-btn final-submit-btn"
                                 onclick="submitFinalAnswer(this)">Responder</button>
                         </div>
                     </div>
 
-                    <!-- CASO 3 -->
+                    <!-- ---- Caso 3 · Laura ya no disfruta su trabajo ---- -->
                     <div class="final-step">
                         <div class="bn-card bn-exam-case">
-                            <h3>Caso 3 · Laura ya no disfruta su trabajo</h3>
-                            <p>Laura lleva seis meses trabajando bajo presión constante. Ya no siente motivación, tiene
-                                problemas de sueño y siente que nada la recarga. Se percibe distante del equipo y sin
-                                energía.</p>
+                            <span class="bn-exam-case-kicker">Caso 3 de 5</span>
+                            <h3>Laura ya no disfruta su trabajo</h3>
+                            <p>Laura lleva seis meses trabajando bajo presión constante. Ya no siente motivación, tiene problemas de sueño y siente que nada la recarga. Se percibe distante del equipo y sin energía.</p>
                         </div>
+                        <div class="bn-exam-nav">
+                            <button class="nav-button primary-blue-btn" onclick="nextFinalStep()">Continuar</button>
+                        </div>
+                    </div>
 
+                    <div class="final-step">
                         <div class="final-question" data-question-id="fq5">
-                            <p class="bn-exam-q"><span class="bn-exam-num">5</span> ¿Qué diferencia clave indica que
-                                Laura no solo vive estrés, sino Burnout?</p>
+                            <p class="bn-exam-q"><span class="bn-exam-num">5</span> ¿Qué diferencia clave indica que Laura no solo vive estrés, sino Burnout?</p>
                             <div class="options-container">
-                                <label><input type="radio" name="fq5" value="a"> Que trabaja muchas horas y está
-                                    cansada todos los días</label>
-                                <label><input type="radio" name="fq5" value="b"> Que en su área tiene días difíciles y
-                                    otros más tranquilos</label>
-                                <label><input type="radio" name="fq5" value="c"> Que presenta agotamiento crónico,
-                                    apatía y reducción de eficacia</label>
-                                <label><input type="radio" name="fq5" value="d"> Que el equipo tiene altas expectativas
-                                    en el trabajo que realiza</label>
+                                <label><input type="radio" name="fq5" value="a"> Que trabaja muchas horas y está cansada todos los días</label>
+                                <label><input type="radio" name="fq5" value="b"> Que en su área tiene días difíciles y otros más tranquilos</label>
+                                <label><input type="radio" name="fq5" value="c"> Que presenta agotamiento crónico, apatía y reducción de eficacia</label>
+                                <label><input type="radio" name="fq5" value="d"> Que el equipo tiene altas expectativas en el trabajo que realiza</label>
                             </div>
                             <button class="nav-button primary-blue-btn final-submit-btn"
                                 onclick="submitFinalAnswer(this)">Responder</button>
                         </div>
+                    </div>
 
+                    <div class="final-step">
                         <div class="final-question" data-question-id="fq6">
-                            <p class="bn-exam-q"><span class="bn-exam-num">6</span> ¿Qué práctica de autocuidado
-                                emocional podría ayudarle?</p>
+                            <p class="bn-exam-q"><span class="bn-exam-num">6</span> ¿Qué práctica de autocuidado emocional podría ayudarle?</p>
                             <div class="options-container">
-                                <label><input type="radio" name="fq6" value="a"> Trabajar durante la hora de comida
-                                    para adelantar</label>
-                                <label><input type="radio" name="fq6" value="b"> Tomar más café para mantenerse activa
-                                    todo el día</label>
-                                <label><input type="radio" name="fq6" value="c"> Pausas de respiración consciente entre
-                                    reuniones tensas</label>
-                                <label><input type="radio" name="fq6" value="d"> Duplicar la cantidad de tareas para
-                                    “ponerse al día”</label>
+                                <label><input type="radio" name="fq6" value="a"> Trabajar durante la hora de comida para adelantar</label>
+                                <label><input type="radio" name="fq6" value="b"> Tomar más café para mantenerse activa todo el día</label>
+                                <label><input type="radio" name="fq6" value="c"> Pausas de respiración consciente entre reuniones tensas</label>
+                                <label><input type="radio" name="fq6" value="d"> Duplicar la cantidad de tareas para “ponerse al día”</label>
                             </div>
                             <button class="nav-button primary-blue-btn final-submit-btn"
                                 onclick="submitFinalAnswer(this)">Responder</button>
                         </div>
                     </div>
 
-                    <!-- CASO 4 -->
+                    <!-- ---- Caso 4 · El equipo de contabilidad en modo supervivencia ---- -->
                     <div class="final-step">
                         <div class="bn-card bn-exam-case">
-                            <h3>Caso 4 · El equipo de contabilidad en modo supervivencia</h3>
-                            <p>El equipo de contabilidad recibe proyectos adicionales cada mes sin redistribuir
-                                prioridades. Las personas han normalizado mensajes fuera de horario. La calidad del
-                                trabajo ha comenzado a bajar.</p>
+                            <span class="bn-exam-case-kicker">Caso 4 de 5</span>
+                            <h3>El equipo de contabilidad en modo supervivencia</h3>
+                            <p>El equipo de contabilidad recibe proyectos adicionales cada mes sin redistribuir prioridades. Las personas han normalizado mensajes fuera de horario. La calidad del trabajo ha comenzado a bajar.</p>
                         </div>
+                        <div class="bn-exam-nav">
+                            <button class="nav-button primary-blue-btn" onclick="nextFinalStep()">Continuar</button>
+                        </div>
+                    </div>
 
+                    <div class="final-step">
                         <div class="final-question" data-question-id="fq7">
-                            <p class="bn-exam-q"><span class="bn-exam-num">7</span> ¿Qué factor de riesgo psicosocial
-                                está presente en este caso?</p>
+                            <p class="bn-exam-q"><span class="bn-exam-num">7</span> ¿Qué factor de riesgo psicosocial está presente en este caso?</p>
                             <div class="options-container">
-                                <label><input type="radio" name="fq7" value="a"> Falta de habilidades técnicas y
-                                    convivencia entre compañeros</label>
-                                <label><input type="radio" name="fq7" value="b"> Mala relación entre compañeros y
-                                    disgusto por las actividades</label>
-                                <label><input type="radio" name="fq7" value="c"> Sobrecarga laboral crónica y falta de
-                                    límites organizacionales</label>
-                                <label><input type="radio" name="fq7" value="d"> Problemas personales ajenos al trabajo
-                                    y a los compañeros</label>
-                            </div>
-                            <button class="nav-button primary-blue-btn final-submit-btn"
-                                onclick="submitFinalAnswer(this)">Responder</button>
-                        </div>
-
-                        <div class="final-question" data-question-id="fq8">
-                            <p class="bn-exam-q"><span class="bn-exam-num">8</span> ¿Qué práctica organizacional
-                                ayudaría más al equipo?</p>
-                            <div class="options-container">
-                                <label><input type="radio" name="fq8" value="a"> Solicitar más reportes a la semana
-                                    para analizar los resultados</label>
-                                <label><input type="radio" name="fq8" value="b"> Aumentar el horario laboral escalonado
-                                    dentro del área</label>
-                                <label><input type="radio" name="fq8" value="c"> Mantener todos los canales abiertos
-                                    24/7 para todo el equipo</label>
-                                <label><input type="radio" name="fq8" value="d"> Establecer políticas de desconexión
-                                    digital y revisión de cargas</label>
+                                <label><input type="radio" name="fq7" value="a"> Falta de habilidades técnicas y convivencia entre compañeros</label>
+                                <label><input type="radio" name="fq7" value="b"> Mala relación entre compañeros y disgusto por las actividades</label>
+                                <label><input type="radio" name="fq7" value="c"> Sobrecarga laboral crónica y falta de límites organizacionales</label>
+                                <label><input type="radio" name="fq7" value="d"> Problemas personales ajenos al trabajo y a los compañeros</label>
                             </div>
                             <button class="nav-button primary-blue-btn final-submit-btn"
                                 onclick="submitFinalAnswer(this)">Responder</button>
                         </div>
                     </div>
 
-                    <!-- CASO 5 -->
                     <div class="final-step">
-                        <div class="bn-card bn-exam-case">
-                            <h3>Caso 5 · Sofía está al límite</h3>
-                            <p>Sofía ha cubierto tareas de otros compañeros durante semanas. Ha trabajado noches
-                                completas y ha dejado de dormir bien. Aun así, evita pedir ayuda por temor a parecer
-                                poco comprometida.</p>
-                        </div>
-
-                        <div class="final-question" data-question-id="fq9">
-                            <p class="bn-exam-q"><span class="bn-exam-num">9</span> ¿Qué señal indica que Sofía debe
-                                pedir apoyo?</p>
+                        <div class="final-question" data-question-id="fq8">
+                            <p class="bn-exam-q"><span class="bn-exam-num">8</span> ¿Qué práctica organizacional ayudaría más al equipo?</p>
                             <div class="options-container">
-                                <label><input type="radio" name="fq9" value="a"> Ha logrado entregar todo, aun cuando
-                                    trabaja horas extra y llega a trabajar en su casa</label>
-                                <label><input type="radio" name="fq9" value="b"> Quiere demostrar que puede con más,
-                                    incluso que tiene más habilidades laborales</label>
-                                <label><input type="radio" name="fq9" value="c"> Ha tenido irritabilidad, baja energía
-                                    y dificultades de concentración por varias semanas</label>
-                                <label><input type="radio" name="fq9" value="d"> Tiene muchos pendientes que se van
-                                    acumulando día a día, sintiendo mucho estrés</label>
+                                <label><input type="radio" name="fq8" value="a"> Solicitar más reportes a la semana para analizar los resultados</label>
+                                <label><input type="radio" name="fq8" value="b"> Aumentar el horario laboral escalonado dentro del área</label>
+                                <label><input type="radio" name="fq8" value="c"> Mantener todos los canales abiertos 24/7 para todo el equipo</label>
+                                <label><input type="radio" name="fq8" value="d"> Establecer políticas de desconexión digital y revisión de cargas</label>
                             </div>
                             <button class="nav-button primary-blue-btn final-submit-btn"
                                 onclick="submitFinalAnswer(this)">Responder</button>
                         </div>
+                    </div>
 
-                        <div class="final-question" data-question-id="fq10">
-                            <p class="bn-exam-q"><span class="bn-exam-num">10</span> ¿Qué forma profesional de pedir
-                                apoyo sería la más adecuada?</p>
+                    <!-- ---- Caso 5 · Sofía está al límite ---- -->
+                    <div class="final-step">
+                        <div class="bn-card bn-exam-case">
+                            <span class="bn-exam-case-kicker">Caso 5 de 5</span>
+                            <h3>Sofía está al límite</h3>
+                            <p>Sofía ha cubierto tareas de otros compañeros durante semanas. Ha trabajado noches completas y ha dejado de dormir bien. Aun así, evita pedir ayuda por temor a parecer poco comprometida.</p>
+                        </div>
+                        <div class="bn-exam-nav">
+                            <button class="nav-button primary-blue-btn" onclick="nextFinalStep()">Continuar</button>
+                        </div>
+                    </div>
+
+                    <div class="final-step">
+                        <div class="final-question" data-question-id="fq9">
+                            <p class="bn-exam-q"><span class="bn-exam-num">9</span> ¿Qué señal indica que Sofía debe pedir apoyo?</p>
                             <div class="options-container">
-                                <label><input type="radio" name="fq10" value="a"> “Ya no puedo más. Alguien tiene que
-                                    ayudarme. Me siento cansada; de lo contrario, que me aumenten el sueldo.”</label>
-                                <label><input type="radio" name="fq10" value="b"> “No se preocupen, yo me encargo de
-                                    todo. Sé muy bien que soy capaz de hacer esto y más.”</label>
-                                <label><input type="radio" name="fq10" value="c"> “En las últimas semanas la carga ha
-                                    aumentado y ha afectado mis tiempos. Propongo revisar prioridades o redistribuir
-                                    tareas.”</label>
-                                <label><input type="radio" name="fq10" value="d"> “No pienso hacer más trabajo extra
-                                    del equipo hasta que mi líder reconozca mi esfuerzo con un bono.”</label>
+                                <label><input type="radio" name="fq9" value="a"> Ha logrado entregar todo, aun cuando trabaja horas extra y llega a trabajar en su casa</label>
+                                <label><input type="radio" name="fq9" value="b"> Quiere demostrar que puede con más, incluso que tiene más habilidades laborales</label>
+                                <label><input type="radio" name="fq9" value="c"> Ha tenido irritabilidad, baja energía y dificultades de concentración por varias semanas</label>
+                                <label><input type="radio" name="fq9" value="d"> Tiene muchos pendientes que se van acumulando día a día, sintiendo mucho estrés</label>
+                            </div>
+                            <button class="nav-button primary-blue-btn final-submit-btn"
+                                onclick="submitFinalAnswer(this)">Responder</button>
+                        </div>
+                    </div>
+
+                    <div class="final-step">
+                        <div class="final-question" data-question-id="fq10">
+                            <p class="bn-exam-q"><span class="bn-exam-num">10</span> ¿Qué forma profesional de pedir apoyo sería la más adecuada?</p>
+                            <div class="options-container">
+                                <label><input type="radio" name="fq10" value="a"> “Ya no puedo más. Alguien tiene que ayudarme. Me siento cansada; de lo contrario, que me aumenten el sueldo.”</label>
+                                <label><input type="radio" name="fq10" value="b"> “No se preocupen, yo me encargo de todo. Sé muy bien que soy capaz de hacer esto y más.”</label>
+                                <label><input type="radio" name="fq10" value="c"> “En las últimas semanas la carga ha aumentado y ha afectado mis tiempos. Propongo revisar prioridades o redistribuir tareas.”</label>
+                                <label><input type="radio" name="fq10" value="d"> “No pienso hacer más trabajo extra del equipo hasta que mi líder reconozca mi esfuerzo con un bono.”</label>
                             </div>
                             <button class="nav-button primary-blue-btn final-submit-btn"
                                 onclick="submitFinalAnswer(this)">Responder</button>
