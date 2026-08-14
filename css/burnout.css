@@ -1540,15 +1540,38 @@
     color: var(--color-negro-texto, #333);
 }
 
+/* Pantalla de caso: sale sola, con su botón Continuar. El texto del caso
+   no se repite luego en las pantallas de pregunta. */
 .bn-exam-case {
     border-left: 5px solid var(--color-naranja-gs1, #ec633c);
     margin-bottom: 22px;
+}
+
+.bn-exam-case-kicker {
+    display: inline-block;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    color: var(--color-naranja-gs1, #ec633c);
+    margin-bottom: 8px;
 }
 
 .bn-exam-case h3 {
     color: var(--color-azul-gs1, #22335e);
     margin: 0 0 10px;
     font-size: 1.15rem;
+}
+
+.bn-exam-case p {
+    margin: 0;
+    line-height: 1.6;
+    color: var(--color-negro-texto, #333);
+}
+
+.bn-exam-nav {
+    display: flex;
+    justify-content: center;
 }
 
 .final-question {
@@ -1588,21 +1611,34 @@
     margin-bottom: 16px;
 }
 
+/* OJO con color y background: la regla base `.options-container label`
+   (styles.css) los fija en blanco porque se diseñó para
+   .quiz-content-wrapper, que tiene fondo negro al 75%. Este examen va
+   sobre tarjetas blancas, así que hay que declararlos aquí o el texto
+   queda blanco sobre blanco e ilegible. No se toca la regla base: la
+   usan los quizzes de unidad, que sí van sobre fondo oscuro. */
 .final-question .options-container label {
     display: flex;
     align-items: flex-start;
     gap: 10px;
     padding: 11px 14px;
+    background: #fff;
+    color: var(--color-negro-texto, #333);
     border: 1px solid #e0e5ef;
     border-radius: 10px;
     cursor: pointer;
     line-height: 1.45;
+    font-size: 1rem;
+    min-height: 0;
     transition: background .15s ease, border-color .15s ease;
 }
 
 .final-question .options-container label:hover {
     border-color: var(--color-naranja-gs1, #ec633c);
     background: #fff8f6;
+    /* La regla base desplaza la opción 5px al pasar el puntero; aquí las
+       opciones van en tarjeta con borde y ese salto queda raro. */
+    transform: none;
 }
 
 .final-question .options-container input {
@@ -1620,7 +1656,8 @@
 
 .final-question.answered .options-container label:hover {
     border-color: #e0e5ef;
-    background: transparent;
+    background: #fff;
+    transform: none;
 }
 
 .final-question.answered {
