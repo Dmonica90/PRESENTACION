@@ -950,22 +950,13 @@
     transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
 }
 
-.bn-expandable-content {
-    display: block;
-    overflow: hidden;
-    transition: max-height 350ms cubic-bezier(0.4, 0, 0.2, 1);
-    background: #fafbfc;
-    border: 1px solid #e0e5ef;
-    border-top: 0;
-    margin-bottom: 12px;
-}
-
 .bn-expandable-content.is-collapsed {
-    max-height: 0;
+    display: none;
 }
 
 .bn-expandable-content.is-expanded {
-    max-height: 800px;
+    display: block;
+    margin-bottom: 12px;
 }
 
 .bn-expand-wrapper {

@@ -2010,7 +2010,7 @@
                     </div>
 
                     <div class="bn-ej-wrap anim-target anim-bounce-up anim-delay-2">
-                        <button class="bn-ej-btn" onclick="bnOpenInfo(this,'src-ej-cultura','Ejemplo')">
+                        <button class="bn-ej-btn" onclick="bnToggleExample(this,'src-ej-cultura','reflect-cultura')">
                             <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                                 <circle cx="12" cy="12" r="3"></circle>
@@ -2019,7 +2019,18 @@
                         </button>
                     </div>
 
-                    <div class="bn-card anim-target anim-bounce-up anim-delay-3">
+                    <div class="bn-card bn-expandable-content is-collapsed" id="src-ej-cultura">
+                        <p class="bn-popup-lead">En un corporativo de moda, los equipos que cerraron proyectos clave
+                            son reconocidos públicamente en una reunión mensual. Además, se promueve el descanso
+                            real: los líderes evitan enviar mensajes fuera de horario.</p>
+                        <div class="bn-microaccion"><span class="bn-ma-tag">Resultado</span>Mayor motivación,
+                            compromiso y retención del talento.
+                            <img src="img/036_Burnout_GS1.jpg" alt="Ilustración de límites saludables"
+                                class="content-image" style="display: block; width: 100%; margin: 16px 0 0;">
+                        </div>
+                    </div>
+
+                    <div class="bn-card bn-expandable-content is-collapsed" id="reflect-cultura">
                         <p style="margin:0 0 12px; font-weight:700; color:var(--color-azul-gs1);">Reflexiona:</p>
                         <ul class="bn-list">
                             <li>¿Qué acciones puedes proponer en tu empresa para fomentar una cultura de bienestar y
@@ -2027,17 +2038,6 @@
                             <li>Si eres líder, ¿cómo reconoces a los miembros de tu equipo?</li>
                             <li>Si eres colaborador, ¿participas en las encuestas y evaluaciones de clima laboral?</li>
                         </ul>
-                    </div>
-                </div>
-
-                <div class="bn-popup-src" id="src-ej-cultura" hidden>
-                    <p class="bn-popup-lead">En un corporativo de moda, los equipos que cerraron proyectos clave son
-                        reconocidos públicamente en una reunión mensual. Además, se promueve el descanso real: los
-                        líderes evitan enviar mensajes fuera de horario.</p>
-                    <div class="bn-microaccion"><span class="bn-ma-tag">Resultado</span>Mayor motivación, compromiso y
-                        retención del talento.
-                        <img src="img/036_Burnout_GS1.jpg" alt="Ilustración de límites saludables"
-                            class="content-image" style="display: block; width: 100%; margin: 16px 0 0;">
                     </div>
                 </div>
             </div>
@@ -2083,13 +2083,33 @@
                         conductas de tu equipo también es liderar.</div>
 
                     <div class="bn-ej-wrap anim-target anim-bounce-up anim-delay-2">
-                        <button class="bn-ej-btn" onclick="bnOpenInfo(this,'src-ej-liderazgo','Ejemplo')">
+                        <button class="bn-ej-btn"
+                            onclick="bnToggleExample(this,'src-ej-liderazgo','reflect-liderazgo')">
                             <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                                 <circle cx="12" cy="12" r="3"></circle>
                             </svg>
                             Ver ejemplo
                         </button>
+                    </div>
+
+                    <div class="bn-card bn-expandable-content is-collapsed" id="src-ej-liderazgo">
+                        <p class="bn-popup-lead">Un jefe de área nota que una analista, antes muy proactiva, comienza
+                            a cometer errores y participar menos. En lugar de sancionarla, el líder se reúne con ella
+                            para preguntar cómo se siente y revisar juntos su carga de trabajo.</p>
+                        <div class="bn-microaccion"><span class="bn-ma-tag">Resultado</span>Con un pequeño ajuste de
+                            tareas y apoyo del equipo, la colaboradora recupera energía y rendimiento.</div>
+                    </div>
+
+                    <div class="bn-card bn-expandable-content is-collapsed" id="reflect-liderazgo">
+                        <p style="margin:0 0 12px; font-weight:700; color:var(--color-azul-gs1);">Reflexiona:</p>
+                        <ul class="bn-list">
+                            <li>¿Con qué frecuencia te detienes a escuchar activamente a tu equipo o compañeros?</li>
+                            <li>¿Qué señales de agotamiento podrías estar pasando por alto en las personas que te
+                                rodean?</li>
+                            <li>¿Qué harías diferente la próxima vez que notes que alguien de tu equipo baja su
+                                rendimiento?</li>
+                        </ul>
                     </div>
 
                     <div class="bn-invite anim-target anim-bounce-up anim-delay-3">
@@ -2102,14 +2122,6 @@
                         <p>Para fortalecer tus habilidades de liderazgo y comunicación, te invitamos a inscribirte en
                             los cursos que <strong>GS1 México</strong> tiene para ti.</p>
                     </div>
-                </div>
-
-                <div class="bn-popup-src" id="src-ej-liderazgo" hidden>
-                    <p class="bn-popup-lead">Un jefe de área nota que una analista, antes muy proactiva, comienza a
-                        cometer errores y participar menos. En lugar de sancionarla, el líder se reúne con ella para
-                        preguntar cómo se siente y revisar juntos su carga de trabajo.</p>
-                    <div class="bn-microaccion"><span class="bn-ma-tag">Resultado</span>Con un pequeño ajuste de tareas
-                        y apoyo del equipo, la colaboradora recupera energía y rendimiento.</div>
                 </div>
             </div>
         </div>
@@ -2448,6 +2460,8 @@
                             <h3>La semana interminable de Arturo</h3>
                             <p>Arturo es analista de datos. Durante los últimos meses ha tenido entregas urgentes, reuniones continuas y cambios en prioridades. Ha perdido la motivación, siente cansancio desde que se levanta y ha comenzado a cometer errores en reportes que antes dominaba.</p>
                         </div>
+                        <img src="img/img_quiz_c1.png" alt="Ilustración del Caso 1" class="content-image"
+                            style="display:block; width:100%; margin:14px 0 0; border-radius:12px;">
                         <div class="bn-exam-nav">
                             <button class="nav-button primary-blue-btn" onclick="nextFinalStep()">Continuar</button>
                         </div>
@@ -2488,6 +2502,8 @@
                             <h3>Mariela y las reuniones inesperadas</h3>
                             <p>Mariela es coordinadora de proyectos. Tiene un reporte clave que entregar en dos días, pero durante la semana agendó cinco reuniones que no estaban planificadas. Se siente saturada y no logra avanzar en sus pendientes.</p>
                         </div>
+                        <img src="img/img_quiz_c2.png" alt="Ilustración del Caso 2" class="content-image"
+                            style="display:block; width:100%; margin:14px 0 0; border-radius:12px;">
                         <div class="bn-exam-nav">
                             <button class="nav-button primary-blue-btn" onclick="nextFinalStep()">Continuar</button>
                         </div>
@@ -2528,6 +2544,8 @@
                             <h3>Laura ya no disfruta su trabajo</h3>
                             <p>Laura lleva seis meses trabajando bajo presión constante. Ya no siente motivación, tiene problemas de sueño y siente que nada la recarga. Se percibe distante del equipo y sin energía.</p>
                         </div>
+                        <img src="img/img_quiz_c3.png" alt="Ilustración del Caso 3" class="content-image"
+                            style="display:block; width:100%; margin:14px 0 0; border-radius:12px;">
                         <div class="bn-exam-nav">
                             <button class="nav-button primary-blue-btn" onclick="nextFinalStep()">Continuar</button>
                         </div>
@@ -2568,6 +2586,8 @@
                             <h3>El equipo de contabilidad en modo supervivencia</h3>
                             <p>El equipo de contabilidad recibe proyectos adicionales cada mes sin redistribuir prioridades. Las personas han normalizado mensajes fuera de horario. La calidad del trabajo ha comenzado a bajar.</p>
                         </div>
+                        <img src="img/img_quiz_c4.png" alt="Ilustración del Caso 4" class="content-image"
+                            style="display:block; width:100%; margin:14px 0 0; border-radius:12px;">
                         <div class="bn-exam-nav">
                             <button class="nav-button primary-blue-btn" onclick="nextFinalStep()">Continuar</button>
                         </div>
@@ -2608,6 +2628,8 @@
                             <h3>Sofía está al límite</h3>
                             <p>Sofía ha cubierto tareas de otros compañeros durante semanas. Ha trabajado noches completas y ha dejado de dormir bien. Aun así, evita pedir ayuda por temor a parecer poco comprometida.</p>
                         </div>
+                        <img src="img/img_quiz_c5.png" alt="Ilustración del Caso 5" class="content-image"
+                            style="display:block; width:100%; margin:14px 0 0; border-radius:12px;">
                         <div class="bn-exam-nav">
                             <button class="nav-button primary-blue-btn" onclick="nextFinalStep()">Continuar</button>
                         </div>

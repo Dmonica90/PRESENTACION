@@ -31,6 +31,35 @@ function bnOpenInfo(btn, contentId, title, wide) {
 }
 
 /**
+ * Despliega el contenido de "Ver ejemplo" en línea, debajo del propio botón
+ * (sin popup), y, tras un breve instante, revela también el bloque de
+ * reflexión/comentario asociado, si se indicó uno.
+ * @param {HTMLElement} btn        - El botón "Ver ejemplo" pulsado.
+ * @param {string} exampleId       - id del bloque de ejemplo a desplegar.
+ * @param {string} [reflectionId]  - id del bloque de reflexión a revelar después.
+ */
+function bnToggleExample(btn, exampleId, reflectionId) {
+    const example = document.getElementById(exampleId);
+    if (example && example.classList.contains('is-collapsed')) {
+        example.classList.remove('is-collapsed');
+        example.classList.add('is-expanded');
+    }
+
+    if (reflectionId) {
+        const reflection = document.getElementById(reflectionId);
+        if (reflection && reflection.classList.contains('is-collapsed')) {
+            setTimeout(() => {
+                reflection.classList.remove('is-collapsed');
+                reflection.classList.add('is-expanded');
+                reflection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 400);
+        }
+    }
+
+    bnMarkViewed(btn);
+}
+
+/**
  * Coloca en el popup el mismo ícono (número o SVG) y color del botón/tile
  * que lo abrió, en vez del emoji genérico del motor.
  */

@@ -148,14 +148,11 @@ p {
 /* =============================================== */
 
 .guide-box {
-    background-color: white;
     width: 100%;
     max-width: 800px;
     margin: 0 auto;
-    border-radius: 20px;
-    padding: 40px;
+    padding: 20px 0;
     text-align: center;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
 }
 
 .guide-box h2 {
@@ -295,8 +292,8 @@ p {
 }
 
 .slide-header .logo-img {
-    height: 40px;
-    min-width: 40px;
+    height: 20px;
+    min-width: 20px;
     object-fit: contain;
 }
 
@@ -3292,7 +3289,6 @@ ul.lista-gs1 li::before {
     margin-left: 10%;
     margin-right: 10%;
     margin-top: 5%;
-    margin-bottom: ;
 }
 
 /* 4. GRIDS DE CONTENIDO INTERNO */
@@ -5293,7 +5289,7 @@ ul.lista-gs1 li::before {
     .guide-box {
         width: 100%;
         max-width: 100%;
-        padding: 25px 15px;
+        padding: 15px 0;
         margin: 20px 0;
         height: auto;
     }
@@ -5929,8 +5925,7 @@ ul.lista-gs1 li::before {
     .guide-box {
         max-width: 95vw;
         margin-top: 10px;
-        padding: 20px 12px;
-        border-radius: 15px;
+        padding: 10px 0;
     }
 
     .guide-box h2 {
