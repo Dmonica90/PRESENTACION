@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ficha de Evaluación · Divina Comida Familiar</title>
+<style>
+:root{
+    --vino:#7B1E3A;
+    --vino-claro:#A8324F;
+    --dorado:#C9A227;
+    --crema:#FDF6EC;
+    --carbon:#2B2320;
+    --gris:#6E635C;
+    --borde:#E7D8C4;
+    --verde:#2E7D5B;
+    --rojo:#B3261E;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+    font-family:"Montserrat","Segoe UI",system-ui,-apple-system,sans-serif;
+    background:var(--crema);
+    color:var(--carbon);
+    line-height:1.5;
+    padding:0 0 3rem;
+}
+
+/* ── Encabezado ───────────────────────────────────────────── */
+.hero{
+    background:linear-gradient(150deg,var(--vino) 0%,var(--vino-claro) 100%);
+    color:#fff;
+    padding:2.5rem 1.25rem 2rem;
+    text-align:center;
+}
+.hero .cubiertos{font-size:2.5rem;line-height:1;display:block;margin-bottom:.5rem}
+.hero h1{font-size:1.7rem;font-weight:800;letter-spacing:-.02em}
+.hero p{opacity:.85;font-size:.95rem;margin-top:.4rem}
+
+.wrap{max-width:640px;margin:0 auto;padding:0 1rem}
+
+/* ── Tarjetas ─────────────────────────────────────────────── */
+.card{
+    background:#fff;
+    border:1px solid var(--borde);
+    border-radius:16px;
+    padding:1.25rem;
+    margin-top:1.25rem;
+    box-shadow:0 2px 10px rgba(123,30,58,.06);
+}
+.card-head{display:flex;gap:.75rem;align-items:flex-start;margin-bottom:.9rem}
+.num{
+    flex:0 0 34px;height:34px;border-radius:50%;
+    background:var(--vino);color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-weight:700;font-size:.95rem;
+}
+.card-head h2{font-size:1.05rem;font-weight:700}
+.card-head .sub{font-size:.82rem;color:var(--gris);font-style:italic}
+.pregunta{font-weight:600;font-size:.93rem;margin-bottom:.6rem}
+
+/* ── Opciones ─────────────────────────────────────────────── */
+.opciones{display:flex;flex-direction:column;gap:.45rem;margin-bottom:1rem}
+.opcion{
+    display:flex;gap:.6rem;align-items:center;
+    border:1.5px solid var(--borde);border-radius:10px;
+    padding:.6rem .7rem;cursor:pointer;
+    font-size:.88rem;transition:all .15s;
+}
+.opcion:hover{border-color:var(--vino-claro);background:#fffaf3}
+.opcion input{accent-color:var(--vino);flex:0 0 auto;width:17px;height:17px}
+.opcion.sel{border-color:var(--vino);background:#FBF0F3}
+.rango{
+    font-weight:700;font-size:.72rem;letter-spacing:.03em;
+    padding:.1rem .4rem;border-radius:5px;flex:0 0 auto;
+}
+.r12{background:#FBE9E7;color:var(--rojo)}
+.r34{background:#FFF6DE;color:#8A6A00}
+.r5{background:#E6F4EC;color:var(--verde)}
+
+/* ── Puntaje ──────────────────────────────────────────────── */
+.puntaje-fila{display:flex;align-items:center;gap:.85rem;padding-top:.9rem;border-top:1px dashed var(--borde)}
+.puntaje-fila label{font-weight:600;font-size:.86rem;flex:1}
+input[type=range]{flex:2;accent-color:var(--vino);height:22px}
+.valor{
+    flex:0 0 46px;text-align:center;
+    background:var(--vino);color:#fff;
+    border-radius:9px;padding:.3rem 0;
+    font-weight:800;font-size:1.05rem;
+}
+
+/* ── Campos de texto ──────────────────────────────────────── */
+.campo{margin-bottom:1rem}
+.campo:last-child{margin-bottom:0}
+.campo label{display:block;font-weight:600;font-size:.88rem;margin-bottom:.35rem}
+.campo .ayuda{font-weight:400;color:var(--gris);font-size:.8rem}
+select{
+    width:100%;font-family:inherit;font-size:.95rem;color:var(--carbon);
+    border:1.5px solid var(--borde);border-radius:10px;
+    padding:.65rem .75rem;background:#fff;appearance:none;
+    background-image:linear-gradient(45deg,transparent 50%,var(--vino) 50%),linear-gradient(135deg,var(--vino) 50%,transparent 50%);
+    background-position:calc(100% - 18px) 55%,calc(100% - 13px) 55%;
+    background-size:5px 5px,5px 5px;background-repeat:no-repeat;
+}
+select:focus{outline:none;border-color:var(--vino)}
+.anonimo{font-size:.82rem;color:var(--gris);margin-top:.75rem}
+input[type=text],textarea{
+    width:100%;font-family:inherit;font-size:.95rem;color:var(--carbon);
+    border:1.5px solid var(--borde);border-radius:10px;
+    padding:.65rem .75rem;background:#fff;
+}
+input[type=text]:focus,textarea:focus{outline:none;border-color:var(--vino)}
+textarea{resize:vertical;min-height:80px}
+
+/* ── Marcador ─────────────────────────────────────────────── */
+.marcador{
+    background:var(--carbon);color:#fff;border:none;
+    display:flex;justify-content:space-around;text-align:center;
+}
+.marcador div span{display:block}
+.marcador .cifra{font-size:1.9rem;font-weight:800;color:var(--dorado);line-height:1.1}
+.marcador .etiqueta{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;opacity:.75}
+
+/* ── Botón ────────────────────────────────────────────────── */
+.enviar{
+    width:100%;margin-top:1.25rem;
+    background:var(--vino);color:#fff;
+    border:none;border-radius:14px;
+    padding:1rem;font-family:inherit;font-size:1.02rem;font-weight:700;
+    cursor:pointer;transition:background .15s;
+}
+.enviar:hover:not(:disabled){background:var(--vino-claro)}
+.enviar:disabled{opacity:.6;cursor:progress}
+
+.aviso{margin-top:.9rem;padding:.85rem 1rem;border-radius:11px;font-size:.9rem;display:none}
+.aviso.ok{display:block;background:#E6F4EC;color:var(--verde);border:1px solid #B7DFC9}
+.aviso.err{display:block;background:#FBE9E7;color:var(--rojo);border:1px solid #F3C6C2}
+
+.tip{
+    margin-top:1.5rem;font-size:.82rem;color:var(--gris);
+    background:#F7ECDD;border-left:3px solid var(--dorado);
+    border-radius:0 10px 10px 0;padding:.8rem 1rem;
+}
+
+/* ── Pantalla de gracias ──────────────────────────────────── */
+.gracias{display:none;text-align:center;padding:3rem 1rem}
+.gracias.on{display:block}
+.gracias .emoji{font-size:3.5rem;display:block;margin-bottom:1rem}
+.gracias h2{color:var(--vino);font-size:1.5rem;margin-bottom:.5rem}
+.gracias p{color:var(--gris);margin-bottom:1.5rem}
+.gracias button{
+    background:none;border:1.5px solid var(--vino);color:var(--vino);
+    border-radius:11px;padding:.7rem 1.4rem;font-family:inherit;
+    font-weight:700;cursor:pointer;
+}
+form.oculto{display:none}
+</style>
+</head>
+<body>
+
+<header class="hero">
+    <span class="cubiertos">🍽️</span>
+    <h1>Ficha de Evaluación</h1>
+    <p>Divina Comida Familiar</p>
+</header>
+
+<div class="wrap">
+
+<form id="ficha">
+
+    <!-- ── Identificación ─────────────────────────────────── -->
+    <section class="card">
+        <div class="campo">
+            <label for="anfitrion">¿A quién calificas esta noche?</label>
+            <select id="anfitrion" name="anfitrion" required>
+                <option value="" disabled selected>Elige al anfitrión…</option>
+                <option>1. Nando y Moni</option>
+                <option>2. Mir y mamá</option>
+                <option>3. Mir y papá</option>
+                <option>4. Mary y Diego</option>
+            </select>
+        </div>
+        <p class="anonimo">🤐 Tu voto es anónimo: no se guarda tu nombre en ningún lado.</p>
+    </section>
+
+    <!-- Las 5 secciones se generan desde JS -->
+    <div id="secciones"></div>
+
+    <!-- ── Voto final ─────────────────────────────────────── -->
+    <section class="card marcador">
+        <div>
+            <span class="cifra" id="total">0</span>
+            <span class="etiqueta">Suma total</span>
+        </div>
+        <div>
+            <span class="cifra" id="promedio">0.0</span>
+            <span class="etiqueta">Promedio</span>
+        </div>
+    </section>
+
+    <section class="card">
+        <div class="card-head">
+            <div class="num">🤫</div>
+            <div>
+                <h2>Voto Final y Confesionario</h2>
+                <span class="sub">Esto solo lo ve quien organiza la velada</span>
+            </div>
+        </div>
+        <div class="campo">
+            <label for="momentoMemorable">El momento más memorable (o chistoso) de la noche</label>
+            <textarea id="momentoMemorable" name="momentoMemorable" placeholder="Cuando se apagó la luz justo con el postre…"></textarea>
+        </div>
+        <div class="campo">
+            <label for="comentarioSecreto">Comentario secreto para el anfitrión</label>
+            <textarea id="comentarioSecreto" name="comentarioSecreto" placeholder="Lo que no te atreviste a decir en la mesa…"></textarea>
+        </div>
+    </section>
+
+    <button type="submit" class="enviar" id="btnEnviar">Sellar mi voto 🗳️</button>
+    <div class="aviso" id="aviso"></div>
+
+    <p class="tip"><strong>Tip de juego:</strong> entrega sobres cerrados a cada invitado al inicio de la cena y pídeles que llenen su ficha en privado, estilo <em>confesionario</em>, para revelar al ganador en la reunión final.</p>
+</form>
+
+<div class="gracias" id="gracias">
+    <span class="emoji">🏆</span>
+    <h2>¡Voto sellado!</h2>
+    <p>Tu ficha quedó guardada en el confesionario. Nadie sabrá tu calificación hasta la gran revelación.</p>
+    <button type="button" id="btnOtra">Calificar a otro anfitrión</button>
+</div>
+
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+// CONFIGURACIÓN
+// Pega aquí la URL de la implementación del Web App de Apps
+// Script (apps-script/DivinaComida_Notion.gs). Ver README.
+// ═══════════════════════════════════════════════════════════
+var ENDPOINT = 'PEGA_AQUI_LA_URL_DEL_WEB_APP';
+
+// ═══════════════════════════════════════════════════════════
+// LAS 5 SECCIONES DE LA FICHA
+// ═══════════════════════════════════════════════════════════
+var SECCIONES = [
+    {
+        clave:'recepcion', titulo:'La Recepción y el Ambiente',
+        sub:'Atención inicial, bebida de bienvenida, decoración y vibra general',
+        pregunta:'¿Cómo calificas la bienvenida y el ambiente del lugar?',
+        opciones:[
+            ['1-2','r12','Parecía que llegué sin avisar.','1-2 Parecía que llegué sin avisar'],
+            ['3-4','r34','Cumplió, pero faltó calidez o música de fondo.','3-4 Cumplió pero faltó calidez'],
+            ['5','r5','¡Hospitalidad pura, bebida lista y ambiente perfecto!','5 Hospitalidad pura']
+        ]
+    },
+    {
+        clave:'entrada', titulo:'La Entrada / Apertura',
+        sub:'Presentación, sabor y temperatura del primer tiempo',
+        pregunta:'¿Qué tal arrancó la cena?',
+        opciones:[
+            ['1-2','r12','Dejó mucho que desear.','1-2 Dejó mucho que desear'],
+            ['3-4','r34','Rica, pero nada fuera de lo común.','3-4 Rica pero nada fuera de lo común'],
+            ['5','r5','¡Un espectáculo para empezar!','5 Un espectáculo para empezar']
+        ]
+    },
+    {
+        clave:'platoFuerte', titulo:'El Plato Fuerte',
+        sub:'Sabor, cocción, creatividad y presentación',
+        pregunta:'¿El plato principal estuvo a la altura del título de "Divina Comida"?',
+        opciones:[
+            ['1-2','r12','El sazón se quedó en el camino.','1-2 El sazón se quedó en el camino'],
+            ['3-4','r34','Buen sabor, aunque faltó un toque especial.','3-4 Buen sabor pero faltó un toque especial'],
+            ['5','r5','Digno de restaurante, repetía sin dudarlo.','5 Digno de restaurante']
+        ]
+    },
+    {
+        clave:'postre', titulo:'El Postre',
+        sub:'El cierre dulce de la noche',
+        pregunta:'¿Cómo estuvo el final dulce?',
+        opciones:[
+            ['1-2','r12','Un empaque del supermercado hubiera estado mejor.','1-2 Mejor un empaque del súper'],
+            ['3-4','r34','Rico para acompañar el café/té.','3-4 Rico para acompañar el café'],
+            ['5','r5','El broche de oro perfecto, nivel repostería.','5 El broche de oro']
+        ]
+    },
+    {
+        clave:'entretenimiento', titulo:'El Entretenimiento / Actividad Especial',
+        sub:'Plática, dinámicas, juegos o sobremesa organizada por el anfitrión',
+        pregunta:'¿Qué tan divertida estuvo la velada?',
+        opciones:[
+            ['1-2','r12','Chequé la hora varias veces para irme.','1-2 Chequé la hora para irme'],
+            ['3-4','r34','Entretenida, con buena plática.','3-4 Entretenida con buena plática'],
+            ['5','r5','Las risas no pararon, ¡el mejor momento de la noche!','5 Las risas no pararon']
+        ]
+    }
+];
+
+// ═══════════════════════════════════════════════════════════
+// CONSTRUCCIÓN DEL FORMULARIO
+// ═══════════════════════════════════════════════════════════
+var contenedor = document.getElementById('secciones');
+
+SECCIONES.forEach(function(s, i){
+    var card = document.createElement('section');
+    card.className = 'card';
+
+    var opciones = s.opciones.map(function(o, j){
+        var id = s.clave + '-op' + j;
+        return '<label class="opcion" for="' + id + '">' +
+                 '<input type="radio" id="' + id + '" name="' + s.clave + 'Nivel" value="' + o[3] + '">' +
+                 '<span class="rango ' + o[1] + '">' + o[0] + '</span>' +
+                 '<span>' + o[2] + '</span>' +
+               '</label>';
+    }).join('');
+
+    card.innerHTML =
+        '<div class="card-head">' +
+            '<div class="num">' + (i + 1) + '</div>' +
+            '<div><h2>' + s.titulo + '</h2><span class="sub">' + s.sub + '</span></div>' +
+        '</div>' +
+        '<p class="pregunta">' + s.pregunta + '</p>' +
+        '<div class="opciones">' + opciones + '</div>' +
+        '<div class="puntaje-fila">' +
+            '<label for="' + s.clave + 'Puntaje">Puntaje (1 al 10)</label>' +
+            '<input type="range" id="' + s.clave + 'Puntaje" name="' + s.clave + 'Puntaje" min="1" max="10" step="1" value="5">' +
+            '<span class="valor" id="' + s.clave + 'Valor">5</span>' +
+        '</div>';
+
+    contenedor.appendChild(card);
+});
+
+// Valor visible del slider + marcador global
+SECCIONES.forEach(function(s){
+    var rango = document.getElementById(s.clave + 'Puntaje');
+    var valor = document.getElementById(s.clave + 'Valor');
+    rango.addEventListener('input', function(){
+        valor.textContent = rango.value;
+        actualizarMarcador();
+    });
+});
+
+// Resaltado de la opción elegida
+document.getElementById('ficha').addEventListener('change', function(e){
+    if (e.target.type !== 'radio') return;
+    var grupo = document.getElementsByName(e.target.name);
+    Array.prototype.forEach.call(grupo, function(r){
+        r.closest('.opcion').classList.toggle('sel', r.checked);
+    });
+});
+
+function actualizarMarcador(){
+    var total = SECCIONES.reduce(function(acc, s){
+        return acc + Number(document.getElementById(s.clave + 'Puntaje').value);
+    }, 0);
+    document.getElementById('total').textContent = total;
+    document.getElementById('promedio').textContent = (total / SECCIONES.length).toFixed(1);
+}
+actualizarMarcador();
+
+// ═══════════════════════════════════════════════════════════
+// ENVÍO A NOTION (vía Apps Script)
+// ═══════════════════════════════════════════════════════════
+var form = document.getElementById('ficha');
+var btn = document.getElementById('btnEnviar');
+var aviso = document.getElementById('aviso');
+
+form.addEventListener('submit', function(e){
+    e.preventDefault();
+
+    if (ENDPOINT.indexOf('PEGA_AQUI') === 0){
+        return mostrarError('Falta configurar la URL del Web App en divina-comida/index.html (variable ENDPOINT).');
+    }
+
+    var datos = {};
+    new FormData(form).forEach(function(v, k){ datos[k] = v; });
+    SECCIONES.forEach(function(s){
+        datos[s.clave + 'Puntaje'] = Number(datos[s.clave + 'Puntaje']);
+    });
+
+    btn.disabled = true;
+    btn.textContent = 'Guardando…';
+    aviso.className = 'aviso';
+
+    // text/plain evita el preflight CORS que Apps Script no responde
+    fetch(ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(datos)
+    })
+    .then(function(r){ return r.json(); })
+    .then(function(res){
+        if (!res.ok) throw new Error(res.error || 'No se pudo guardar la ficha.');
+        form.classList.add('oculto');
+        document.getElementById('gracias').classList.add('on');
+        window.scrollTo(0, 0);
+    })
+    .catch(function(err){
+        mostrarError(err.message);
+    })
+    .finally(function(){
+        btn.disabled = false;
+        btn.textContent = 'Sellar mi voto 🗳️';
+    });
+});
+
+function mostrarError(msg){
+    aviso.className = 'aviso err';
+    aviso.textContent = '⚠️ ' + msg;
+}
+
+document.getElementById('btnOtra').addEventListener('click', function(){
+    form.reset();
+    SECCIONES.forEach(function(s){
+        document.getElementById(s.clave + 'Valor').textContent = '5';
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('.opcion.sel'), function(el){
+        el.classList.remove('sel');
+    });
+    actualizarMarcador();
+    document.getElementById('gracias').classList.remove('on');
+    form.classList.remove('oculto');
+    window.scrollTo(0, 0);
+});
+</script>
+</body>
+</html>
