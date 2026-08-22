@@ -5916,6 +5916,28 @@ ul.lista-gs1 li::before {
     }
     
     .tab-pane { border: 1px solid #E9E9E9; border-radius: 5px; }
+
+    /* Barra de navegación inferior: compactar paddings/gaps/tipografía para
+       que Inicio, Regresar, la barra de progreso y Avanzar quepan sin
+       desbordar el ancho de pantalla (antes se salían ~113px en 320px). */
+    #nav-bar {
+        padding: 0 6px;
+    }
+
+    .nav-group {
+        gap: 4px;
+    }
+
+    .center-group {
+        margin: 0 6px;
+        flex-shrink: 1;
+        min-width: 30px;
+    }
+
+    .nav-button {
+        padding: 7px 8px;
+        font-size: 0.7em;
+    }
 }
 
 /* -----------------------------------------------------------
