@@ -130,6 +130,7 @@ const introVideo = document.getElementById('intro-video');
 
 // Indicador de Scroll
 const scrollIndicator = document.getElementById('scroll-indicator');
+let scrollContentObserver = null;
 
 const closeFeedbackBtn = document.getElementById('close-feedback-btn');
 const feedbackTitle = document.getElementById('feedback-title');
@@ -148,23 +149,37 @@ let finalExamPassed = false;
 // 1. ESTRUCTURA MODULAR, QUIZ Y ESTADO
 // ===============================================
 
-// Estructura del curso Burnout (índices 0-based).
-// Unidad 1: slides 5-11  | Unidad 2: 12-17 | Unidad 3: 18-32 | Unidad 4: 33-41 | Cierre: 42-45
+// Estructura del curso Burnout (índices 0-based, verificados contra el DOM real).
+// slides[] tiene un elemento extra "#slide-nav-guide" entre slide-1 y slide-2,
+// y el id "slide-16" NO existe en el HTML. Por eso, para slide-N con N>=17,
+// índice_real_en_slides = N-1 (no N). Portadas reales de cada unidad:
+//   Unidad 1: slide-4  -> idx 4   | Unidad 2: slide-11 -> idx 11
+//   Unidad 3: slide-17 -> idx 16  | Unidad 4: slide-32 -> idx 31
+//   Cierre:   slide-41 -> idx 40  | Última slide: slide-44 -> idx 43 (totalSlides-1)
 const moduleStructure = {
     'modulo1': { start: 4, end: 11, quizIndex: 10, name: 'Unidad 1: Comprendiendo el Burnout' },
-    'modulo2': { start: 11, end: 17, quizIndex: 16, name: 'Unidad 2: Señales y factores de riesgo' },
-    'modulo3': { start: 17, end: 32, quizIndex: 31, name: 'Unidad 3: Estrategias de prevención' },
-    'modulo4': { start: 32, end: 41, quizIndex: 40, name: 'Unidad 4: Red de apoyo organizacional' },
-    'cierre': { start: 41, end: 45, quizIndex: 43, name: 'Cierre y evaluación final' }
+    'modulo2': { start: 11, end: 16, quizIndex: 15, name: 'Unidad 2: Señales y factores de riesgo' },
+    'modulo3': { start: 16, end: 31, quizIndex: 30, name: 'Unidad 3: Estrategias de prevención' },
+    'modulo4': { start: 31, end: 40, quizIndex: 39, name: 'Unidad 4: Red de apoyo organizacional' },
+    'cierre': { start: 40, end: totalSlides, quizIndex: 42, name: 'Cierre y evaluación final' }
 };
 
+// Orden de las unidades = orden de las claves de moduleStructure.
+const moduleKeysOrder = Object.keys(moduleStructure);
+
 let moduleStatus = {
-    'modulo1': { passed: true, unlockIndex: 11 },
-    'modulo2': { passed: false, unlockIndex: 17 },
-    'modulo3': { passed: false, unlockIndex: 32 },
-    'modulo4': { passed: false, unlockIndex: 41 },
-    'cierre': { passed: false, unlockIndex: 45 }
+    'modulo1': { passed: false, unlockIndex: 11 },
+    'modulo2': { passed: false, unlockIndex: 16 },
+    'modulo3': { passed: false, unlockIndex: 31 },
+    'modulo4': { passed: false, unlockIndex: 40 },
+    'cierre': { passed: false, unlockIndex: totalSlides }
 };
+
+// Índice de slide más profundo alcanzado por navegación legítima (avance
+// normal por "Siguiente", o salto del menú a una unidad ya desbloqueada).
+// Es la señal de progreso real: determina qué unidades quedan "unlocked"
+// en el menú desplegable.
+let furthestSlideIndexReached = 0;
 
 const FINAL_PASSING_SCORE = 70;
 
@@ -489,6 +504,13 @@ function showSlide(index) {
         const direction = index > currentSlideIndex ? 'next' : 'prev';
         currentSlideIndex = index;
 
+        // Actualiza el punto más profundo alcanzado por navegación legítima
+        // y recalcula qué unidades quedan desbloqueadas en el menú.
+        if (index > furthestSlideIndexReached) {
+            furthestSlideIndexReached = index;
+        }
+        recomputeModuleUnlocks();
+
         // ⭐⭐ NUEVO: GUARDAR BOOKMARK EN SCORM (PIPWERKS) ⭐⭐
         if (typeof scorm !== 'undefined') {
             // Guardamos el índice actual (ej: "5")
@@ -535,6 +557,26 @@ function showSlide(index) {
                     img.addEventListener('load', checkScrollability);
                 }
             });
+
+            // Reobserva el contenido del slide activo: si un clic revela
+            // contenido nuevo más abajo (pestañas, acordeones, "ver más"),
+            // se vuelve a evaluar si hay que mostrar el indicador de scroll.
+            if (scrollContentObserver) {
+                scrollContentObserver.disconnect();
+            }
+            if (scrollContent) {
+                let scrollRecheckTimer = null;
+                scrollContentObserver = new MutationObserver(() => {
+                    clearTimeout(scrollRecheckTimer);
+                    scrollRecheckTimer = setTimeout(checkScrollability, 60);
+                });
+                scrollContentObserver.observe(scrollContent, {
+                    childList: true,
+                    subtree: true,
+                    attributes: true,
+                    attributeFilter: ['style', 'class', 'hidden']
+                });
+            }
 
             // --- MAQUETA BURNOUT: hooks por índice desactivados ---
             // Los reinicios de quiz/evaluación del curso CRE se rehabilitarán
@@ -688,44 +730,6 @@ function closeVideoOverlay() {
     fullscreenOverlay.style.display = 'none';
 }
 
-
-/**
- * Verifica si el contenido del slide actual necesita scroll.
- */
-function checkScrollability() {
-    if (!scrollIndicator) return;
-
-    const currentSlide = slides[currentSlideIndex];
-    // .slide-scroll-content es el contenedor que debe tener overflow: auto en CSS
-    const scrollContent = currentSlide ? currentSlide.querySelector('.slide-scroll-content') : null;
-
-    // Primero, siempre limpiamos el listener del slide anterior antes de procesar el nuevo.
-    document.querySelectorAll('.slide-scroll-content').forEach(el => {
-        el.removeEventListener('scroll', handleScroll);
-    });
-
-    if (scrollContent) {
-        // La altura del contenido es mayor que la altura visible, necesita scroll.
-        const requiresScroll = scrollContent.scrollHeight > scrollContent.clientHeight;
-
-        if (requiresScroll) {
-            // ⭐ CORRECCIÓN CSS: Usamos .active ya que está en tu CSS
-            scrollIndicator.classList.remove('hidden');
-            scrollIndicator.classList.add('active');
-
-            // Añade el listener para ocultar el indicador cuando se llega al final
-            scrollContent.addEventListener('scroll', handleScroll);
-        } else {
-            // ⭐ CORRECCIÓN CSS: Usamos .hidden y removemos .active
-            scrollIndicator.classList.add('hidden');
-            scrollIndicator.classList.remove('active');
-        }
-    } else {
-        // Si no hay contenedor de scroll (como en la portada o slides sin contenido), se oculta.
-        scrollIndicator.classList.add('hidden');
-        scrollIndicator.classList.remove('active');
-    }
-}
 
 /**
  * Oculta el indicador de scroll cuando el usuario llega al final.
@@ -1186,12 +1190,47 @@ if (feedbackCloseBtn) {
 // 5. LÓGICA DE BLOQUEO MODULAR Y MENÚ
 // ===============================================
 
-function checkModuleLock(targetIndex) { return true; }
-function getPreviousModuleKey(currentKey) { return null; }
-function unlockNextModule(passedModuleKey) { }
+// Devuelve la clave de unidad ('modulo1', 'modulo2', ...) a la que pertenece
+// un índice de slide, o null si no cae en ninguna unidad conocida.
+function getModuleKeyForIndex(index) {
+    return moduleKeysOrder.find(key => {
+        const def = moduleStructure[key];
+        return index >= def.start && index < def.end;
+    }) || null;
+}
+
+function getPreviousModuleKey(currentKey) {
+    const i = moduleKeysOrder.indexOf(currentKey);
+    return i > 0 ? moduleKeysOrder[i - 1] : null;
+}
+
+// ¿Se puede saltar (vía menú) a targetIndex? La primera unidad siempre está
+// abierta; cualquier otra requiere que la unidad anterior esté "passed".
+function checkModuleLock(targetIndex) {
+    const targetKey = getModuleKeyForIndex(targetIndex);
+    if (!targetKey) return true; // fuera de cualquier unidad conocida: no bloquea
+    if (targetKey === moduleKeysOrder[0]) return true;
+    const prevKey = getPreviousModuleKey(targetKey);
+    return prevKey ? moduleStatus[prevKey].passed : true;
+}
+
+// Marca una unidad como aprobada si furthestSlideIndexReached ya llegó a
+// su unlockIndex (== inicio de la siguiente unidad). Idempotente.
+function unlockNextModule(passedModuleKey) {
+    const status = moduleStatus[passedModuleKey];
+    if (status && !status.passed && furthestSlideIndexReached >= status.unlockIndex) {
+        status.passed = true;
+    }
+}
+
+// Recalcula el estado "passed" de todas las unidades. Se llama cada vez que
+// furthestSlideIndexReached puede haber avanzado (ver showSlide()).
+function recomputeModuleUnlocks() {
+    moduleKeysOrder.forEach(unlockNextModule);
+}
 
 function updateModuleDropdown() {
-    const keys = Object.keys(moduleStructure);
+    const keys = moduleKeysOrder;
     if (moduleDropdown.children.length === 0) {
         keys.forEach(key => {
             const moduleDef = moduleStructure[key];
@@ -1199,16 +1238,25 @@ function updateModuleDropdown() {
             linkElement.href = '#';
             linkElement.setAttribute('data-module', key);
             linkElement.textContent = moduleDef.name;
-            linkElement.classList.add('module-link', 'unlocked');
+            linkElement.classList.add('module-link');
             linkElement.addEventListener('click', function (e) {
                 e.preventDefault();
                 const targetIndex = moduleDef.start;
+                if (!checkModuleLock(targetIndex)) return; // guarda JS además del CSS pointer-events:none
                 showSlide(targetIndex);
                 moduleDropdown.classList.remove('show');
             });
             moduleDropdown.appendChild(linkElement);
         });
     }
+    // Refresca locked/unlocked cada vez que se abre el menú (no solo al construirlo).
+    keys.forEach(key => {
+        const linkElement = moduleDropdown.querySelector(`[data-module="${key}"]`);
+        if (!linkElement) return;
+        const unlocked = checkModuleLock(moduleStructure[key].start);
+        linkElement.classList.toggle('unlocked', unlocked);
+        linkElement.classList.toggle('locked', !unlocked);
+    });
 }
 
 function showFeedback(title, message, type = 'info') {
