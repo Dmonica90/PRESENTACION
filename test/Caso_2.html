@@ -7,13 +7,13 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     * { font-family: 'Montserrat', sans-serif; }
+    html, body { min-height: 100%; }
     body {
       font-family: 'Montserrat', sans-serif;
       font-weight: 400;
       background-image: url('../img/art_full_oficina.png');
       background-size: cover;
       background-position: center;
-      background-attachment: fixed;
       background-color: #f5f5f5;
       display: flex;
       padding: 26px 16px 40px;
@@ -272,6 +272,9 @@
       fb.classList.remove('hidden');
       caso2.answered = true;
       document.getElementById('btn-retry-question').classList.remove('hidden');
+      if (window.parent !== window) {
+        window.parent.postMessage({ type: 'bn-exercise-done' }, '*');
+      }
     });
 
     document.getElementById('start-btn').addEventListener('click', () => {

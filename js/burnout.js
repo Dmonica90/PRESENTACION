@@ -238,13 +238,15 @@ function bnSlideAllowsNext(slideEl) {
         if (temas.length === 0) return true;
         return Array.from(temas).every(t => t.classList.contains('viewed'));
     }
-    // MBI Test gate: unlocks when test is completed
-    if (gate === 'mbi-test') {
-        return !!(window.mbiTestCompleted === true);
+    // Interactivo embebido (iframe): se desbloquea cuando ese iframe
+    // reporta su propio "terminado" (bn-test-done / bn-exercise-done).
+    if (gate === 'embed') {
+        return slideEl.dataset.bnEmbedDone === 'true';
     }
-    // Exercise gate: unlocks when exercise is completed
-    if (gate === 'exercise') {
-        return !!(window.exerciseCompleted === true);
+    // Evaluación final: se desbloquea únicamente al llegar a la pantalla
+    // de resultados (aprobado o reprobado), nunca antes.
+    if (gate === 'exam-final') {
+        return !!(window.bnFinalExamResultsShown === true);
     }
     return true;
 }
@@ -278,25 +280,29 @@ const BN_MAX_EMBED_HEIGHT = 6000;
 window.addEventListener('message', function (e) {
     const d = e.data || {};
 
+    // Localiza el iframe .bn-embed que envió este mensaje (se usa tanto
+    // para el auto-alto como para saber qué slide desbloquear).
+    let sourceIframe = null;
+    const iframes = document.querySelectorAll('iframe[class*="bn-embed"]');
+    for (let iframe of iframes) {
+        if (iframe.contentWindow === e.source) {
+            sourceIframe = iframe;
+            break;
+        }
+    }
+
     // Ajuste automático de alto del iframe del test
-    if (d.type === 'bn-test-height') {
-        // Auto-detect which iframe sent this message and update it
-        const iframes = document.querySelectorAll('iframe[class*="bn-embed"]');
-        for (let iframe of iframes) {
-            if (iframe.contentWindow === e.source) {
-                if (d.height && typeof d.height === 'number' && d.height > 0) {
-                    /* Tope de seguridad: si el documento embebido usa alturas de
-                       viewport (100vh, min-h-screen) se realimenta con el alto que
-                       le acabamos de fijar y crece sin parar hasta bloquear el
-                       slide. Recortamos a un máximo razonable y evitamos reescribir
-                       por diferencias mínimas (que también realimentan). */
-                    const h = Math.min(Math.round(d.height), BN_MAX_EMBED_HEIGHT);
-                    const actual = parseFloat(iframe.style.height) || 0;
-                    if (Math.abs(h + 8 - actual) > 4) {
-                        iframe.style.height = (h + 8) + 'px';
-                    }
-                }
-                break;
+    if (d.type === 'bn-test-height' && sourceIframe) {
+        if (d.height && typeof d.height === 'number' && d.height > 0) {
+            /* Tope de seguridad: si el documento embebido usa alturas de
+               viewport (100vh, min-h-screen) se realimenta con el alto que
+               le acabamos de fijar y crece sin parar hasta bloquear el
+               slide. Recortamos a un máximo razonable y evitamos reescribir
+               por diferencias mínimas (que también realimentan). */
+            const h = Math.min(Math.round(d.height), BN_MAX_EMBED_HEIGHT);
+            const actual = parseFloat(sourceIframe.style.height) || 0;
+            if (Math.abs(h + 8 - actual) > 4) {
+                sourceIframe.style.height = (h + 8) + 'px';
             }
         }
     }
@@ -310,13 +316,21 @@ window.addEventListener('message', function (e) {
             }
         } catch (err) { }
         console.log('Test Burnout completado. Puntaje:', d.score, '/', d.max, '·', d.tier);
-        window.mbiTestCompleted = true;
-        if (typeof updateNavigation === 'function') updateNavigation();
+        bnMarkEmbedDone(sourceIframe);
     }
 
-    // Exercise/case study completed
+    // Ejercicio/caso interactivo completado
     if (d.type === 'bn-exercise-done') {
-        window.exerciseCompleted = true;
-        if (typeof updateNavigation === 'function') updateNavigation();
+        bnMarkEmbedDone(sourceIframe);
     }
 });
+
+/**
+ * Marca como "terminado" el slide que contiene un iframe embebido
+ * (test o caso interactivo) y revalida el gate para desbloquear Avanzar.
+ */
+function bnMarkEmbedDone(iframe) {
+    const slideEl = iframe ? iframe.closest('.slide') : null;
+    if (slideEl) slideEl.dataset.bnEmbedDone = 'true';
+    if (typeof updateNavigation === 'function') updateNavigation();
+}
