@@ -243,10 +243,12 @@ function bnSlideAllowsNext(slideEl) {
     if (gate === 'embed') {
         return slideEl.dataset.bnEmbedDone === 'true';
     }
-    // Evaluación final: se desbloquea únicamente al llegar a la pantalla
-    // de resultados (aprobado o reprobado), nunca antes.
+    // Evaluación final: se desbloquea únicamente si se aprobó (≥80).
+    // Si reprobó, Avanzar sigue bloqueado aunque ya esté en resultados;
+    // solo puede reintentar o, tras agotar intentos, volver al inicio
+    // del curso (ese botón navega directo, sin pasar por este gate).
     if (gate === 'exam-final') {
-        return !!(window.bnFinalExamResultsShown === true);
+        return typeof finalExamPassed !== 'undefined' && finalExamPassed === true;
     }
     return true;
 }

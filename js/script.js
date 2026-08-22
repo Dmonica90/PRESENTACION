@@ -2103,8 +2103,8 @@ function startFinalEvaluation() {
     const intro = slide ? slide.querySelector('.quiz-intro') : null;
     const resultsDiv = document.getElementById('final-results-screen');
 
-    // Re-bloquear Avanzar: el examen empieza de nuevo, aún no hay resultados.
-    window.bnFinalExamResultsShown = false;
+    // Re-bloquear Avanzar: el examen empieza de nuevo, aún no está aprobado.
+    finalExamPassed = false;
     updateNavigation();
 
     if (intro) intro.style.display = 'none';
@@ -2230,10 +2230,9 @@ function finishFinalExam() {
     const score = quizDef.correctAnswerCount * 10;
     const passed = score >= 80;
 
-    // 1. Actualizar estado global y desbloquear Avanzar (solo hasta aquí,
-    // al llegar a la pantalla de resultados, se habilita el botón).
+    // 1. Actualizar estado global: Avanzar solo se desbloquea si se aprobó.
+    // Si reprobó, sigue bloqueado (debe reintentar o volver al inicio).
     finalExamPassed = passed;
-    window.bnFinalExamResultsShown = true;
     updateNavigation();
 
     // 2. Mostrar resultados
@@ -2317,8 +2316,8 @@ function resetFinalExamUI() {
     const container = document.getElementById('quiz-final');
     const resultsDiv = document.getElementById('final-results-screen');
 
-    // Re-bloquear Avanzar: vuelve a la intro, aún no hay resultados.
-    window.bnFinalExamResultsShown = false;
+    // Re-bloquear Avanzar: vuelve a la intro, aún no está aprobado.
+    finalExamPassed = false;
 
     // 2. OCULTAR RESULTADOS Y PREGUNTAS
     if (resultsDiv) {

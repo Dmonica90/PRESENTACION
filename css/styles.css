@@ -291,8 +291,8 @@ p {
 }
 
 .slide-header .logo-img {
-    height: 20px;
-    min-width: 20px;
+    height: 40px;
+    min-width: 40px;
     object-fit: contain;
 }
 

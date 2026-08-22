@@ -206,8 +206,7 @@
 #slide-38 .slide-scroll-content,
 #slide-39 .slide-scroll-content,
 #slide-40 .slide-scroll-content,
-#slide-42 .slide-scroll-content,
-#slide-43 .slide-scroll-content {
+#slide-42 .slide-scroll-content {
     background-image: none;
     background-color: var(--color-gris-claro, #F4F4F4);
 }
@@ -1509,6 +1508,17 @@
    página. El motor (script.js) muestra un .final-step a la vez.
    ============================================================ */
 
+/* Fondo del examen: bg_quiz.png con velo oscuro. Todo el contenido de
+   texto (.bn-exercise, .bn-card, .final-question, .quiz-results-box)
+   va sobre su propia tarjeta blanca, así que el overlay oscuro no
+   afecta la legibilidad. */
+#slide-43 .slide-scroll-content {
+    background: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)), url('../img/bg_quiz.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
 /* La intro reutiliza .quiz-intro solo para que startFinalEvaluation()
    la encuentre; hay que neutralizar el fondo heredado del curso base. */
 #slide-43 .quiz-intro {
@@ -1565,6 +1575,7 @@
 .bn-exam-nav {
     display: flex;
     justify-content: center;
+    margin: 2%;
 }
 
 .final-question {
