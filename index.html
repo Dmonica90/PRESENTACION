@@ -30,58 +30,66 @@
                 <div id="overlay-animado">
                     <div id="intro-content">
                         <h1>Prevención y atención del Burnout <br>y Bienestar Laboral</h1>
-                        <button id="start-course-btn" class="nav-button" onclick="openNavGuide()">
+                        <button id="start-course-btn" class="nav-button" onclick="goToNext()">
                             Comenzar
                         </button>
                     </div>
                 </div>
-                <div id="nav-guide-overlay" class="hidden">
-                    <div class="guide-box anim-target anim-bounce-up">
-                        <h2>Guía de Navegación</h2>
-                        <p class="guide-intro">Antes de comenzar, familiarízate con los controles del curso:</p>
+            </div>
+        </div>
 
-                        <div class="guide-grid">
-                            <div class="guide-item">
-                                <div class="icon-circle">
-                                    <img src="img/bullet.svg" alt="Menú">
-                                </div>
-                                <p><strong>Menú:</strong> Accede a las unidades del curso.</p>
-                            </div>
+        <!-- [G1b] Guía de Navegación -->
+        <div class="slide" id="slide-nav-guide">
+            <div class="slide-header">
+                <img class="logo-img" src="img/logo/Logo GS1 azul.png" alt="Logo de la Empresa">
+                <p class="page-title">Guía de Navegación</p>
+            </div>
+            <div class="slide-scroll-content">
+                <div class="guide-box anim-target anim-bounce-up">
+                    <h2>Guía de Navegación</h2>
+                    <p class="guide-intro">Antes de comenzar, familiarízate con los controles del curso:</p>
 
-                            <div class="guide-item">
-                                <div class="nav-sim">
-                                    <span>Regresar</span> | <span>Avanzar</span>
-                                </div>
-                                <p><strong>Navegación:</strong> Avanza o retrocede entre pantallas.</p>
+                    <div class="guide-grid">
+                        <div class="guide-item">
+                            <div class="icon-circle">
+                                <img src="img/bullet.svg" alt="Menú">
                             </div>
-
-                            <div class="guide-item">
-                                <div class="icon-circle">
-                                    <img src="img/icon_clic.svg" alt="Clic">
-                                </div>
-                                <p><strong>Interactividad:</strong> Haz clic donde veas este icono.</p>
-                            </div>
-
-                            <div class="guide-item">
-                                <div class="bar-sim"></div>
-                                <p><strong>Progreso:</strong> Visualiza tu avance en el curso.</p>
-                            </div>
-
-                            <div class="guide-item" style="grid-column: 1 / -1;">
-                                <div class="icon-circle" style="background-color: var(--color-naranja-gs1);">
-                                    <img src="img/scroll.svg" alt="Scroll">
-                                </div>
-                                <p><strong>Scroll:</strong> Si ves este icono, desliza hacia abajo para ver más
-                                    contenido.</p>
-                            </div>
+                            <p><strong>Menú:</strong> Accede a las unidades del curso.</p>
                         </div>
 
-                        <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
+                        <div class="guide-item">
+                            <div class="nav-sim">
+                                <span>Regresar</span> | <span>Avanzar</span>
+                            </div>
+                            <p><strong>Navegación:</strong> Avanza o retrocede entre pantallas.</p>
+                        </div>
 
-                        <button class="nav-button primary-blue-btn" onclick="closeNavGuideAndStart()">
-                            ¡Entendido, comenzar!
-                        </button>
+                        <div class="guide-item">
+                            <div class="icon-circle">
+                                <img src="img/icon_clic.svg" alt="Clic">
+                            </div>
+                            <p><strong>Interactividad:</strong> Haz clic donde veas este icono.</p>
+                        </div>
+
+                        <div class="guide-item">
+                            <div class="bar-sim"></div>
+                            <p><strong>Progreso:</strong> Visualiza tu avance en el curso.</p>
+                        </div>
+
+                        <div class="guide-item" style="grid-column: 1 / -1;">
+                            <div class="icon-circle" style="background-color: var(--color-naranja-gs1);">
+                                <img src="img/scroll.svg" alt="Scroll">
+                            </div>
+                            <p><strong>Scroll:</strong> Si ves este icono, desliza hacia abajo para ver más
+                                contenido.</p>
+                        </div>
                     </div>
+
+                    <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
+
+                    <button class="nav-button primary-blue-btn" onclick="goToNext()">
+                        ¡Entendido, comenzar!
+                    </button>
                 </div>
             </div>
         </div>
@@ -191,7 +199,7 @@
         </div>
 
         <!-- [G5] En esta unidad aprenderás (índice de temas 1.1–1.4) — HUB -->
-        <div class="slide" id="slide-5" data-gate="temas" data-goto-next="9">
+        <div class="slide" id="slide-5" data-gate="temas" data-goto-next="10">
             <div class="slide-header">
                 <img class="logo-img" src="img/logo/Logo GS1 azul.png" alt="Logo de la Empresa">
                 <p class="page-title">1. Comprendiendo el Burnout</p>
@@ -213,25 +221,25 @@
 
                     <div class="bn-temas">
                         <button class="bn-tema anim-target anim-bounce-up anim-delay-2" data-tema="0"
-                            onclick="showSlide(5)">
+                            onclick="showSlide(6)">
                             <span class="bn-tema-num">1.1</span>
                             <span class="bn-tema-label">¿Qué es el Burnout?</span>
                             <span class="bn-tema-arrow">›</span>
                         </button>
                         <button class="bn-tema anim-target anim-bounce-up anim-delay-3" data-tema="1"
-                            onclick="showSlide(6)">
+                            onclick="showSlide(7)">
                             <span class="bn-tema-num">1.2</span>
                             <span class="bn-tema-label">Etapas del agotamiento laboral</span>
                             <span class="bn-tema-arrow">›</span>
                         </button>
                         <button class="bn-tema anim-target anim-bounce-up anim-delay-4" data-tema="2"
-                            onclick="showSlide(7)">
+                            onclick="showSlide(8)">
                             <span class="bn-tema-num">1.3</span>
                             <span class="bn-tema-label">Diferencia entre estrés y burnout</span>
                             <span class="bn-tema-arrow">›</span>
                         </button>
                         <button class="bn-tema anim-target anim-bounce-up anim-delay-5" data-tema="3"
-                            onclick="showSlide(8)">
+                            onclick="showSlide(9)">
                             <span class="bn-tema-num">1.4</span>
                             <span class="bn-tema-label">Consecuencias del burnout en la salud y el rendimiento</span>
                             <span class="bn-tema-arrow">›</span>
@@ -242,10 +250,10 @@
         </div>
 
         <!-- [G6] 1.1 ¿Qué es el Burnout? — spoke del hub (slide 5) -->
-        <div class="slide" id="slide-6" data-tema="0" data-spoke-hub="4" data-goto-next="4" data-goto-prev="4">
+        <div class="slide" id="slide-6" data-tema="0" data-spoke-hub="5" data-goto-next="5" data-goto-prev="5">
             <div class="slide-header">
                 <img class="logo-img" src="img/logo/Logo GS1 azul.png" alt="Logo de la Empresa">
-                <p class="page-title">1.1. ¿Qué es el Burnout?</p>
+                <p class="page-title">1. Comprendiendo el Burnout</p>
             </div>
             <div class="slide-scroll-content">
                 <div class="bn-slide">
@@ -273,11 +281,11 @@
         </div>
 
         <!-- [G7] 1.2 Etapas del agotamiento laboral (botonera 4 · popups) — spoke -->
-        <div class="slide" id="slide-7" data-gate="buttons" data-tema="1" data-spoke-hub="4" data-goto-next="4"
-            data-goto-prev="4">
+        <div class="slide" id="slide-7" data-gate="buttons" data-tema="1" data-spoke-hub="5" data-goto-next="5"
+            data-goto-prev="5">
             <div class="slide-header">
                 <img class="logo-img" src="img/logo/Logo GS1 azul.png" alt="Logo de la Empresa">
-                <p class="page-title">1.2. Etapas del agotamiento laboral</p>
+                <p class="page-title">1. Comprendiendo el Burnout</p>
             </div>
             <div class="slide-scroll-content">
                 <div class="bn-slide">
@@ -432,11 +440,11 @@
         </div>
 
         <!-- [G8/G9] 1.3 Diferencia entre estrés y burnout (botonera + tabla popup + video guion_03) — spoke -->
-        <div class="slide" id="slide-8" data-gate="buttons" data-tema="2" data-spoke-hub="4" data-goto-next="4"
-            data-goto-prev="4">
+        <div class="slide" id="slide-8" data-gate="buttons" data-tema="2" data-spoke-hub="5" data-goto-next="5"
+            data-goto-prev="5">
             <div class="slide-header">
                 <img class="logo-img" src="img/logo/Logo GS1 azul.png" alt="Logo de la Empresa">
-                <p class="page-title">1.3. Diferencia entre estrés y burnout</p>
+                <p class="page-title">1. Comprendiendo el Burnout</p>
             </div>
             <div class="slide-scroll-content">
                 <div class="bn-slide">
@@ -629,11 +637,11 @@
         </div>
 
         <!-- [G10/G11/G12] 1.4 Consecuencias del Burnout (botonera 3 · tablas popup) — spoke -->
-        <div class="slide" id="slide-9" data-gate="buttons" data-tema="3" data-spoke-hub="4" data-goto-next="4"
-            data-goto-prev="4">
+        <div class="slide" id="slide-9" data-gate="buttons" data-tema="3" data-spoke-hub="5" data-goto-next="5"
+            data-goto-prev="5">
             <div class="slide-header">
                 <img class="logo-img" src="img/logo/Logo GS1 azul.png" alt="Logo de la Empresa">
-                <p class="page-title">1.4. Consecuencias del Burnout en la salud y el rendimiento</p>
+                <p class="page-title">1. Comprendiendo el Burnout</p>
             </div>
             <div class="slide-scroll-content">
                 <div class="bn-slide">
@@ -864,7 +872,7 @@
         <div class="slide" id="slide-13" data-gate="buttons">
             <div class="slide-header">
                 <img class="logo-img" src="img/logo/Logo GS1 azul.png" alt="Logo de la Empresa">
-                <p class="page-title">2.1. Señales emocionales, cognitivas y conductuales</p>
+                <p class="page-title">2 · Identificación de señales y factores de riesgo</p>
             </div>
             <div class="slide-scroll-content">
                 <div class="bn-slide">
@@ -1007,7 +1015,7 @@
         <div class="slide" id="slide-14" data-gate="buttons">
             <div class="slide-header">
                 <img class="logo-img" src="img/logo/Logo GS1 azul.png" alt="Logo de la Empresa">
-                <p class="page-title">UNIDAD 2 · Identificación de señales y factores de riesgo</p>
+                <p class="page-title">2 · Identificación de señales y factores de riesgo</p>
             </div>
             <div class="slide-scroll-content">
                 <div class="bn-slide">
@@ -1139,7 +1147,7 @@
         <div class="slide" id="slide-15">
             <div class="slide-header">
                 <img class="logo-img" src="img/logo/Logo GS1 azul.png" alt="Logo de la Empresa">
-                <p class="page-title">UNIDAD 2 · Identificación de señales y factores de riesgo</p>
+                <p class="page-title">2 · Identificación de señales y factores de riesgo</p>
             </div>
            <div class="slide-scroll-content">
                 <div class="bn-embed-wrap">
@@ -1184,7 +1192,7 @@
         <div class="slide" id="slide-18">
             <div class="slide-header">
                 <img class="logo-img" src="img/logo/Logo GS1 azul.png" alt="Logo de la Empresa">
-                <p class="page-title">Unidad 3. Estrategias personales de prevención</p>
+                <p class="page-title">3 · Estrategias personales de prevención</p>
             </div>
             <div class="slide-scroll-content">
                 <div class="bn-slide">
@@ -1209,7 +1217,7 @@
         <div class="slide" id="slide-19" data-gate="buttons">
             <div class="slide-header">
                 <img class="logo-img" src="img/logo/Logo GS1 azul.png" alt="Logo de la Empresa">
-                <p class="page-title">Unidad 3. Estrategias personales de prevención</p>
+                <p class="page-title">3 · Estrategias personales de prevención</p>
             </div>
             <div class="slide-scroll-content">
                 <div class="bn-slide">
@@ -1327,7 +1335,7 @@
         <div class="slide" id="slide-20">
             <div class="slide-header">
                 <img class="logo-img" src="img/logo/Logo GS1 azul.png" alt="Logo de la Empresa">
-                <p class="page-title">3.2. Gestión del tiempo y priorización saludable</p>
+                <p class="page-title">3 · Estrategias personales de prevención</p>
             </div>
             <div class="slide-scroll-content">
                 <div class="bn-slide">
@@ -1348,7 +1356,7 @@
         <div class="slide" id="slide-21" data-gate="buttons">
             <div class="slide-header">
                 <img class="logo-img" src="img/logo/Logo GS1 azul.png" alt="Logo de la Empresa">
-                <p class="page-title">3.2. Gestión del tiempo y priorización saludable</p>
+                <p class="page-title">3 · Estrategias personales de prevención</p>
             </div>
             <div class="slide-scroll-content">
                 <div class="bn-slide">
@@ -1435,7 +1443,7 @@
         <div class="slide" id="slide-22">
             <div class="slide-header">
                 <img class="logo-img" src="img/logo/Logo GS1 azul.png" alt="Logo de la Empresa">
-                <p class="page-title">3.2. Gestión del tiempo y priorización saludable</p>
+                <p class="page-title">3 · Estrategias personales de prevención</p>
             </div>
             <div class="slide-scroll-content">
                 <div class="bn-slide">
@@ -1470,7 +1478,7 @@
         <div class="slide" id="slide-23">
             <div class="slide-header">
                 <img class="logo-img" src="img/logo/Logo GS1 azul.png" alt="Logo de la Empresa">
-                <p class="page-title">3.2. Gestión del tiempo y priorización saludable</p>
+                <p class="page-title">3 · Estrategias personales de prevención</p>
             </div>
             <div class="slide-scroll-content">
                 <div class="bn-slide">
@@ -1497,7 +1505,7 @@
         <div class="slide" id="slide-24">
             <div class="slide-header">
                 <img class="logo-img" src="img/logo/Logo GS1 azul.png" alt="Logo de la Empresa">
-                <p class="page-title">3.2. Gestión del tiempo y priorización saludable</p>
+                <p class="page-title">3 · Estrategias personales de prevención</p>
             </div>
             <div class="slide-scroll-content">
                 <div class="bn-slide">
@@ -1568,11 +1576,11 @@
         <div class="slide" id="slide-27" data-gate="buttons">
             <div class="slide-header">
                 <img class="logo-img" src="img/logo/Logo GS1 azul.png" alt="Logo de la Empresa">
-                <p class="page-title">3.3. Técnicas de relajación</p>
+                <p class="page-title">3 · Estrategias personales de prevención</p>
             </div>
             <div class="slide-scroll-content">
                 <div class="bn-slide">
-                    <h2 class="bn-title">Mindfulness laboral</h2>
+                    <h2 class="bn-title">3.3 Mindfulness laboral</h2>
                     <p class="bn-intro anim-target anim-bounce-left anim-delay-1">El mindfulness laboral o
                         <strong>atención plena</strong> no significa "dejar de pensar", sino enfocar la mente en el
                         momento presente: respirar, escuchar, observar y actuar con conciencia. Estas pausas conscientes
@@ -1710,7 +1718,7 @@
         <div class="slide" id="slide-28">
             <div class="slide-header">
                 <img class="logo-img" src="img/logo/Logo GS1 azul.png" alt="Logo de la Empresa">
-                <p class="page-title">3.4. Establecimiento de límites</p>
+                <p class="page-title">3 · Estrategias personales de prevención</p>
             </div>
             <div class="slide-scroll-content">
                 <div class="bn-slide">
@@ -1812,11 +1820,11 @@
         <div class="slide" id="slide-30">
             <div class="slide-header">
                 <img class="logo-img" src="img/logo/Logo GS1 azul.png" alt="Logo de la Empresa">
-                <p class="page-title">3.5. Pedir apoyo cuando es necesario</p>
+                <p class="page-title">3 · Estrategias personales de prevención</p>
             </div>
             <div class="slide-scroll-content">
                 <div class="bn-slide">
-                    <h2 class="bn-title">3.5. Pedir apoyo cuando es necesario</h2>
+                    <h2 class="bn-title">3.5 Pedir apoyo cuando es necesario</h2>
                     <p class="bn-intro anim-target anim-bounce-left anim-delay-1">En muchos entornos laborales existe la
                         idea equivocada de que "pedir ayuda es signo de debilidad" o de que los buenos colaboradores
                         deben poder con todo.</p>
@@ -1916,11 +1924,11 @@
         <div class="slide" id="slide-34">
             <div class="slide-header">
                 <img class="logo-img" src="img/logo/Logo GS1 azul.png" alt="Logo de la Empresa">
-                <p class="page-title">4.1. Cultura de bienestar y reconocimiento</p>
+                <p class="page-title">4 · Red de apoyo organizacional y trabajo en equipo</p>
             </div>
             <div class="slide-scroll-content">
                 <div class="bn-slide">
-                    <h2 class="bn-title">4.1. Cultura de bienestar y reconocimiento</h2>
+                    <h2 class="bn-title">4.1 Cultura de bienestar y reconocimiento</h2>
                     <p class="bn-intro anim-target anim-bounce-left anim-delay-1">El bienestar laboral no se logra solo
                         con pausas o actividades recreativas; es el resultado de una <strong>cultura
                             organizacional</strong> que cuida a las personas mientras busca resultados. Una empresa con
@@ -1981,11 +1989,11 @@
         <div class="slide" id="slide-35">
             <div class="slide-header">
                 <img class="logo-img" src="img/logo/Logo GS1 azul.png" alt="Logo de la Empresa">
-                <p class="page-title">4.1. Cultura de bienestar y reconocimiento</p>
+                <p class="page-title">4 · Red de apoyo organizacional y trabajo en equipo</p>
             </div>
             <div class="slide-scroll-content">
                 <div class="bn-slide">
-                    <h2 class="bn-title">Reconocer también previene el agotamiento</h2>
+                    <h2 class="bn-title">4.1 Reconocer también previene el agotamiento</h2>
                     
                     <div class="bn-highlight anim-target anim-bounce-up anim-delay-3"
                         style="position: relative; overflow: hidden; padding: 0;">
@@ -2039,11 +2047,11 @@
         <div class="slide" id="slide-36">
             <div class="slide-header">
                 <img class="logo-img" src="img/logo/Logo GS1 azul.png" alt="Logo de la Empresa">
-                <p class="page-title">4.2. Comunicación empática y liderazgo saludable</p>
+                <p class="page-title">4 · Red de apoyo organizacional y trabajo en equipo</p>
             </div>
             <div class="slide-scroll-content">
                 <div class="bn-slide">
-                    <h2 class="bn-title">4.2. Comunicación empática y liderazgo saludable</h2>
+                    <h2 class="bn-title">4.2 Comunicación empática y liderazgo saludable</h2>
                     <p class="bn-intro anim-target anim-bounce-left anim-delay-1">El liderazgo es un factor determinante
                         en la aparición o prevención del Burnout. Un líder saludable no solo exige resultados: también
                         escucha, equilibra y guía. Pero, ¿cuáles son las características de un <strong>liderazgo que
@@ -2066,11 +2074,11 @@
         <div class="slide" id="slide-37">
             <div class="slide-header">
                 <img class="logo-img" src="img/logo/Logo GS1 azul.png" alt="Logo de la Empresa">
-                <p class="page-title">4.2. Comunicación empática y liderazgo saludable</p>
+                <p class="page-title">4 · Red de apoyo organizacional y trabajo en equipo</p>
             </div>
             <div class="slide-scroll-content">
                 <div class="bn-slide">
-                    <h2 class="bn-title">Escuchar también es liderar</h2>
+                    <h2 class="bn-title">4.2 Escuchar también es liderar</h2>
                     <div class="bn-highlight anim-target anim-bounce-left anim-delay-1">Escuchar y saber detectar las
                         conductas de tu equipo también es liderar.</div>
 
@@ -2110,11 +2118,11 @@
         <div class="slide" id="slide-38" data-gate="buttons">
             <div class="slide-header">
                 <img class="logo-img" src="img/logo/Logo GS1 azul.png" alt="Logo de la Empresa">
-                <p class="page-title">4.3. Trabajo en equipo y apoyo entre colegas</p>
+                <p class="page-title">4 · Red de apoyo organizacional y trabajo en equipo</p>
             </div>
             <div class="slide-scroll-content">
                 <div class="bn-slide">
-                    <h2 class="bn-title">4.3. Trabajo en equipo y apoyo entre colegas</h2>
+                    <h2 class="bn-title">4.3 Trabajo en equipo y apoyo entre colegas</h2>
                     <p class="bn-intro anim-target anim-bounce-left anim-delay-1">Un entorno colaborativo protege contra
                         el Burnout porque crea redes de apoyo emocional y operativo. Los equipos cohesionados se ayudan,
                         comparten responsabilidades y evitan que la carga recaiga siempre sobre las mismas personas.</p>
@@ -2175,11 +2183,11 @@
         <div class="slide" id="slide-39" data-gate="buttons">
             <div class="slide-header">
                 <img class="logo-img" src="img/logo/Logo GS1 azul.png" alt="Logo de la Empresa">
-                <p class="page-title">4.4. Prácticas de organizaciones saludables</p>
+                <p class="page-title">4 · Red de apoyo organizacional y trabajo en equipo</p>
             </div>
             <div class="slide-scroll-content">
                 <div class="bn-slide">
-                    <h2 class="bn-title">4.4. Prácticas de organizaciones saludables</h2>
+                    <h2 class="bn-title">4.4 Prácticas de organizaciones saludables</h2>
                     <p class="bn-intro anim-target anim-bounce-left anim-delay-1">Las organizaciones que reducen los
                         riesgos psicosociales aplican acciones concretas y medibles. Estas estrategias previenen el
                         Burnout y, además, aumentan la productividad, la innovación y la lealtad. Algunas buenas
@@ -2322,11 +2330,11 @@
         <div class="slide" id="slide-40">
             <div class="slide-header">
                 <img class="logo-img" src="img/logo/Logo GS1 azul.png" alt="Logo de la Empresa">
-                <p class="page-title">4.4. Prácticas de organizaciones saludables</p>
+                <p class="page-title">4 · Red de apoyo organizacional y trabajo en equipo</p>
             </div>
             <div class="slide-scroll-content">
                 <div class="bn-slide">
-                    <h2 class="bn-title">Concluyendo</h2>
+                    <h2 class="bn-title">4.4 Prácticas de organizaciones saludables · Concluyendo</h2>
                     <div class="bn-card anim-target anim-bounce-up anim-delay-1">
                         <ul class="bn-list">
                             <li>El bienestar organizacional no depende solo del individuo, sino de cómo trabaja la

@@ -149,21 +149,21 @@ let finalExamPassed = false;
 // ===============================================
 
 // Estructura del curso Burnout (índices 0-based).
-// Unidad 1: slides 4-10  | Unidad 2: 11-16 | Unidad 3: 17-31 | Unidad 4: 32-40 | Cierre: 41-44
+// Unidad 1: slides 5-11  | Unidad 2: 12-17 | Unidad 3: 18-32 | Unidad 4: 33-41 | Cierre: 42-45
 const moduleStructure = {
-    'modulo1': { start: 3, end: 10, quizIndex: 9, name: 'Unidad 1: Comprendiendo el Burnout' },
-    'modulo2': { start: 10, end: 16, quizIndex: 15, name: 'Unidad 2: Señales y factores de riesgo' },
-    'modulo3': { start: 16, end: 31, quizIndex: 30, name: 'Unidad 3: Estrategias de prevención' },
-    'modulo4': { start: 31, end: 40, quizIndex: 39, name: 'Unidad 4: Red de apoyo organizacional' },
-    'cierre': { start: 40, end: 44, quizIndex: 42, name: 'Cierre y evaluación final' }
+    'modulo1': { start: 4, end: 11, quizIndex: 10, name: 'Unidad 1: Comprendiendo el Burnout' },
+    'modulo2': { start: 11, end: 17, quizIndex: 16, name: 'Unidad 2: Señales y factores de riesgo' },
+    'modulo3': { start: 17, end: 32, quizIndex: 31, name: 'Unidad 3: Estrategias de prevención' },
+    'modulo4': { start: 32, end: 41, quizIndex: 40, name: 'Unidad 4: Red de apoyo organizacional' },
+    'cierre': { start: 41, end: 45, quizIndex: 43, name: 'Cierre y evaluación final' }
 };
 
 let moduleStatus = {
-    'modulo1': { passed: true, unlockIndex: 10 },
-    'modulo2': { passed: false, unlockIndex: 16 },
-    'modulo3': { passed: false, unlockIndex: 31 },
-    'modulo4': { passed: false, unlockIndex: 40 },
-    'cierre': { passed: false, unlockIndex: 44 }
+    'modulo1': { passed: true, unlockIndex: 11 },
+    'modulo2': { passed: false, unlockIndex: 17 },
+    'modulo3': { passed: false, unlockIndex: 32 },
+    'modulo4': { passed: false, unlockIndex: 41 },
+    'cierre': { passed: false, unlockIndex: 45 }
 };
 
 const FINAL_PASSING_SCORE = 70;
@@ -540,8 +540,8 @@ function showSlide(index) {
             // Los reinicios de quiz/evaluación del curso CRE se rehabilitarán
             // por sección cuando se construyan los interactivos reales de Burnout.
 
-            // --- CIERRE DEL CURSO (¡Felicidades! -> último índice 43) ---
-            if (index === 43) {
+            // --- CIERRE DEL CURSO (¡Felicidades! -> último slide) ---
+            if (index === totalSlides - 1) {
                 lanzarConfeti();
                 if (typeof SD !== 'undefined') {
                     console.log("Llegada al slide final. Forzando guardado...");
@@ -1507,15 +1507,6 @@ function initializeCourse() {
     prevBtn.addEventListener('click', goToPrev);
     nextBtn.addEventListener('click', goToNext);
     homeBtn.addEventListener('click', () => showSlide(0));
-    /* 
-    // Botón INICIAR CURSO
-    const startCourseBtn = document.getElementById('start-course-btn');
-    if (startCourseBtn) {
-        startCourseBtn.addEventListener('click', () => {
-            showSlide(1); // Mover al Slide 2 (índice 1)
-        });
-    }  
-    */
 
     // Otros Listeners (Finalización, Quiz, Video, etc.)
     finishBtn.addEventListener('click', () => {
@@ -1986,56 +1977,6 @@ function closePhaseOverlay(completedPhaseNum) {
         }
     }
 }
-// ===============================================
-// 8. LÓGICA GUÍA DE NAVEGACIÓN (SLIDE 1)
-// ===============================================
-
-function openNavGuide() {
-    const guideOverlay = document.getElementById('nav-guide-overlay');
-    // Referencia al título/contenido de la portada para ocultarlo y que no estorbe
-    const introContent = document.getElementById('intro-content');
-
-    if (guideOverlay) {
-        // Mostramos el overlay quitando la clase hidden
-        guideOverlay.classList.remove('hidden');
-
-        // Opcional: Ocultamos el título de la portada para que se vea limpia la guía
-        if (introContent) introContent.style.opacity = '0';
-
-        // Fix para Safari: Remueve la opacidad inicial y re-dispara la animación
-        const guideBox = guideOverlay.querySelector('.guide-box');
-        if (guideBox) {
-            // Remover animación temporalmente para forzar su re-ejecución
-            guideBox.classList.remove('anim-bounce-up');
-            guideBox.classList.remove('anim-target');
-
-            // Forzar reflow para que el navegador registre el cambio
-            void guideBox.offsetHeight;
-
-            // Re-agregar las clases para que la animación se ejecute
-            guideBox.classList.add('anim-target');
-            guideBox.classList.add('anim-bounce-up');
-        }
-    }
-}
-
-function closeNavGuideAndStart() {
-    const guideOverlay = document.getElementById('nav-guide-overlay');
-    const introContent = document.getElementById('intro-content');
-
-    if (guideOverlay) {
-        // Ocultamos la guía
-        guideOverlay.classList.add('hidden');
-    }
-
-    // Regresamos el título por si el usuario vuelve al inicio después
-    if (introContent) introContent.style.opacity = '1';
-
-    // ⭐ AQUÍ ES DONDE FINALMENTE AVANZAMOS AL CURSO ⭐
-    // showSlide(1) nos lleva al Slide 2 (porque el índice empieza en 0)
-    showSlide(1);
-}
-
 // ===============================================
 // LÓGICA MODELO SBI (SLIDE 28)
 // ===============================================

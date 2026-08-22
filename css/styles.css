@@ -144,31 +144,14 @@ p {
 }
 
 /* =============================================== */
-/* GUÍA DE NAVEGACIÓN (POPUP INICIAL)              */
+/* GUÍA DE NAVEGACIÓN (SLIDE)                      */
 /* =============================================== */
-
-#nav-guide-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.85);
-    /* Fondo oscuro */
-    z-index: 100;
-    /* Encima de todo */
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-    box-sizing: border-box;
-}
 
 .guide-box {
     background-color: white;
     width: 100%;
     max-width: 800px;
+    margin: 0 auto;
     border-radius: 20px;
     padding: 40px;
     text-align: center;
@@ -5306,13 +5289,7 @@ ul.lista-gs1 li::before {
         margin-right: 8px;
         flex-shrink: 0;
     }
-    /* --- 1. GUÍA DE NAVEGACIÓN (Slide 1 Overlay) --- */
-    #nav-guide-overlay {
-        align-items: flex-start;
-        padding: 20px;
-        overflow-y: auto; /* Scroll si el celular es horizontal */
-    }
-
+    /* --- 1. GUÍA DE NAVEGACIÓN (Slide) --- */
     .guide-box {
         width: 100%;
         max-width: 100%;
@@ -5949,22 +5926,6 @@ ul.lista-gs1 li::before {
    C. PANTALLAS PEQUEÑAS (Max 600px) - Mejoras para Guía de Navegación
    ----------------------------------------------------------- */
 @media (max-width: 600px) {
-    /* Asegurar que nav-guide-overlay sea completamente visible en móvil */
-    #nav-guide-overlay {
-        position: absolute !important;
-        top: 0 !important;
-        left: 0 !important;
-        width: 100% !important;
-        height: 100% !important;
-        z-index: 9999 !important;
-        overflow-y: auto;
-        background-color: rgba(0, 0, 0, 0.85);
-    }
-
-    #nav-guide-overlay.hidden {
-        display: none !important;
-    }
-
     .guide-box {
         max-width: 95vw;
         margin-top: 10px;
