@@ -19,18 +19,98 @@
 	<resources>
 		<resource identifier="RES-1" type="webcontent" adlcp:scormType="sco" href="index.html">
 			<file href="index.html"/>
+
+			<!-- JavaScript -->
 			<file href="js/SCORM_API_wrapper.js"/>
+			<file href="js/libs/lottie.min.js"/>
 			<file href="js/script.js"/>
+			<file href="js/burnout.js"/>
+
+			<!-- CSS -->
 			<file href="css/styles.css"/>
 			<file href="css/burnout.css"/>
-			<file href="js/libs/lottie.min.js"/>
+
+			<!-- Fuentes -->
+			<file href="fonts/Montserrat-Thin.woff2"/>
+			<file href="fonts/Montserrat-Regular.woff2"/>
+			<file href="fonts/Montserrat-Medium.woff2"/>
+			<file href="fonts/Montserrat-SemiBold.woff2"/>
+			<file href="fonts/Montserrat-ExtraBold.woff2"/>
+			<file href="fonts/Montserrat-Italic.woff2"/>
+
+			<!-- Animación Lottie -->
 			<file href="animations/courses.json"/>
-			<file href="img/logo/Logo GS1 azul.png"/>
+
+			<!-- Videos -->
+			<file href="videos/CB_ Presentación del curso.mp4"/>
+			<file href="videos/guion_03_Burnout_video_ejemplo.mp4"/>
+			<file href="videos/guion_08_Burnout_video.mp4"/>
+			<file href="videos/guion_10_Burnout_video.mp4"/>
+
+			<!-- Ejercicios interactivos embebidos (iframes con gate) -->
+			<file href="test/index.html"/>
+			<file href="test/Caso_1.html"/>
+			<file href="test/Caso_2.html"/>
+			<file href="test/Test_MBI.html"/>
+
+			<!-- Imágenes y PDFs -->
 			<file href="img/001_Burnout_GS1.jpg"/>
 			<file href="img/002_Burnout_GS1.jpg"/>
 			<file href="img/003_Burnout_GS1.jpg"/>
 			<file href="img/004_Burnout_GS1.jpg"/>
 			<file href="img/005_Burnout_GS1.jpg"/>
+			<file href="img/006_Burnout_GS1.jpg"/>
+			<file href="img/008_Burnout_GS1.jpg"/>
+			<file href="img/009_Burnout_GS1.jpg"/>
+			<file href="img/010_Burnout_GS1.jpg"/>
+			<file href="img/011_Burnout_GS1.jpg"/>
+			<file href="img/012_Burnout_GS1.jpg"/>
+			<file href="img/013_Burnout_GS1.jpg"/>
+			<file href="img/014_Burnout_GS1.jpg"/>
+			<file href="img/015_Burnout_GS1.jpg"/>
+			<file href="img/016_Burnout_GS1.jpg"/>
+			<file href="img/017_Burnout_GS1.jpg"/>
+			<file href="img/018_Burnout_GS1.jpg"/>
+			<file href="img/027_Burnout_GS1.jpg"/>
+			<file href="img/028_Burnout_GS1.jpg"/>
+			<file href="img/029_Burnout_GS1.jpg"/>
+			<file href="img/031_Burnout_GS1.jpg"/>
+			<file href="img/032_Burnout_GS1.jpg"/>
+			<file href="img/033_Burnout_GS1.jpg"/>
+			<file href="img/034_Burnout_GS1.jpg"/>
+			<file href="img/035_Burnout_GS1.jpg"/>
+			<file href="img/036_Burnout_GS1.jpg"/>
+			<file href="img/Burnout_infografia_06.pdf"/>
+			<file href="img/Caso2_Burnout_GS1.png"/>
+			<file href="img/MBI_TEST.pdf"/>
+			<file href="img/art_full_slide-10.png"/>
+			<file href="img/art_full_slide-11.png"/>
+			<file href="img/art_full_slide-12.png"/>
+			<file href="img/art_full_slide-15.png"/>
+			<file href="img/art_full_slide-16.png"/>
+			<file href="img/art_full_slide-27.png"/>
+			<file href="img/art_full_slide-3.png"/>
+			<file href="img/art_full_slide-33.png"/>
+			<file href="img/art_full_slide-7.png"/>
+			<file href="img/art_full_slide-8.png"/>
+			<file href="img/art_full_slide-9.png"/>
+			<file href="img/art_full_slide-Final.png"/>
+			<file href="img/bg_quiz.png"/>
+			<file href="img/bullet.svg"/>
+			<file href="img/etapa1_Burnout_GS1.jpg"/>
+			<file href="img/etapa2_Burnout_GS1.jpg"/>
+			<file href="img/etapa3_Burnout_GS1.jpg"/>
+			<file href="img/etapa4_Burnout_GS1.jpg"/>
+			<file href="img/icon_clic.svg"/>
+			<file href="img/img_quiz_c1.png"/>
+			<file href="img/img_quiz_c2.png"/>
+			<file href="img/img_quiz_c3.png"/>
+			<file href="img/img_quiz_c4.png"/>
+			<file href="img/img_quiz_c5.png"/>
+			<file href="img/logo/Logo GS1 azul.png"/>
+			<file href="img/play_icon.svg"/>
+			<file href="img/scroll.svg"/>
+			<file href="img/video.png"/>
 		</resource>
 	</resources>
 </manifest>
