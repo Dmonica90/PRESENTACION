@@ -8,6 +8,8 @@
 // El token de Notion NUNCA vive en el HTML: se guarda aquí como
 // Script Property, así el formulario puede publicarse abierto.
 //
+// La votación es anónima: no se pide ni se guarda quién califica.
+//
 // Instalación: ver apps-script/README_DivinaComida.md
 // ═══════════════════════════════════════════════════════════════
 
@@ -51,9 +53,19 @@ function doGet() {
 // VALIDACIÓN
 // ═══════════════════════════════════════════════════════════════
 
+// Anfitriones válidos: deben coincidir con las opciones del select en Notion
+const ANFITRIONES = [
+  '1. Nando y Moni',
+  '2. Mir y mamá',
+  '3. Mir y papá',
+  '4. Mary y Diego'
+];
+
 function validar_(d) {
-  if (!d || !texto_(d.anfitrion)) return 'Falta el nombre del anfitrión.';
-  if (!texto_(d.juez)) return 'Falta el nombre del comensal / juez.';
+  if (!d) return 'No llegó ninguna ficha.';
+  if (ANFITRIONES.indexOf(texto_(d.anfitrion)) === -1) {
+    return 'Elige a uno de los anfitriones de la lista.';
+  }
 
   for (var i = 0; i < SECCIONES.length; i++) {
     var s = SECCIONES[i];
@@ -71,9 +83,7 @@ function validar_(d) {
 
 function crearPaginaNotion_(d) {
   var props = {
-    'Evaluación': titulo_(texto_(d.juez) + ' → ' + texto_(d.anfitrion)),
-    'Anfitrión': richText_(d.anfitrion),
-    'Juez': richText_(d.juez),
+    'Anfitrión': { select: { name: texto_(d.anfitrion) } },
     'Momento Memorable': richText_(d.momentoMemorable),
     'Comentario Secreto': richText_(d.comentarioSecreto)
   };
@@ -120,10 +130,6 @@ function texto_(v) {
   return v == null ? '' : String(v).trim();
 }
 
-function titulo_(v) {
-  return { title: [{ text: { content: v.slice(0, 2000) } }] };
-}
-
 function richText_(v) {
   var t = texto_(v);
   return { rich_text: t ? [{ text: { content: t.slice(0, 2000) } }] : [] };
@@ -141,8 +147,7 @@ function json_(obj) {
 
 function probarEnvio() {
   var demo = {
-    anfitrion: 'Prueba Anfitrión',
-    juez: 'Prueba Juez',
+    anfitrion: '1. Nando y Moni',
     recepcionPuntaje: 9,  recepcionNivel: '5 Hospitalidad pura',
     entradaPuntaje: 7,    entradaNivel: '3-4 Rica pero nada fuera de lo común',
     platoFuertePuntaje: 10, platoFuerteNivel: '5 Digno de restaurante',

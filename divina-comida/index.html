@@ -93,6 +93,16 @@ input[type=range]{flex:2;accent-color:var(--vino);height:22px}
 .campo:last-child{margin-bottom:0}
 .campo label{display:block;font-weight:600;font-size:.88rem;margin-bottom:.35rem}
 .campo .ayuda{font-weight:400;color:var(--gris);font-size:.8rem}
+select{
+    width:100%;font-family:inherit;font-size:.95rem;color:var(--carbon);
+    border:1.5px solid var(--borde);border-radius:10px;
+    padding:.65rem .75rem;background:#fff;appearance:none;
+    background-image:linear-gradient(45deg,transparent 50%,var(--vino) 50%),linear-gradient(135deg,var(--vino) 50%,transparent 50%);
+    background-position:calc(100% - 18px) 55%,calc(100% - 13px) 55%;
+    background-size:5px 5px,5px 5px;background-repeat:no-repeat;
+}
+select:focus{outline:none;border-color:var(--vino)}
+.anonimo{font-size:.82rem;color:var(--gris);margin-top:.75rem}
 input[type=text],textarea{
     width:100%;font-family:inherit;font-size:.95rem;color:var(--carbon);
     border:1.5px solid var(--borde);border-radius:10px;
@@ -160,13 +170,16 @@ form.oculto{display:none}
     <!-- ── Identificación ─────────────────────────────────── -->
     <section class="card">
         <div class="campo">
-            <label for="anfitrion">Nombre del Anfitrión <span class="ayuda">(a quién calificas)</span></label>
-            <input type="text" id="anfitrion" name="anfitrion" required autocomplete="off" placeholder="Ej. Tía Lupita">
+            <label for="anfitrion">¿A quién calificas esta noche?</label>
+            <select id="anfitrion" name="anfitrion" required>
+                <option value="" disabled selected>Elige al anfitrión…</option>
+                <option>1. Nando y Moni</option>
+                <option>2. Mir y mamá</option>
+                <option>3. Mir y papá</option>
+                <option>4. Mary y Diego</option>
+            </select>
         </div>
-        <div class="campo">
-            <label for="juez">Comensal / Juez <span class="ayuda">(tu nombre)</span></label>
-            <input type="text" id="juez" name="juez" required autocomplete="off" placeholder="Ej. Primo Beto">
-        </div>
+        <p class="anonimo">🤐 Tu voto es anónimo: no se guarda tu nombre en ningún lado.</p>
     </section>
 
     <!-- Las 5 secciones se generan desde JS -->
@@ -395,9 +408,7 @@ function mostrarError(msg){
 }
 
 document.getElementById('btnOtra').addEventListener('click', function(){
-    var juez = document.getElementById('juez').value;
     form.reset();
-    document.getElementById('juez').value = juez;   // el juez sigue siendo el mismo
     SECCIONES.forEach(function(s){
         document.getElementById(s.clave + 'Valor').textContent = '5';
     });
