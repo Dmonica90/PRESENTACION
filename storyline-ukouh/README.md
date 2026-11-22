@@ -15,6 +15,7 @@ Paquete de animaciones de texto, transiciones, feedback y telemetría para la c�
 | `00_libreria_UK.js` | Patrón de diapositivas → trigger *Ejecutar JavaScript* **cuando la línea de tiempo comienza** | Crea `window.UK` con todos los efectos |
 | `S01_portada.js` … `S07_evaluacion.js` | Un bloque por trigger (cada archivo indica cuál) | Coreografía de cada slide y sus capas |
 | `S99_utilidades.js` | Botones de reinicio, saltar animación, depuración y envío al LMS | Utilidades |
+| `GUIA_VARIABLES_Y_OBJETOS.md` | Léela primero | Prompts del AI Assistant para las 29 variables, colocación del JS y nombres de cada objeto |
 | `webobject-simulador/index.html` | Insertar → Objeto web → carpeta `webobject-simulador` (Slide 06) | Simulador en Canvas con el slider de 0 a 14 m y la animación de cruce |
 
 Si no quieres usar el patrón, pega la librería como **primer** trigger de Slide_01. Pégala también en cualquier
